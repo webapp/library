@@ -1,4 +1,4 @@
-raw
-*.sw?
-.DS_Store
-node_modules
+/dist/
+/test/reports/
+/node_modules/
+/vendor/lib/
