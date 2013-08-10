@@ -14,6 +14,7 @@
     "lodash": "~1.3.1",
     "q": "~0.9.4",
     "history.js": "~1.8.0",
-    "scopedcss": "~0.1.0"
+    "scopedcss": "~0.1.0",
+    "ractive": "master"
   }
 }
