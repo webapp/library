@@ -1,121 +1,108 @@
-$(document).ready(function() {
+define(function(require, exports, module) {
 
-  module("Backbone.Events");
+  var _ = require("lodash");
 
-  test("on and trigger", 2, function() {
-    var obj = { counter: 0 };
-    _.extend(obj,Backbone.Events);
-    obj.on('event', function() { obj.counter += 1; });
-    obj.trigger('event');
-    equal(obj.counter,1,'counter should be incremented.');
-    obj.trigger('event');
-    obj.trigger('event');
-    obj.trigger('event');
-    obj.trigger('event');
-    equal(obj.counter, 5, 'counter should be incremented five times.');
+  describe("Events", function() {
+    var Events = require("webapp/events");
+
+    it("is an object", function() {
+      expect(Events).to.be.a("object");
+    });
+
+    it("has on and trigger", function() {
+      var obj = { counter: 0 };
+      _.extend(obj, Events);
+      obj.on("event", function() { obj.counter += 1; });
+      obj.trigger("event");
+      expect(obj.counter).to.equal(1);
+      obj.trigger("event");
+      obj.trigger("event");
+      obj.trigger("event");
+      obj.trigger("event");
+      expect(obj.counter).to.equal(5);
+    });
+
+    it("can bind and trigger multiple events", function() {
+      var obj = { counter: 0 };
+      _.extend(obj, Events);
+
+      obj.on('a b c', function() { obj.counter += 1; });
+
+      obj.trigger('a');
+      expect(obj.counter).to.equal(1);
+
+      obj.trigger('a b');
+      expect(obj.counter).to.equal(3);
+
+      obj.trigger('c');
+      expect(obj.counter).to.equal(4);
+
+      obj.off('a c');
+      obj.trigger('a b c');
+      expect(obj.counter).to.equal(5);
+    });
+
+    it("can bind and trigger with event maps", function() {
+      var obj = { counter: 0 };
+      _.extend(obj, Events);
+
+      var increment = function() {
+        this.counter += 1;
+      };
+
+      obj.on({
+        a: increment,
+        b: increment,
+        c: increment
+      }, obj);
+
+      obj.trigger('a');
+      expect(obj.counter).to.equal(1);
+
+      obj.trigger('a b');
+      expect(obj.counter).to.equal(3);
+
+      obj.trigger('c');
+      expect(obj.counter).to.equal(4);
+
+      obj.off({
+        a: increment,
+        c: increment
+      }, obj);
+      obj.trigger('a b c');
+      expect(obj.counter).to.equal(5);
+    });
+
+    it("has listenTo and stopListening", function() {
+      var a = _.extend({}, Events);
+      var b = _.extend({}, Events);
+      var hit = false;
+      a.listenTo(b, 'all', function(){ hit = true; });
+      b.trigger('anything');
+      a.listenTo(b, 'all', function(){ hit = false; });
+      a.stopListening();
+      b.trigger('anything');
+      expect(hit).to.equal(true);
+    });
+
+    it("can listenTo and stopListening with event maps", function() {
+      var a = _.extend({}, Events);
+      var b = _.extend({}, Events);
+      var cb = function(){ expect(true).to.be.equal(true); };
+      a.listenTo(b, {event: cb});
+      b.trigger('event');
+      a.listenTo(b, {event2: cb});
+      b.on('event2', cb);
+      a.stopListening(b, {event2: cb});
+      b.trigger('event event2');
+      a.stopListening();
+      b.trigger('event event2');
+    });
   });
+});
 
-  test("binding and triggering multiple events", 4, function() {
-    var obj = { counter: 0 };
-    _.extend(obj, Backbone.Events);
+/*
 
-    obj.on('a b c', function() { obj.counter += 1; });
-
-    obj.trigger('a');
-    equal(obj.counter, 1);
-
-    obj.trigger('a b');
-    equal(obj.counter, 3);
-
-    obj.trigger('c');
-    equal(obj.counter, 4);
-
-    obj.off('a c');
-    obj.trigger('a b c');
-    equal(obj.counter, 5);
-  });
-
-  test("binding and triggering with event maps", function() {
-    var obj = { counter: 0 };
-    _.extend(obj, Backbone.Events);
-
-    var increment = function() {
-      this.counter += 1;
-    };
-
-    obj.on({
-      a: increment,
-      b: increment,
-      c: increment
-    }, obj);
-
-    obj.trigger('a');
-    equal(obj.counter, 1);
-
-    obj.trigger('a b');
-    equal(obj.counter, 3);
-
-    obj.trigger('c');
-    equal(obj.counter, 4);
-
-    obj.off({
-      a: increment,
-      c: increment
-    }, obj);
-    obj.trigger('a b c');
-    equal(obj.counter, 5);
-  });
-
-  test("listenTo and stopListening", 1, function() {
-    var a = _.extend({}, Backbone.Events);
-    var b = _.extend({}, Backbone.Events);
-    a.listenTo(b, 'all', function(){ ok(true); });
-    b.trigger('anything');
-    a.listenTo(b, 'all', function(){ ok(false); });
-    a.stopListening();
-    b.trigger('anything');
-  });
-
-  test("listenTo and stopListening with event maps", 4, function() {
-    var a = _.extend({}, Backbone.Events);
-    var b = _.extend({}, Backbone.Events);
-    var cb = function(){ ok(true); };
-    a.listenTo(b, {event: cb});
-    b.trigger('event');
-    a.listenTo(b, {event2: cb});
-    b.on('event2', cb);
-    a.stopListening(b, {event2: cb});
-    b.trigger('event event2');
-    a.stopListening();
-    b.trigger('event event2');
-  });
-
-  test("stopListening with omitted args", 2, function () {
-    var a = _.extend({}, Backbone.Events);
-    var b = _.extend({}, Backbone.Events);
-    var cb = function () { ok(true); };
-    a.listenTo(b, 'event', cb);
-    b.on('event', cb);
-    a.listenTo(b, 'event2', cb);
-    a.stopListening(null, {event: cb});
-    b.trigger('event event2');
-    b.off();
-    a.listenTo(b, 'event event2', cb);
-    a.stopListening(null, 'event');
-    a.stopListening();
-    b.trigger('event2');
-  });
-
-  test("listenToOnce and stopListening", 1, function() {
-    var a = _.extend({}, Backbone.Events);
-    var b = _.extend({}, Backbone.Events);
-    a.listenToOnce(b, 'all', function() { ok(true); });
-    b.trigger('anything');
-    b.trigger('anything');
-    a.listenToOnce(b, 'all', function() { ok(false); });
-    a.stopListening();
-    b.trigger('anything');
-  });
 
   test("listenTo, listenToOnce and stopListening", 1, function() {
     var a = _.extend({}, Backbone.Events);
@@ -450,3 +437,4 @@ $(document).ready(function() {
   });
 
 });
+*/

@@ -1,29 +1,25 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset='utf8'>
-  <title>Backbone Test Suite</title>
-  <link rel="stylesheet" href="vendor/qunit.css" type="text/css" media="screen">
-  <script src="vendor/json2.js"></script>
-  <script src="vendor/jquery.js"></script>
-  <script src="vendor/qunit.js"></script>
-  <script src="vendor/underscore.js"></script>
-  <script src="../backbone.js"></script>
-  <script src="environment.js"></script>
-  <script src="noconflict.js"></script>
-  <script src="events.js"></script>
-  <script src="model.js"></script>
-  <script src="collection.js"></script>
-  <script src="router.js"></script>
-  <script src="view.js"></script>
-  <script src="sync.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>WebApp Library Test Suite</title>
+
+  <!-- Mocha styles. -->
+  <link rel="stylesheet" href="vendor/mocha.css">
 </head>
+
 <body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture">
-    <div id='testElement'>
-      <h1>Test</h1>
-    </div>
-  </div>
+  <div id="mocha"></div>
+
+  <!-- Testing libraries. -->
+  <script src="vendor/chai.js"></script>
+  <script src="vendor/mocha.js"></script>
+  <script src="vendor/require.js"></script>
+
+  <!-- Run the test harness. -->
+  <script src="test-runner.js"></script>
 </body>
 </html>

@@ -1,7 +1,4 @@
-# Grunt configuration updated to latest Grunt.  That means your minimum
-# version necessary to run these tasks is Grunt 0.4.
-#
-# Please install this locally and install `grunt-cli` globally to run.
+# Minimum version necessary to run these tasks is Grunt 0.4.
 module.exports = ->
 
   # Initialize the configuration.
@@ -24,31 +21,24 @@ module.exports = ->
 
     # Build out the library.
     requirejs:
-      # The default build.
-      default:
+      options:
         options:
           mainConfigFile: "build/config.js"
-          optimize: "none"
-          out: "dist/webapp.js"
           name: "../build/almond"
-          excludeShallow: ["jquery"]
 
           wrap:
             startFile: "build/start.js"
             endFile: "build/end.js"
 
-    # Provide an optimized version of the library as well.
-    uglify:
-      options:
-        sourceMap: "dist/webapp.js.map"
-        sourceMapRoot: ""
-        sourceMapPrefix: 1
-        preserveComments: "some"
-        report: "gzip"
+      uncompressed:
+        options:
+          optimize: "none"
+          out: "dist/webapp.js"
 
-      default:
-        files:
-          "dist/webapp.min.js": ["dist/webapp.js"]
+      compressed:
+        options:
+          optimize: "uglify2"
+          out: "dist/webapp.min.js"
 
     karma:
       options:
@@ -61,9 +51,6 @@ module.exports = ->
         plugins: [
           "karma-coverage",
           "karma-mocha",
-          "karma-chrome-launcher",
-          "karma-firefox-launcher",
-          "karma-safari-launcher",
           "karma-phantomjs-launcher"
         ]
 
@@ -89,16 +76,11 @@ module.exports = ->
         options:
           browsers: ["PhantomJS"]
 
-      browsers:
-        options:
-          browsers: ["Chrome", "Firefox", "Safari"]
-
   # Load external Grunt task plugins.
   @loadNpmTasks "grunt-contrib-clean"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-contrib-requirejs"
-  @loadNpmTasks "grunt-contrib-uglify"
-  @loadNpmTasks "grunt-karma-0.9.1"
+  @loadNpmTasks "grunt-karma"
 
   # Default task.
-  @registerTask "default", ["clean", "jshint", "requirejs", "uglify", "karma"]
+  @registerTask "default", ["clean", "jshint", "requirejs", "karma"]
