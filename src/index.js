@@ -38,6 +38,7 @@ define(function(require, exports, module) {
   WebApp.mixin({
     Class: require("./class"),
     Collection: require("./collection"),
+    Component: require("./component"),
     Events: require("./events"),
     Inheritance: require("./inheritance"),
     Model: require("./model"),

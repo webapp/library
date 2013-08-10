@@ -10,7 +10,14 @@ module.exports = ->
 
     # Lint source, node, and test code with some sane options.
     jshint:
-      default: ["src/**/*.js"]
+      default: [
+        "src/**/*.js"
+        "!src/collection.js"
+        "!src/history.js"
+        "!src/model.js"
+        "!src/router.js"
+        "!src/sync.js"
+      ]
 
       # Allow ES5 so that `delete` may be used as an identifer.
       options:
@@ -22,13 +29,12 @@ module.exports = ->
     # Build out the library.
     requirejs:
       options:
-        options:
-          mainConfigFile: "build/config.js"
-          name: "../build/almond"
+        mainConfigFile: "build/config.js"
+        name: "../build/almond"
 
-          wrap:
-            startFile: "build/start.js"
-            endFile: "build/end.js"
+        wrap:
+          startFile: "build/start.js"
+          endFile: "build/end.js"
 
       uncompressed:
         options:
