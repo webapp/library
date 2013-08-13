@@ -4,6 +4,7 @@ define(function(require, exports, module) {
   // Libraries.
   var $ = require("jquery");
   var _ = require("lodash");
+  var Ractive = require("ractive");
 
   // Modules.
   var Class = require("./class");
@@ -97,9 +98,6 @@ define(function(require, exports, module) {
         // top level inner-elements.
         suppressWarnings: this.suppressWarnings
       };
-
-      // Set up the observable.
-      // TODO Ractive here...
     },
 
     // Simply pass along the options to configure this new instance.
@@ -288,6 +286,15 @@ define(function(require, exports, module) {
 
           // Always emit an afterRender event.
           view.trigger("afterRender", view);
+
+          // If Ractive is included, apply the data binding.
+          if (Ractive) {
+            state.binding = new Ractive({
+              el: view.$el.get(),
+              template: view.$el.html(),
+              data: view
+            });
+          }
 
           // If there are multiple top level elements and `el: false` is used,
           // display a warning message and a stack trace.

@@ -3,6 +3,9 @@ require.config({
     name: "webapp",
     location: ".",
     main: "index.js",
+    catchError: {
+      define: true
+    }
   }],
 
   paths: {
@@ -15,5 +18,5 @@ require.config({
   },
 
   baseUrl: "../src",
-  include: "webapp"
+  include: ["../build/almond", "webapp", "../build/shim"]
 });

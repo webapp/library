@@ -3,10 +3,6 @@ define(function(require, exports, module) {
 
   var $ = require("jquery");
   var _ = require("lodash");
-  var Q = require("q");
-  var History = require("history");
-  var ScopedCss = require("scopedcss");
-  var Ractive = require("ractive");
 
   var Class = require("./class");
   var Component = require("./component");
@@ -37,22 +33,18 @@ define(function(require, exports, module) {
   // Attach modules directly for access.
   WebApp.mixin({
     Class: require("./class"),
-    Collection: require("./collection"),
+    //Collection: require("./collection"),
     Component: require("./component"),
     Events: require("./events"),
     Inheritance: require("./inheritance"),
-    Model: require("./model"),
-    Router: require("./router"),
+    //Model: require("./model"),
+    //Router: require("./router"),
     View: require("./view")
   });
 
   // Export dependencies.
   WebApp.$ = $;
   WebApp._ = _;
-  WebApp.Q = Q;
-  WebApp.History = History;
-  WebApp.ScopedCss = ScopedCss;
-  WebApp.Ractive = Ractive;
 
   // Expose a version.
   WebApp.VERSION = "0.1.0-wip";

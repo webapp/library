@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Data-binding</title>
+</head>
+<body>
+  <main>
+    <webapp-view test="Check me out man">{{ test }}</webapp-view>
+    <br>
+    <webapp-view template="template.html"></webapp-view>
+  </main>
+
+  <script>
+    var require = {
+      packages: [{
+        name: "webapp",
+        location: ".",
+        main: "index.js",
+      }],
+
+      paths: {
+        "jquery": "../vendor/lib/jquery/jquery",
+        "lodash": "../vendor/lib/lodash/dist/lodash",
+        "ractive": "../vendor/lib/ractive/build/Ractive"
+      },
+
+      baseUrl: "../src",
+      include: "webapp"
+    };
+  </script>
+
+  <script src="require.js"></script>
+  <script>
+    require(["webapp"], function(WebApp) {
+      WebApp.create().start();
+
+      //window.view = new WebApp.View({
+      //  el: "span"
+      //});
+
+      //view.test = "hello";
+
+      //view.render();
+
+    });
+  </script>
+</body>
+</html>

@@ -1,3 +1,8 @@
+define(function(require) {
+  "use strict";
+});
+
+
 // Backbone.Collection
 // -------------------
 

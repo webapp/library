@@ -1,8 +1,8 @@
 define(function(require, exports, module) {
   "use strict";
 
-  var _ = require("lodash");
   var $ = require("jquery");
+  var _ = require("lodash");
 
   var View = require("./view");
 

@@ -30,7 +30,16 @@ module.exports = ->
     requirejs:
       options:
         mainConfigFile: "build/config.js"
-        name: "../build/almond"
+
+        # Do not bundle any internal dependencies by default.
+        excludeShallow: [
+          "jquery"
+          "lodash"
+          "q"
+          "ractive"
+          "scopedcss"
+          "history"
+        ]
 
         wrap:
           startFile: "build/start.js"
@@ -45,6 +54,9 @@ module.exports = ->
         options:
           optimize: "uglify2"
           out: "dist/webapp.min.js"
+          generateSourceMaps: true
+          preserveLicenseComments: false
+          baseUrl: "src/"
 
     karma:
       options:
