@@ -2,7 +2,7 @@
   if (typeof exports === "object") {
     // Node. Does not work with strict CommonJS, but only CommonJS-like
     // enviroments that support module.exports, like Node.
-    module.exports = factory(window.require);
+    module.exports = factory();
   } else if (typeof define === "function" && define.amd) {
     // Allow using this built library as an AMD module in another project. That
     // other project will only see this AMD call, not the internal modules in
@@ -22,4 +22,6 @@
     // Overwrite the Backbone global with this object.
     window.Backbone = window.WebApp;
   }
-}(this, function(nodeRequire) {
+}(this, function() {
+  // Ensure the global window object is always `this`.
+  var window = this;
