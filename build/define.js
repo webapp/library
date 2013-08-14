@@ -1,6 +1,8 @@
 // Save a reference to CommonJS `require` implementation.
 var nodeRequire = typeof require !== "undefined" && require;
 
+// Register modules first, but do not execute the callbacks until a matching
+// `require` has been requested for this module.
 var define = function(moduleName, deps, callback) {
   // Allow deps to be optional.
   if (!callback) {
@@ -40,6 +42,12 @@ var require = function(moduleName) {
     exports: {}
   };
 
+  // Attempt to find a suitable global from the globals configuration, if none
+  // is present, at least attempt to load the moduleName.
+  var globalIdentifier = require.conf.globals
+    ? require.conf.globals[moduleName]
+    : moduleName;
+
   // Modules that are inlined, but not yet cached must be run and then cached.
   if (inlined && !inlined.value) {
     // This will appropriate the correct behavior for modules.
@@ -77,11 +85,15 @@ var require = function(moduleName) {
     
   // Last place to check is the global object, extract the correct
   // global identifier from the configuration.
-  return window[require.conf.globals[moduleName]];
+  return window[globalIdentifier];
 };
 
+// In the case of a library you should realistically only be calling `config`
+// once.
 require.config = function(object) {
   require.conf = object;
 };
 
+// This is a placeholder object, in the case that a `require.config` is not
+// bundled.
 require.conf = {};

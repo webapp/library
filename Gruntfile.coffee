@@ -1,14 +1,20 @@
 # Minimum version necessary to run these tasks is Grunt 0.4.
 module.exports = ->
 
-  # Initialize the configuration.
   @initConfig
 
-    # Ensure the dist/ directory stays fresh.
     clean:
-      default: ["dist", "test/reports"]
+      pre: ["dist", "test/reports"]
+      post: ["dist/src", "dist/vendor"]
 
-    # Lint source, node, and test code with some sane options.
+    # Copy over source files so that source maps are built correctly.
+    copy:
+      default:
+        files: [
+          { src: "src/**", dest: "dist/" }
+          { src: "vendor/**", dest: "dist/" }
+        ]
+
     jshint:
       default: [
         "src/**/*.js"
@@ -26,7 +32,6 @@ module.exports = ->
         boss: true
         proto: true
 
-    # Build out the library.
     requirejs:
       options:
         mainConfigFile: "build/config.js"
@@ -55,7 +60,6 @@ module.exports = ->
           out: "dist/webapp.min.js"
           generateSourceMaps: true
           preserveLicenseComments: false
-          baseUrl: "src/"
 
       bundled_uncompressed:
         options:
@@ -69,7 +73,6 @@ module.exports = ->
           out: "dist/webapp.bundled.min.js"
           generateSourceMaps: true
           preserveLicenseComments: false
-          baseUrl: "src/"
           excludeShallow: []
 
     karma:
@@ -81,8 +84,8 @@ module.exports = ->
         reporters: ["progress", "coverage"]
 
         plugins: [
-          "karma-coverage",
-          "karma-mocha",
+          "karma-coverage"
+          "karma-mocha"
           "karma-phantomjs-launcher"
         ]
 
@@ -92,8 +95,8 @@ module.exports = ->
           { pattern: "vendor/**/*.js", included: false },
           { pattern: "build/**/*.js", included: false },
 
-          "test/vendor/chai.js",
-          "test/vendor/require.js",
+          "test/vendor/chai.js"
+          "test/vendor/require.js"
           "test/test-runner.js"
         ]
 
@@ -110,9 +113,12 @@ module.exports = ->
 
   # Load external Grunt task plugins.
   @loadNpmTasks "grunt-contrib-clean"
+  @loadNpmTasks "grunt-contrib-copy"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-contrib-requirejs"
   @loadNpmTasks "grunt-karma"
 
   # Default task.
-  @registerTask "default", ["clean", "jshint", "requirejs:uncompressed", "karma"]
+  @registerTask "default", [
+    "clean:pre", "copy", "jshint", "requirejs:uncompressed", "clean:post", "karma"
+  ]

@@ -2,10 +2,7 @@ require.config({
   packages: [{
     name: "webapp",
     location: ".",
-    main: "index.js",
-    catchError: {
-      define: true
-    }
+    main: "index.js"
   }],
 
   globals: {
@@ -26,6 +23,6 @@ require.config({
     ractive: "../vendor/lib/ractive/build/Ractive"
   },
 
-  baseUrl: "../src",
-  include: ["../build/define", "../build/config", "webapp"]
+  baseUrl: "../dist/src",
+  include: ["../../build/define", "../../build/config", "webapp"]
 });
