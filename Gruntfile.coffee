@@ -34,7 +34,6 @@ module.exports = ->
         # Do not bundle any internal dependencies by default.
         excludeShallow: [
           "jquery"
-          "lodash"
           "q"
           "ractive"
           "scopedcss"
@@ -57,6 +56,21 @@ module.exports = ->
           generateSourceMaps: true
           preserveLicenseComments: false
           baseUrl: "src/"
+
+      bundled_uncompressed:
+        options:
+          optimize: "none"
+          out: "dist/webapp.bundled.js"
+          excludeShallow: []
+
+      bundled_compressed:
+        options:
+          optimize: "uglify2"
+          out: "dist/webapp.bundled.min.js"
+          generateSourceMaps: true
+          preserveLicenseComments: false
+          baseUrl: "src/"
+          excludeShallow: []
 
     karma:
       options:
@@ -101,4 +115,4 @@ module.exports = ->
   @loadNpmTasks "grunt-karma"
 
   # Default task.
-  @registerTask "default", ["clean", "jshint", "requirejs", "karma"]
+  @registerTask "default", ["clean", "jshint", "requirejs:uncompressed", "karma"]

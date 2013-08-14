@@ -22,14 +22,9 @@
     });
   }
 
-  // Required.
   [
-    ["jquery", "jQuery", true],
-    ["lodash", "_", true],
-  ].forEach(resolve);
-
-  // Optional.
-  [
+    ["jquery", "jQuery"],
+    ["lodash", "_"],
     ["ractive", "Ractive"],
     ["scopedcss", "ScopedCss"],
     ["history", "History"]

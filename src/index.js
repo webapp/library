@@ -1,9 +1,6 @@
 define(function(require, exports, module) {
   "use strict";
 
-  var $ = require("jquery");
-  var _ = require("lodash");
-
   var Class = require("./class");
   var Component = require("./component");
 
@@ -41,10 +38,6 @@ define(function(require, exports, module) {
     //Router: require("./router"),
     View: require("./view")
   });
-
-  // Export dependencies.
-  WebApp.$ = $;
-  WebApp._ = _;
 
   // Expose a version.
   WebApp.VERSION = "0.1.0-wip";
