@@ -83,8 +83,8 @@ var require = function(moduleName) {
     return nodeRequire(moduleName);
   } catch (ex) {}
     
-  // Last place to check is the global object, extract the correct
-  // global identifier from the configuration.
+  // Last place to check is the global object, extract the correct global
+  // identifier from the configuration.
   return window[globalIdentifier];
 };
 

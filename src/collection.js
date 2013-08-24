@@ -1,7 +1,33 @@
-define(function(require) {
-  "use strict";
-});
+// Libraries.
+import _ from "lodash";
 
+// Modules.
+import Class from "./class";
+import Model from "./model";
+
+// Default options for `Collection#set`.
+var setOptions = {add: true, remove: true, merge: true};
+var addOptions = {add: true, remove: false};
+
+// FIXME
+var array = [];
+var push = array.push;
+var slice = array.slice;
+var splice = array.splice;
+
+// Throw an error when a URL is needed, and none is supplied.
+var urlError = function() {
+  throw new Error('A "url" property or function must be specified');
+};
+
+// Wrap an optional error callback with a fallback error event.
+var wrapError = function(model, options) {
+  var error = options.error;
+  options.error = function(resp) {
+    if (error) error(model, resp, options);
+    model.trigger('error', model, resp, options);
+  };
+};
 
 // Backbone.Collection
 // -------------------
@@ -16,21 +42,15 @@ define(function(require) {
 // Create a new **Collection**, perhaps to contain a specific type of `model`.
 // If a `comparator` is specified, the Collection will maintain
 // its models in sort order, as they're added and removed.
-var Collection = Backbone.Collection = function(models, options) {
-  options || (options = {});
-  if (options.model) this.model = options.model;
-  if (options.comparator !== void 0) this.comparator = options.comparator;
-  this._reset();
-  this.initialize.apply(this, arguments);
-  if (models) this.reset(models, _.extend({silent: true}, options));
-};
-
-// Default options for `Collection#set`.
-var setOptions = {add: true, remove: true, merge: true};
-var addOptions = {add: true, remove: false};
-
-// Define the Collection's inheritable methods.
-_.extend(Collection.prototype, Events, {
+var Collection = Class.extend({
+  constructor: function(models, options) {
+    options || (options = {});
+    if (options.model) this.model = options.model;
+    if (options.comparator !== void 0) this.comparator = options.comparator;
+    this._reset();
+    this.initialize.apply(this, arguments);
+    if (models) this.reset(models, _.extend({silent: true}, options));
+  },
 
   // The default model for a collection is just a **Backbone.Model**.
   // This should be overridden in most cases.
@@ -48,7 +68,7 @@ _.extend(Collection.prototype, Events, {
 
   // Proxy `Backbone.sync` by default.
   sync: function() {
-    return Backbone.sync.apply(this, arguments);
+    //return Backbone.sync.apply(this, arguments);
   },
 
   // Add a model, or list of models to the set.
@@ -357,7 +377,6 @@ _.extend(Collection.prototype, Events, {
     }
     this.trigger.apply(this, arguments);
   }
-
 });
 
 // Underscore methods that we want to implement on the Collection.
@@ -391,3 +410,5 @@ _.each(attributeMethods, function(method) {
     return _[method](this.models, iterator, context);
   };
 });
+
+export default Collection;

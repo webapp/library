@@ -5,22 +5,65 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>Data-binding</title>
+
+  <style>
+    .default {
+      color: black;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .failure {
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <main>
     <webapp-view test="Check me out man">{{ test }}</webapp-view>
     <br>
     <webapp-view template="Hey man"></webapp-view>
+
+    <br>
+    <br>
+
+    <my-element>
+      <span class="{{ state }}">Testing {{ hahaha }} out.</span>
+    </my-element>
+
+    <my-element>
+      <span class="{{ state }}">Testing {{ hahaha }} out.</span>
+
+      <style scoped>
+        span {
+          font-weight: bold;
+        }
+      </style>
+    </my-element>
   </main>
 
-  <script src="../vendor/lib/jquery/jquery.js"></script>
-  <script src="../vendor/lib/lodash/dist/lodash.js"></script>
-  <script src="../vendor/lib/ractive/build/Ractive.js"></script>
-
-  <script src="../dist/webapp.js"></script>
+  <script src="../test/vendor/require.js"></script>
 
   <script>
-    WebApp.create().start();
+    var opts = { state: "success", hahaha: "tada" };
+
+    // This is a mess.
+    require(["../build/config"], function() {
+      require({ baseUrl: "../src" }, ["component"], function(Component) {
+        MyElement = Component.extend({
+          tagName: "my-element",
+          scope: opts,
+
+          constructor: function() {
+            MyElement.super("constructor", this);
+          }
+        });
+
+        Component.register(MyElement).activateAll(document.body);
+      });
+    });
   </script>
 </body>
 </html>

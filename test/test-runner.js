@@ -1,12 +1,15 @@
 var baseUrl = window.__karma__ ? "/base/" : "../";
 
 var tests = [
+  "tests/class",
   "tests/collection",
-  "tests/entity",
+  "tests/component",
   "tests/events",
   "tests/index",
   "tests/inheritance",
-  "tests/class",
+  "tests/model",
+  "tests/router",
+  "tests/sync",
   "tests/view"
 ];
 

@@ -1,21 +1,8 @@
-// Backbone.History
-// ----------------
+// Libraries.
+import _ from "lodash";
 
-// Handles cross-browser history management, based on either
-// [pushState](http://diveintohtml5.info/history.html) and real URLs, or
-// [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
-// and URL fragments. If the browser supports neither (old IE, natch),
-// falls back to polling.
-var History = Backbone.History = function() {
-  this.handlers = [];
-  _.bindAll(this, 'checkUrl');
-
-  // Ensure that `History` can be used outside of the browser.
-  if (typeof window !== 'undefined') {
-    this.location = window.location;
-    this.history = window.history;
-  }
-};
+// Modules.
+import Class from "./class";
 
 // Cached regex for stripping a leading hash/slash and trailing space.
 var routeStripper = /^[#\/]|\s+$/g;
@@ -29,11 +16,25 @@ var isExplorer = /msie [\w.]+/;
 // Cached regex for removing a trailing slash.
 var trailingSlash = /\/$/;
 
-// Has the history handling already been started?
-History.started = false;
+// Backbone.History
+// ----------------
 
-// Set up all inheritable **Backbone.History** properties and methods.
-_.extend(History.prototype, Events, {
+// Handles cross-browser history management, based on either
+// [pushState](http://diveintohtml5.info/history.html) and real URLs, or
+// [onhashchange](https://developer.mozilla.org/en-US/docs/DOM/window.onhashchange)
+// and URL fragments. If the browser supports neither (old IE, natch),
+// falls back to polling.
+var History = Class.extend({
+  constructor: function() {
+    this.handlers = [];
+    _.bindAll(this, 'checkUrl');
+
+    // Ensure that `History` can be used outside of the browser.
+    if (typeof window !== 'undefined') {
+      this.location = window.location;
+      this.history = window.history;
+    }
+  },
 
   // The default interval to poll for hash changes, if necessary, is
   // twenty times a second.
@@ -220,8 +221,9 @@ _.extend(History.prototype, Events, {
       location.hash = '#' + fragment;
     }
   }
-
 });
 
-// Create the default Backbone.history.
-Backbone.history = new History;
+// Has the history handling already been started?
+History.started = false;
+
+export default History;

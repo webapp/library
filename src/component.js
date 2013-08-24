@@ -1,122 +1,110 @@
-define(function(require, exports, module) {
-  "use strict";
+// Libraries.
+import $ from "jquery";
+import _ from "lodash";
+import ScopedCss from "scopedcss";
 
-  var $ = require("jquery");
-  var _ = require("lodash");
+// Modules.
+import View from "./view";
 
-  var View = require("./view");
-
-  // The View base class for the Component.
-  var Component = View.extend({
-    constructor: function() {
-      if (!this.tagName) {
-        throw new Error("tagName required to initialize component.");
-      }
-
-      var cssText = this.style || "";
-
-      // Swap out the `@host` for the `tagName`.
-      cssText = cssText.replace(/\@host/g, this.tagName);
-
-      // This is a `<style/>` tag associated with the Component.
-      this.styleTag = $("<style>");
-
-      // If styles were provided set them.  TODO maybe a convenience method to
-      // allow end users to update the styles.
-      if (this.style) {
-        // Insert the CSS and render it in the DOM.
-        this.styleTag[0].innerHTML = cssText;
-        this.styleTag.appendTo("body");
-
-        // Parse out the last styleSheet.
-        var styleSheet = document.styleSheets[document.styleSheets.length-1];
-        var rules = styleSheet.cssRules;
-
-        // For all the rules, scope the selector.
-        _.each(_.clone(rules), function(rule, index) {
-          // Prepend a space to make it easier to replace without a trailing
-          // character.
-          var cssText = rule.selectorText;
-
-          //// If this is a `@host` scoped selector, then use only the `tagName`,
-          //// otherwise keep the remaining selector.
-          cssText = cssText || this.tagName;
-
-          //// Remove this rule.
-          //styleSheet.deleteRule(index);
-
-          //// Insert a new one.
-          //styleSheet.insertRule(this.tagName + " " + cssText, index);
-          rule.selectorText = this.tagName + " " + cssText;
-        }, this);
-      }
-
-      // Ensure the View is correctly set up.
-      Component.super("constructor", this, arguments);
-    },
-
-    afterRender: function() {
-      // Seek out nested components and render them.
-      Component.activateAll(this.$el);
+// The View base class for the Component.
+var Component = View.extend({
+  constructor: function() {
+    if (!this.tagName) {
+      throw new Error("tagName required to initialize component.");
     }
-  });
 
-  Component.configure({
-    // By default the template property contains the contents of the template.
-    fetchTemplate: function(contents) {
-      // Convert into a Lo-Dash template.
-      return _.template(contents);
-    }
-  });
+    // Ensure the View is correctly set up.
+    Component.super("constructor", this, arguments);
+  },
 
-  Component.mixin({
-    components: {},
+  afterRender: function() {
+    // Seek out nested components and render them.
+    Component.activateAll(this.$el);
 
-    register: function(Component, identifier) {
-      // Allow a manual override of the tagName to use.
-      identifier = identifier || Component.prototype.tagName;
-
-      // Register a Component constructor, not an instance.
-      return this.components[identifier] = Component;
-    },
-
-    unregister: function(identifier) {
-      delete this.components[identifier];
-    },
-
-    activate: function($el) {
-      var Component = this;
-
-      // Convert all attributes on the Element into View properties.
-      var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
-        attrs[attr.name] = attr.value;
-        return attrs;
-      }, {});
-
-      // Associate the element as well.
-      attrs.el = $el;
-
-      // Create a new Component.
-      var component = new Component(attrs);
-
-      // By default use the template property provided, otherwise pull the
-      // template contents from the DOM.
-      if (!component.template) {
-        component.template = _.template(_.unescape($el.html()));
-      }
-
-      // Render and apply to the Document.
-      component.render();
-    },
-
-    activateAll: function($el) {
-      _.each(this.components, function(Component, tagName) {
-        $el.children(tagName).each(function() {
-          Component.activate($(this));
-        });
-      });
-    }
-  });
-
-  module.exports = Component;
+    // Also activate all scoped stylesheets.
+    ScopedCss.applyTo(this.$el[0]);
+  }
 });
+
+Component.configure({
+  // By default the template property contains the contents of the template.
+  fetchTemplate: function(contents) {
+    // Convert into a Lo-Dash template.
+    return _.template(contents);
+  }
+});
+
+Component.mixin({
+  components: {},
+
+  register: function(Component, identifier) {
+    // Allow a manual override of the tagName to use.
+    identifier = identifier || Component.prototype.tagName;
+
+    // Register a Component constructor, not an instance.
+    this.components[identifier] = {
+      ctor: Component,
+      instances: []
+    };
+
+    var cssText = Component.prototype.styles;
+
+    if (cssText) {
+      // Create the scoped object outside of the fetch.
+      ScopedCss(identifier, cssText).appendTo(document.body);
+    }
+
+    // Save a pointer for easier lookup.
+    Component.__pointer__ = this.components[identifier];
+
+    return Component;
+  },
+
+  unregister: function(identifier) {
+    delete this.components[identifier];
+  },
+
+  augment: function(cb) {
+    _.each(this.__pointer__.instances, function(instance) {
+      cb.call(instance, instance);
+    });
+  },
+
+  activate: function($el, instances) {
+    var Component = this;
+
+    // Convert all attributes on the Element into View properties.
+    var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
+      attrs[attr.name] = attr.value;
+      return attrs;
+    }, {});
+
+    // Associate the element as well.
+    attrs.el = $el;
+
+    // Create a new Component.
+    var component = new Component(attrs);
+
+    // Add to the internal cache.
+    instances.push(component);
+
+    // By default use the template property provided, otherwise pull the
+    // template contents from the DOM.
+    if (!component.template) {
+      component.template = _.template(_.unescape($el.html()));
+    }
+
+    // Render and apply to the Document.
+    component.render();
+  },
+
+  activateAll: function(el) {
+    _.each(this.components, function(Component, tagName) {
+      $(el).find(tagName).each(function() {
+        Component.ctor.activate($(this), Component.instances);
+      });
+    });
+  }
+});
+
+export default Component;

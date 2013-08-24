@@ -1,3 +1,23 @@
+// Libraries.
+import _ from "lodash";
+
+// Modules.
+import Class from "./class";
+
+// Throw an error when a URL is needed, and none is supplied.
+var urlError = function() {
+  throw new Error('A "url" property or function must be specified');
+};
+
+// Wrap an optional error callback with a fallback error event.
+var wrapError = function(model, options) {
+  var error = options.error;
+  options.error = function(resp) {
+    if (error) error(model, resp, options);
+    model.trigger('error', model, resp, options);
+  };
+};
+
 // Backbone.Model
 // --------------
 
@@ -8,25 +28,23 @@
 
 // Create a new model with the specified attributes. A client id (`cid`)
 // is automatically generated and assigned for you.
-var Model = Backbone.Model = function(attributes, options) {
-  var defaults;
-  var attrs = attributes || {};
-  options || (options = {});
-  this.cid = _.uniqueId('c');
-  this.attributes = {};
-  if (options.collection) this.collection = options.collection;
-  if (options.parse) attrs = this.parse(attrs, options) || {};
-  options._attrs || (options._attrs = attrs);
-  if (defaults = _.result(this, 'defaults')) {
-    attrs = _.defaults({}, attrs, defaults);
-  }
-  this.set(attrs, options);
-  this.changed = {};
-  this.initialize.apply(this, arguments);
-};
-
-// Attach all inheritable methods to the Model prototype.
-_.extend(Model.prototype, Events, {
+var Model = Class.extend({
+  constructor: function(attributes, options) {
+    var defaults;
+    var attrs = attributes || {};
+    options || (options = {});
+    this.cid = _.uniqueId('c');
+    this.attributes = {};
+    if (options.collection) this.collection = options.collection;
+    if (options.parse) attrs = this.parse(attrs, options) || {};
+    options._attrs || (options._attrs = attrs);
+    if (defaults = _.result(this, 'defaults')) {
+      attrs = _.defaults({}, attrs, defaults);
+    }
+    this.set(attrs, options);
+    this.changed = {};
+    this.initialize.apply(this, arguments);
+  },
 
   // A hash of attributes whose current and previous value differ.
   changed: null,
@@ -50,7 +68,7 @@ _.extend(Model.prototype, Events, {
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    return Backbone.sync.apply(this, arguments);
+    //return Backbone.sync.apply(this, arguments);
   },
 
   // Get the value of an attribute.
@@ -347,3 +365,5 @@ _.each(modelMethods, function(method) {
     return _[method].apply(_, args);
   };
 });
+
+export default Model;

@@ -1,11 +1,10 @@
-define(function(require, exports, module) {
-  "use strict";
+  // Libraries.
+  import $ from "jquery";
 
-  var Class = require("./class");
-  var Component = require("./component");
-
-  // A default component to remotely load template files.
-  var ViewComponent = require("./components/view");
+  // Modules.
+  import Class from "./class";
+  import Component from "./component";
+  import ViewComponent from "./component/view";
 
   // The `WebApp` object.
   var WebApp = Class.extend({
@@ -27,21 +26,29 @@ define(function(require, exports, module) {
     }
   });
 
-  // Attach modules directly for access.
   WebApp.mixin({
+    // Expose libraries.
+    $: require("jquery"),
+    _: require("lodash"),
+
+    // Expose modules.
     Class: require("./class"),
-    //Collection: require("./collection"),
+    Collection: require("./collection"),
     Component: require("./component"),
     Events: require("./events"),
+    History: require("./history"),
     Inheritance: require("./inheritance"),
-    //Model: require("./model"),
-    //Router: require("./router"),
+    Model: require("./model"),
+    Router: require("./router"),
+    //Sync: require("./sync"),
     View: require("./view")
   });
+
+  // Create the default history.
+  WebApp.history = new WebApp.History();
 
   // Expose a version.
   WebApp.VERSION = "0.1.0-wip";
 
   // Export.
-  module.exports = WebApp;
-});
+  export default WebApp;

@@ -98,22 +98,22 @@ define(function(require, exports, module) {
       a.stopListening();
       b.trigger('event event2');
     });
+
+    it("can listenTo, listenToOnce, and stopListening", function() {
+      var a = _.extend({}, Events);
+      var b = _.extend({}, Events);
+      a.listenToOnce(b, 'all', function() { expect(true).to.be.equal(true); });
+      b.trigger('anything');
+      b.trigger('anything');
+      a.listenTo(b, 'all', function() { expect(false).to.be.equal(true); });
+      a.stopListening();
+      b.trigger('anything');
+    });
   });
 });
 
 /*
 
-
-  test("listenTo, listenToOnce and stopListening", 1, function() {
-    var a = _.extend({}, Backbone.Events);
-    var b = _.extend({}, Backbone.Events);
-    a.listenToOnce(b, 'all', function() { ok(true); });
-    b.trigger('anything');
-    b.trigger('anything');
-    a.listenTo(b, 'all', function() { ok(false); });
-    a.stopListening();
-    b.trigger('anything');
-  });
 
   test("listenTo and stopListening with event maps", 1, function() {
     var a = _.extend({}, Backbone.Events);

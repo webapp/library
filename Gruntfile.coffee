@@ -1,13 +1,10 @@
-# Minimum version necessary to run these tasks is Grunt 0.4.
 module.exports = ->
-
   @initConfig
 
     clean:
       pre: ["dist", "test/reports"]
       post: ["dist/src", "dist/vendor"]
 
-    # Copy over source files so that source maps are built correctly.
     copy:
       default:
         files: [
@@ -25,23 +22,29 @@ module.exports = ->
         "!src/sync.js"
       ]
 
-      # Allow ES5 so that `delete` may be used as an identifer.
       options:
-        es5: true
+        esnext: true
         eqnull: true
         boss: true
+        unused: true
+        undef: true
         proto: true
+
+        globals:
+          window: true
+          document: true
+          navigator: true
+          define: true
+          require: true
 
     requirejs:
       options:
         mainConfigFile: "build/config.js"
 
-        # Do not bundle any internal dependencies by default.
         excludeShallow: [
           "jquery"
           "q"
           "ractive"
-          "scopedcss"
           "history"
         ]
 
@@ -49,7 +52,7 @@ module.exports = ->
           startFile: "build/start.js"
           endFile: "build/end.js"
 
-      uncompressed:
+      raw:
         options:
           optimize: "none"
           out: "dist/webapp.js"
@@ -61,7 +64,7 @@ module.exports = ->
           generateSourceMaps: true
           preserveLicenseComments: false
 
-      bundled_uncompressed:
+      bundled_raw:
         options:
           optimize: "none"
           out: "dist/webapp.bundled.js"
@@ -111,14 +114,11 @@ module.exports = ->
         options:
           browsers: ["PhantomJS"]
 
-  # Load external Grunt task plugins.
   @loadNpmTasks "grunt-contrib-clean"
   @loadNpmTasks "grunt-contrib-copy"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-contrib-requirejs"
   @loadNpmTasks "grunt-karma"
 
-  # Default task.
-  @registerTask "default", [
-    "clean:pre", "copy", "jshint", "requirejs:uncompressed", "clean:post", "karma"
-  ]
+  @registerTask "build", ["clean:pre", "copy", "requirejs:raw", "clean:post"]
+  @registerTask "default", ["jshint", "build", "karma"]

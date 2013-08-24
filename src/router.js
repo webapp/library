@@ -1,14 +1,8 @@
-// Backbone.Router
-// ---------------
+// Libraries.
+import _ from "lodash";
 
-// Routers map faux-URLs to actions, and fire events when routes are
-// matched. Creating a new one sets its `routes` hash, if not set statically.
-var Router = Backbone.Router = function(options) {
-  options || (options = {});
-  if (options.routes) this.routes = options.routes;
-  this._bindRoutes();
-  this.initialize.apply(this, arguments);
-};
+// Modules.
+import Class from "./class";
 
 // Cached regular expressions for matching named param parts and splatted
 // parts of route strings.
@@ -17,8 +11,15 @@ var namedParam    = /(\(\?)?:\w+/g;
 var splatParam    = /\*\w+/g;
 var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
-// Set up all inheritable **Backbone.Router** properties and methods.
-_.extend(Router.prototype, Events, {
+// Routers map faux-URLs to actions, and fire events when routes are
+// matched. Creating a new one sets its `routes` hash, if not set statically.
+var Router = Class.extend({
+  constructor: function(options) {
+    options || (options = {});
+    if (options.routes) this.routes = options.routes;
+    this._bindRoutes();
+    this.initialize.apply(this, arguments);
+  },
 
   // Initialize is an empty function by default. Override it with your own
   // initialization logic.
@@ -87,5 +88,6 @@ _.extend(Router.prototype, Events, {
       return param ? decodeURIComponent(param) : null;
     });
   }
-
 });
+
+export default Router;
