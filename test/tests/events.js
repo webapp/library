@@ -1,114 +1,110 @@
-define(function(require, exports, module) {
+import _ from "lodash";
+import Events from "webapp/events";
 
-  var _ = require("lodash");
+describe("Events", function() {
+  it("is an object", function() {
+    expect(Events).to.be.a("object");
+  });
 
-  describe("Events", function() {
-    var Events = require("webapp/events");
+  it("has on and trigger", function() {
+    var obj = { counter: 0 };
+    _.extend(obj, Events);
+    obj.on("event", function() { obj.counter += 1; });
+    obj.trigger("event");
+    expect(obj.counter).to.equal(1);
+    obj.trigger("event");
+    obj.trigger("event");
+    obj.trigger("event");
+    obj.trigger("event");
+    expect(obj.counter).to.equal(5);
+  });
 
-    it("is an object", function() {
-      expect(Events).to.be.a("object");
-    });
+  it("can bind and trigger multiple events", function() {
+    var obj = { counter: 0 };
+    _.extend(obj, Events);
 
-    it("has on and trigger", function() {
-      var obj = { counter: 0 };
-      _.extend(obj, Events);
-      obj.on("event", function() { obj.counter += 1; });
-      obj.trigger("event");
-      expect(obj.counter).to.equal(1);
-      obj.trigger("event");
-      obj.trigger("event");
-      obj.trigger("event");
-      obj.trigger("event");
-      expect(obj.counter).to.equal(5);
-    });
+    obj.on('a b c', function() { obj.counter += 1; });
 
-    it("can bind and trigger multiple events", function() {
-      var obj = { counter: 0 };
-      _.extend(obj, Events);
+    obj.trigger('a');
+    expect(obj.counter).to.equal(1);
 
-      obj.on('a b c', function() { obj.counter += 1; });
+    obj.trigger('a b');
+    expect(obj.counter).to.equal(3);
 
-      obj.trigger('a');
-      expect(obj.counter).to.equal(1);
+    obj.trigger('c');
+    expect(obj.counter).to.equal(4);
 
-      obj.trigger('a b');
-      expect(obj.counter).to.equal(3);
+    obj.off('a c');
+    obj.trigger('a b c');
+    expect(obj.counter).to.equal(5);
+  });
 
-      obj.trigger('c');
-      expect(obj.counter).to.equal(4);
+  it("can bind and trigger with event maps", function() {
+    var obj = { counter: 0 };
+    _.extend(obj, Events);
 
-      obj.off('a c');
-      obj.trigger('a b c');
-      expect(obj.counter).to.equal(5);
-    });
+    var increment = function() {
+      this.counter += 1;
+    };
 
-    it("can bind and trigger with event maps", function() {
-      var obj = { counter: 0 };
-      _.extend(obj, Events);
+    obj.on({
+      a: increment,
+      b: increment,
+      c: increment
+    }, obj);
 
-      var increment = function() {
-        this.counter += 1;
-      };
+    obj.trigger('a');
+    expect(obj.counter).to.equal(1);
 
-      obj.on({
-        a: increment,
-        b: increment,
-        c: increment
-      }, obj);
+    obj.trigger('a b');
+    expect(obj.counter).to.equal(3);
 
-      obj.trigger('a');
-      expect(obj.counter).to.equal(1);
+    obj.trigger('c');
+    expect(obj.counter).to.equal(4);
 
-      obj.trigger('a b');
-      expect(obj.counter).to.equal(3);
+    obj.off({
+      a: increment,
+      c: increment
+    }, obj);
+    obj.trigger('a b c');
+    expect(obj.counter).to.equal(5);
+  });
 
-      obj.trigger('c');
-      expect(obj.counter).to.equal(4);
+  it("has listenTo and stopListening", function() {
+    var a = _.extend({}, Events);
+    var b = _.extend({}, Events);
+    var hit = false;
+    a.listenTo(b, 'all', function(){ hit = true; });
+    b.trigger('anything');
+    a.listenTo(b, 'all', function(){ hit = false; });
+    a.stopListening();
+    b.trigger('anything');
+    expect(hit).to.equal(true);
+  });
 
-      obj.off({
-        a: increment,
-        c: increment
-      }, obj);
-      obj.trigger('a b c');
-      expect(obj.counter).to.equal(5);
-    });
+  it("can listenTo and stopListening with event maps", function() {
+    var a = _.extend({}, Events);
+    var b = _.extend({}, Events);
+    var cb = function(){ expect(true).to.be.equal(true); };
+    a.listenTo(b, {event: cb});
+    b.trigger('event');
+    a.listenTo(b, {event2: cb});
+    b.on('event2', cb);
+    a.stopListening(b, {event2: cb});
+    b.trigger('event event2');
+    a.stopListening();
+    b.trigger('event event2');
+  });
 
-    it("has listenTo and stopListening", function() {
-      var a = _.extend({}, Events);
-      var b = _.extend({}, Events);
-      var hit = false;
-      a.listenTo(b, 'all', function(){ hit = true; });
-      b.trigger('anything');
-      a.listenTo(b, 'all', function(){ hit = false; });
-      a.stopListening();
-      b.trigger('anything');
-      expect(hit).to.equal(true);
-    });
-
-    it("can listenTo and stopListening with event maps", function() {
-      var a = _.extend({}, Events);
-      var b = _.extend({}, Events);
-      var cb = function(){ expect(true).to.be.equal(true); };
-      a.listenTo(b, {event: cb});
-      b.trigger('event');
-      a.listenTo(b, {event2: cb});
-      b.on('event2', cb);
-      a.stopListening(b, {event2: cb});
-      b.trigger('event event2');
-      a.stopListening();
-      b.trigger('event event2');
-    });
-
-    it("can listenTo, listenToOnce, and stopListening", function() {
-      var a = _.extend({}, Events);
-      var b = _.extend({}, Events);
-      a.listenToOnce(b, 'all', function() { expect(true).to.be.equal(true); });
-      b.trigger('anything');
-      b.trigger('anything');
-      a.listenTo(b, 'all', function() { expect(false).to.be.equal(true); });
-      a.stopListening();
-      b.trigger('anything');
-    });
+  it("can listenTo, listenToOnce, and stopListening", function() {
+    var a = _.extend({}, Events);
+    var b = _.extend({}, Events);
+    a.listenToOnce(b, 'all', function() { expect(true).to.be.equal(true); });
+    b.trigger('anything');
+    b.trigger('anything');
+    a.listenTo(b, 'all', function() { expect(false).to.be.equal(true); });
+    a.stopListening();
+    b.trigger('anything');
   });
 });
 

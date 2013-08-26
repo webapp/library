@@ -17,6 +17,7 @@
     "karma-mocha": "~0.0.1",
     "karma-coverage": "~0.0.2",
     "karma-phantomjs-launcher": "~0.0.2",
-    "grunt-contrib-copy": "~0.4.1"
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-connect": "~0.3.0"
   }
 }

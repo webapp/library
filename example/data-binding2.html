@@ -22,24 +22,17 @@
 </head>
 <body>
   <main>
-    <webapp-view test="Check me out man">{{ test }}</webapp-view>
-    <br>
-    <webapp-view template="Hey man"></webapp-view>
-
-    <br>
-    <br>
-
     <my-element>
-      <span class="{{ state }}">Testing {{ hahaha }} out.</span>
+      <span class="{{ state }}">Testing {{ test }} in.</span>
     </my-element>
 
+    <hr>
+
     <my-element>
-      <span class="{{ state }}">Testing {{ hahaha }} out.</span>
+      <span class="{{ state }}">Woah {{ test }} out.</span>
 
       <style scoped>
-        span {
-          font-weight: bold;
-        }
+        span { font-weight: bold; }
       </style>
     </my-element>
   </main>
@@ -47,21 +40,32 @@
   <script src="../test/vendor/require.js"></script>
 
   <script>
-    var opts = { state: "success", hahaha: "tada" };
+    var opts = { state: "normal", test: "example" };
 
     // This is a mess.
     require(["../build/config"], function() {
       require({ baseUrl: "../src" }, ["component"], function(Component) {
         MyElement = Component.extend({
-          tagName: "my-element",
-          scope: opts,
+          selector: "my-element",
 
-          constructor: function() {
-            MyElement.super("constructor", this);
-          }
+          // This is the data that is rendered.
+          scope: opts
         });
 
         Component.register(MyElement).activateAll(document.body);
+
+        // After one second, update the text on all components.
+        window.setTimeout(function() {
+          // The augment method is provided on the Component class itself.  It is a
+          // singleton that will iterate over all active components.
+          MyElement.augment(function(component) {
+            // Updates the data-binding.
+            component.set({
+              state: "success",
+              test: "updated"
+            });
+          });
+        }, 1000);
       });
     });
   </script>

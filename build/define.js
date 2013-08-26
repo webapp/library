@@ -51,7 +51,7 @@ var require = function(moduleName) {
   // Modules that are inlined, but not yet cached must be run and then cached.
   if (inlined && !inlined.value) {
     // This will appropriate the correct behavior for modules.
-    inlined.deps = inlined.deps.map(function(dep) {
+    inlined.deps = (inlined.deps || []).map(function(dep) {
       if (dep === "require") {
         return require;
       }

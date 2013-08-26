@@ -1,16 +1,9 @@
 module.exports = ->
+  modules = require "webapp-modules"
+
   @initConfig
 
-    clean:
-      pre: ["dist", "test/reports"]
-      post: ["dist/src", "dist/vendor"]
-
-    copy:
-      default:
-        files: [
-          { src: "src/**", dest: "dist/" }
-          { src: "vendor/**", dest: "dist/" }
-        ]
+    clean: ["dist", "test/reports"]
 
     jshint:
       default: [
@@ -37,46 +30,38 @@ module.exports = ->
           define: true
           require: true
 
-    requirejs:
+    modules:
       options:
+        sourceFormat: "es6"
         mainConfigFile: "build/config.js"
-
-        excludeShallow: [
-          "jquery"
-          "q"
-          "ractive"
-          "history"
-        ]
 
         wrap:
           startFile: "build/start.js"
           endFile: "build/end.js"
 
-      raw:
+      default:
         options:
           optimize: "none"
           out: "dist/webapp.js"
 
-      compressed:
-        options:
-          optimize: "uglify2"
-          out: "dist/webapp.min.js"
-          generateSourceMaps: true
-          preserveLicenseComments: false
-
-      bundled_raw:
+      bundled:
         options:
           optimize: "none"
           out: "dist/webapp.bundled.js"
           excludeShallow: []
 
-      bundled_compressed:
-        options:
-          optimize: "uglify2"
-          out: "dist/webapp.bundled.min.js"
-          generateSourceMaps: true
-          preserveLicenseComments: false
-          excludeShallow: []
+    connect:
+      options:
+        base: "."
+        keepalive: true
+
+        middleware: (connect) -> [
+          modules "src", sourceFormat: "es6",
+          modules "test/tests", sourceFormat: "es6",
+          connect.static __dirname
+        ]
+
+      default: {}
 
     karma:
       options:
@@ -84,13 +69,16 @@ module.exports = ->
         singleRun: true
 
         frameworks: ["mocha"]
-        reporters: ["progress", "coverage"]
+        reporters: ["progress", "webapp-coverage"]
 
         plugins: [
-          "karma-coverage"
+          "karma-webapp-coverage"
           "karma-mocha"
           "karma-phantomjs-launcher"
         ]
+
+        proxies:
+          "/base": "http://localhost:8000"
 
         files: [
           { pattern: "test/tests/**/*.js", included: false },
@@ -104,7 +92,7 @@ module.exports = ->
         ]
 
         preprocessors:
-          "src/**/*.js": "coverage"
+          "src/*.js": "webapp-coverage"
 
         coverageReporter:
           type: "html"
@@ -114,11 +102,15 @@ module.exports = ->
         options:
           browsers: ["PhantomJS"]
 
+  # Plugins.
   @loadNpmTasks "grunt-contrib-clean"
+  @loadNpmTasks "grunt-contrib-connect"
   @loadNpmTasks "grunt-contrib-copy"
   @loadNpmTasks "grunt-contrib-jshint"
-  @loadNpmTasks "grunt-contrib-requirejs"
+  @loadNpmTasks "grunt-webapp-modules"
   @loadNpmTasks "grunt-karma"
 
-  @registerTask "build", ["clean:pre", "copy", "requirejs:raw", "clean:post"]
-  @registerTask "default", ["jshint", "build", "karma"]
+  @registerTask "test", ["connect"]
+
+  # Task.
+  @registerTask "default", ["jshint", "clean", "modules"]

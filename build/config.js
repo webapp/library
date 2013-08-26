@@ -9,20 +9,20 @@ require.config({
     lodash: "_",
     jquery: "jQuery",
     q: "Q",
-    history: "History",
+    "history.js": "History",
     scopedcss: "ScopedCss",
     ractive: "Ractive"
   },
 
   paths: {
-    jquery: "../vendor/lib/jquery/jquery",
-    lodash: "../vendor/lib/lodash/dist/lodash",
-    history: "../vendor/lib/history.js/scripts/uncompressed/history",
-    q: "../vendor/lib/q/q",
-    scopedcss: "../vendor/lib/scopedcss/dist/scopedcss",
-    ractive: "../vendor/lib/ractive/build/Ractive"
+    jquery: "../vendor/jquery/jquery",
+    lodash: "../vendor/lodash/dist/lodash",
+    q: "../vendor/q/q",
+    scopedcss: "../vendor/scopedcss/dist/scopedcss",
+    ractive: "../vendor/ractive/build/Ractive"
   },
 
-  baseUrl: "../dist/src",
-  include: ["../../build/define", "../../build/config", "webapp"]
+  baseUrl: "../src/",
+  include: ["../build/define", "../build/config", "webapp"],
+  excludeShallow: ["jquery", "q", "ractive"]
 });

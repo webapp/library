@@ -2,7 +2,7 @@
 import _ from "lodash";
 
 // Modules.
-import Class from "./class";
+import Class from "class";
 
 // Throw an error when a URL is needed, and none is supplied.
 var urlError = function() {

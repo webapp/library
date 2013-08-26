@@ -1,5 +1,7 @@
-import Component from "../component";
+import Component from "component";
 
-export default Component.extend({
+var ViewComponent = Component.extend({
   tagName: "webapp-view"
 });
+
+export default ViewComponent;

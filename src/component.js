@@ -4,13 +4,13 @@ import _ from "lodash";
 import ScopedCss from "scopedcss";
 
 // Modules.
-import View from "./view";
+import View from "view";
 
 // The View base class for the Component.
 var Component = View.extend({
   constructor: function() {
-    if (!this.tagName) {
-      throw new Error("tagName required to initialize component.");
+    if (!this.selector) {
+      throw new Error("selector required to initialize component.");
     }
 
     // Ensure the View is correctly set up.
@@ -38,8 +38,8 @@ Component.mixin({
   components: {},
 
   register: function(Component, identifier) {
-    // Allow a manual override of the tagName to use.
-    identifier = identifier || Component.prototype.tagName;
+    // Allow a manual override of the selector to use.
+    identifier = identifier || Component.prototype.selector;
 
     // Register a Component constructor, not an instance.
     this.components[identifier] = {
@@ -99,8 +99,8 @@ Component.mixin({
   },
 
   activateAll: function(el) {
-    _.each(this.components, function(Component, tagName) {
-      $(el).find(tagName).each(function() {
+    _.each(this.components, function(Component, selector) {
+      $(el).find(selector).each(function() {
         Component.ctor.activate($(this), Component.instances);
       });
     });
