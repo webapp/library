@@ -2,8 +2,8 @@
 import _ from "lodash";
 
 // Modules.
-import Class from "class";
-import Model from "model";
+import Class from "./class";
+import Model from "./model";
 
 // Default options for `Collection#set`.
 var setOptions = {add: true, remove: true, merge: true};

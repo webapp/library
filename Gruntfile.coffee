@@ -1,6 +1,7 @@
 module.exports = ->
   modules = require "webapp-modules"
 
+  # Configuration.
   @initConfig
 
     clean: ["dist", "test/reports"]
@@ -19,7 +20,6 @@ module.exports = ->
         esnext: true
         eqnull: true
         boss: true
-        unused: true
         undef: true
         proto: true
 
@@ -29,6 +29,7 @@ module.exports = ->
           navigator: true
           define: true
           require: true
+          __exports__: true
 
     modules:
       options:
@@ -39,8 +40,9 @@ module.exports = ->
           startFile: "build/start.js"
           endFile: "build/end.js"
 
-      default:
+      amd:
         options:
+          targetFolder: "dist/"
           optimize: "none"
           out: "dist/webapp.js"
 
@@ -53,7 +55,6 @@ module.exports = ->
     connect:
       options:
         base: "."
-        keepalive: true
 
         middleware: (connect) -> [
           modules "src", sourceFormat: "es6",
@@ -61,7 +62,13 @@ module.exports = ->
           connect.static __dirname
         ]
 
-      default: {}
+      default:
+        options:
+          keepalive: true
+
+      test:
+        options:
+          keepalive: false
 
     karma:
       options:
@@ -69,22 +76,18 @@ module.exports = ->
         singleRun: true
 
         frameworks: ["mocha"]
-        reporters: ["progress", "webapp-coverage"]
+        reporters: ["progress", "coverage"]
 
         plugins: [
-          "karma-webapp-coverage"
+          "karma-coverage"
           "karma-mocha"
           "karma-phantomjs-launcher"
         ]
 
-        proxies:
-          "/base": "http://localhost:8000"
-
         files: [
-          { pattern: "test/tests/**/*.js", included: false },
-          { pattern: "src/**/*.js", included: false },
-          { pattern: "vendor/**/*.js", included: false },
-          { pattern: "build/**/*.js", included: false },
+          { pattern: "dist/amd/**/*.js", included: false }
+          { pattern: "vendor/**/*.js", included: false }
+          { pattern: "build/**/*.js", included: false }
 
           "test/vendor/chai.js"
           "test/vendor/require.js"
@@ -92,7 +95,7 @@ module.exports = ->
         ]
 
         preprocessors:
-          "src/*.js": "webapp-coverage"
+          "dist/amd/*.js": "coverage"
 
         coverageReporter:
           type: "html"
@@ -105,12 +108,10 @@ module.exports = ->
   # Plugins.
   @loadNpmTasks "grunt-contrib-clean"
   @loadNpmTasks "grunt-contrib-connect"
-  @loadNpmTasks "grunt-contrib-copy"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-webapp-modules"
   @loadNpmTasks "grunt-karma"
 
-  @registerTask "test", ["connect"]
-
-  # Task.
-  @registerTask "default", ["jshint", "clean", "modules"]
+  # Tasks.
+  @registerTask "test", ["connect:test", "karma"]
+  @registerTask "default", ["jshint", "clean", "modules", "test"]

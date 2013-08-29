@@ -1,4 +1,4 @@
-var baseUrl = window.__karma__ ? "/base/" : "../";
+var baseUrl = window.__karma__ ? "/base/dist/" : "../";
 
 var tests = [
   "tests/class",
@@ -25,19 +25,25 @@ window.expect = chai.expect;
 
 require({
   // Set the application endpoint.
-  paths: { tests: baseUrl + "test/tests" },
+  paths: {
+    tests: "http://localhost:8000/test/tests",
+
+    jquery: "../../vendor/jquery/jquery",
+    lodash: "../../vendor/lodash/dist/lodash",
+    q: "../../vendor/q/q",
+    scopedcss: "../../vendor/scopedcss/dist/scopedcss",
+    ractive: "../../vendor/ractive/build/Ractive"
+  },
 
   // Determine the baseUrl if we are in Karma or not.
-  baseUrl: baseUrl
-},
+  baseUrl: baseUrl + (window.__karma__ ? "amd" : "src"),
 
-// Load the configuration.
-["build/config"],
-
-function() {
-
-  // Update the baseUrl after loading everything.
-  require.s.contexts._.config.baseUrl = baseUrl + "src/";
+  packages: [{
+    name: "webapp",
+    location: ".",
+    main: "webapp.js"
+  }],
+}, [], function() {
 
   // Load all tests.
   require(tests, function() {

@@ -1,6 +1,3 @@
-// Exports.
-var exports = {};
-
 // Libraries.
 import _ from "lodash";
 
@@ -17,12 +14,12 @@ function initialize(parent, child, args) {
 }
 
 // Optionally allow users to create instances without using the new keyword.
-exports.create = function() {
+export function create() {
   return initialize(this.__proto__, Object.create(this.prototype), arguments);
-};
+}
 
 // Extends the parent Object, without triggering anything special.
-exports.extend = function(instanceProperties, classProperties) {
+export function extend(instanceProperties, classProperties) {
   var Parent = this;
 
   // Extending creates a new constructor that will be based off the parent.
@@ -56,11 +53,9 @@ exports.extend = function(instanceProperties, classProperties) {
   _.extend(Surrogate.prototype, instanceProperties);
 
   return Surrogate;
-};
+}
 
 // Allow class properties to be mixed into the constructor.
-exports.mixin = function(classProperties) {
+export function mixin(classProperties) {
   _.extend(this, classProperties);
-};
-
-export default exports;
+}

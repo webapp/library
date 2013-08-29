@@ -4,7 +4,7 @@ import _ from "lodash";
 import ScopedCss from "scopedcss";
 
 // Modules.
-import View from "view";
+import View from "./view";
 
 // The View base class for the Component.
 var Component = View.extend({

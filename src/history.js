@@ -2,7 +2,7 @@
 import _ from "lodash";
 
 // Modules.
-import Class from "class";
+import Class from "./class";
 
 // Cached regex for stripping a leading hash/slash and trailing space.
 var routeStripper = /^[#\/]|\s+$/g;

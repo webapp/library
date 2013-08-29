@@ -22,7 +22,7 @@ require.config({
     ractive: "../vendor/ractive/build/Ractive"
   },
 
-  baseUrl: "../src/",
+  baseUrl: "../src",
   include: ["../build/define", "../build/config", "webapp"],
   excludeShallow: ["jquery", "q", "ractive"]
 });

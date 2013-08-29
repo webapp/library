@@ -1,6 +1,6 @@
 import _ from "lodash";
-import Events from "events";
-import Inheritance from "inheritance";
+import Events from "./events";
+import Inheritance from "./inheritance";
 
 function Class() {}
 

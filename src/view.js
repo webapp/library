@@ -4,7 +4,7 @@ import _ from "lodash";
 import Ractive from "ractive";
 
 // Modules.
-import Class from "class";
+import Class from "./class";
 
 // Cached regex to split keys for `delegate`.
 var delegateEventSplitter = /^(\S+)\s*(.*)$/;

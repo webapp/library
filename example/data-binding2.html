@@ -40,33 +40,44 @@
   <script src="../test/vendor/require.js"></script>
 
   <script>
+    require.config({
+      // Set the base path to the AMD build.
+      baseUrl: "../dist/amd",
+
+      // Point to correct depenencies.
+      paths: {
+        jquery: "../../vendor/jquery/jquery",
+        lodash: "../../vendor/lodash/dist/lodash",
+        scopedcss: "../../vendor/scopedcss/dist/scopedcss",
+        ractive: "../../vendor/ractive/build/Ractive"
+      }
+    });
+
     var opts = { state: "normal", test: "example" };
 
     // This is a mess.
-    require(["../build/config"], function() {
-      require({ baseUrl: "../src" }, ["component"], function(Component) {
-        MyElement = Component.extend({
-          selector: "my-element",
+    require(["component"], function(Component) {
+      MyElement = Component.extend({
+        selector: "my-element",
 
-          // This is the data that is rendered.
-          scope: opts
-        });
-
-        Component.register(MyElement).activateAll(document.body);
-
-        // After one second, update the text on all components.
-        window.setTimeout(function() {
-          // The augment method is provided on the Component class itself.  It is a
-          // singleton that will iterate over all active components.
-          MyElement.augment(function(component) {
-            // Updates the data-binding.
-            component.set({
-              state: "success",
-              test: "updated"
-            });
-          });
-        }, 1000);
+        // This is the data that is rendered.
+        scope: opts
       });
+
+      Component.register(MyElement).activateAll(document.body);
+
+      // After one second, update the text on all components.
+      window.setTimeout(function() {
+        // The augment method is provided on the Component class itself.  It is a
+        // singleton that will iterate over all active components.
+        MyElement.augment(function(component) {
+          // Updates the data-binding.
+          component.set({
+            state: "success",
+            test: "updated"
+          });
+        });
+      }, 1000);
     });
   </script>
 </body>

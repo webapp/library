@@ -1,14 +1,12 @@
-// Exports.
-var exports = {};
-
 // Libraries.
-var _ = require("lodash");
+import _ from "lodash";
 
+var global = this;
 var slice = Array.prototype.slice;
 
 // Bind an event to a `callback` function. Passing `"all"` will bind
 // the callback to all events fired.
-exports.on = function(name, callback, context) {
+export function on(name, callback, context) {
   if (!eventsApi(this, "on", name, [callback, context]) || !callback) {
     return this;
   }
@@ -23,31 +21,31 @@ exports.on = function(name, callback, context) {
   });
 
   return this;
-};
+}
 
 // Bind an event to only be triggered a single time. After the first time
 // the callback is invoked, it will be removed.
-exports.once = function(name, callback, context) {
+export function once(name, callback, context) {
   if (!eventsApi(this, 'once', name, [callback, context]) || !callback) {
     return this;
   }
 
   var self = this;
-  var once = _.once(function() {
+  var onceCallback = _.once(function() {
     self.off(name, once);
     callback.apply(this, arguments);
   });
 
-  once._callback = callback;
+  onceCallback._callback = callback;
 
-  return this.on(name, once, context);
-};
+  return this.on(name, onceCallback, context);
+}
 
 // Remove one or many callbacks. If `context` is null, removes all
 // callbacks with that function. If `callback` is null, removes all
 // callbacks for the event. If `name` is null, removes all bound
 // callbacks for all events.
-exports.off = function(name, callback, context) {
+export function off(name, callback, context) {
   var retain, ev, events, names, i, l, j, k;
 
   if (!this._events || !eventsApi(this, 'off', name, [callback, context])) {
@@ -86,13 +84,13 @@ exports.off = function(name, callback, context) {
   }
 
   return this;
-};
+}
 
 // Trigger one or many events, firing all bound callbacks. Callbacks are
 // passed the same arguments as `trigger` is, apart from the event name
 // (unless you're listening on `"all"`, which will cause your callback to
 // receive the true name of the event as the first argument).
-exports.trigger = function(name) {
+export function trigger(name) {
   if (!this._events) return this;
   var args = slice.call(arguments, 1);
   if (!eventsApi(this, 'trigger', name, args)) return this;
@@ -101,11 +99,11 @@ exports.trigger = function(name) {
   if (events) triggerEvents(events, args);
   if (allEvents) triggerEvents(allEvents, arguments);
   return this;
-};
+}
 
 // Tell this object to stop listening to either specific events ... or
 // to every object it's currently listening to.
-exports.stopListening = function(obj, name, callback) {
+export function stopListening(obj, name, callback) {
   var listeners = this._listeners;
   if (!listeners) return this;
   var deleteListener = !name && !callback;
@@ -116,7 +114,7 @@ exports.stopListening = function(obj, name, callback) {
     if (deleteListener) delete this._listeners[id];
   }
   return this;
-};
+}
 
 // Regular expression used to split event strings.
 var eventSplitter = /\s+/;
@@ -167,6 +165,9 @@ var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
 // listen to an event in another object ... keeping track of what it's
 // listening to.
 _.each(listenMethods, function(implementation, method) {
+  // FIXME Hack at the moment.
+  var exports = typeof __exports__ === "object" ? __exports__ : exports || {};
+
   exports[method] = function(obj, name, callback) {
     var listeners = this._listeners || (this._listeners = {});
     var id = obj._listenerId || (obj._listenerId = _.uniqueId('l'));
@@ -176,9 +177,3 @@ _.each(listenMethods, function(implementation, method) {
     return this;
   };
 });
-
-// Aliases for backwards compatibility.
-exports.bind = exports.on;
-exports.unbind = exports.off;
-
-export default exports;
