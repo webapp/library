@@ -6,6 +6,7 @@ import ScopedCss from "scopedcss";
 // Modules.
 import Events from "./events";
 import View from "./view";
+import Channel from "./channel";
 
 // The View base class for the Component.
 var Component = View.extend({
@@ -16,14 +17,6 @@ var Component = View.extend({
 
     // Ensure the View is correctly set up.
     Component.super("constructor", this, arguments);
-  },
-
-  connectChannel: function(channel) {
-    channel.on(this.channel, function(path, value) {
-      if (this.get(path) !== value) {
-        this.set(path, value);
-      }
-    }, this);
   },
 
   afterRender: function() {
@@ -87,7 +80,13 @@ Component.mixin({
 
     // Convert all attributes on the Element into View properties.
     var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
+      // Optionally consume data attributes.
+      if (attr.name.indexOf("data-") === 0) {
+        attr.name = attr.name.slice(5);
+      }
+
       attrs[attr.name] = attr.value;
+
       return attrs;
     }, {});
 
@@ -106,12 +105,25 @@ Component.mixin({
         return;
       }
 
-      state.binding.on("set", function(path, value) {
-        Component.channels.trigger(component.channel, path, value);
-      });
+      // Replace the string channel name with an instance.
+      if (typeof component.channel === "string") {
+        component.channel = new Channel(component.channel);
+      }
 
       if (component.channel) {
-        component.connectChannel(Component.channels);
+        // If a channel exists, monitor changes.
+        component.channel.subscribe(function(value, key) {
+          if (this.get(key) !== value) {
+            this.set(key, value);
+          }
+        }, component);
+
+        state.binding.on("set", function(key, value) {
+          component.channel.publish(key, value);
+        });
+
+        // Publish the initial view.
+        component.channel.publish(component);
       }
     });
 

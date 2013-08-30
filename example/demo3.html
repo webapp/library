@@ -14,11 +14,13 @@
   </style>
 </head>
 <body>
-  <div class="image-1" style="float: left;">
-    <custom-slider channel="image-1"></custom-slider>
+  <custom-slider channel="image-1"></custom-slider>
+  <my-photo channel="image-1" value="100" src="http://tbranyen.com/u/0f144c70.png"></my-photo>
 
-    <my-photo src="http://tbranyen.com/u/0f144c70.png"></my-photo>
-  </div>
+  <hr>
+      
+  <custom-slider channel="image-2"></custom-slider>
+  <my-photo channel="image-2" value="100" src="http://tbranyen.com/u/0a1c2c60.png"></my-photo>
 
   <script src="../test/vendor/require.js"></script>
 
@@ -39,9 +41,7 @@
     var opts = { state: "normal", test: "example" };
 
     // This is a mess.
-    require(["component"], function(Component) {
-      var inSync = { value: 10 };
-
+    require(["component", "model"], function(Component, Model) {
       // Demonstration of an Enhanced-Multi-View aka Component.
       var CustomSlider = Component.extend({
           // What elements to attach to.
@@ -61,12 +61,15 @@
       var PhotoImage = Component.extend({
           // What elements to attach to.
           selector: "my-photo",
-          channel: "image-1",
-          value: 100,
+          // What to render (should be pulled from an external file).
           template: "<img src='{{ src }}' width='{{ value }}%'>"
       });
 
-      // You must register the Component and activate before use.
+      dimensionModel = Model.create({
+        channel: "image-1"
+      });
+
+      // You must register the Components and activate them before use.
       Component.register(CustomSlider);
       Component.register(PhotoImage);
       Component.activateAll(document.body);

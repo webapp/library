@@ -6,6 +6,7 @@ import Ractive from "ractive";
 import ScopedCss from "scopedcss";
 
 // Modules.
+import Channel from "./channel";
 import Class from "./class";
 import Collection from "./collection";
 import Component from "./component";
@@ -50,6 +51,7 @@ WebApp.mixin({
   ScopedCss: ScopedCss,
 
   // Expose modules.
+  Channel: Channel,
   Class: Class,
   Collection: Collection,
   Component: Component,

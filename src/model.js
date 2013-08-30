@@ -3,6 +3,7 @@ import _ from "lodash";
 
 // Modules.
 import Class from "./class";
+import Channel from "./channel";
 
 // Throw an error when a URL is needed, and none is supplied.
 var urlError = function() {
@@ -44,6 +45,25 @@ var Model = Class.extend({
     this.set(attrs, options);
     this.changed = {};
     this.initialize.apply(this, arguments);
+
+    // Replace the string channel name with an instance.
+    if (typeof this.channel === "string") {
+      this.channel = new Channel(this.channel);
+    }
+
+    if (this.channel) {
+      this.channel.subscribe(function(value, path) {
+        if (this.get(path) !== value) {
+          this.set(path, value);
+        }
+      }, this);
+
+      this.on("change", function() {
+        _.each(this.changed, function(val, key) {
+          this.channel.publish(key, val);
+        }, this);
+      }, this);
+    }
   },
 
   // A hash of attributes whose current and previous value differ.
