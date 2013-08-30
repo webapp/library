@@ -9,7 +9,6 @@ require.config({
     lodash: "_",
     jquery: "jQuery",
     q: "Q",
-    "history.js": "History",
     scopedcss: "ScopedCss",
     ractive: "Ractive"
   },

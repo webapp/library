@@ -4,6 +4,7 @@ import _ from "lodash";
 import ScopedCss from "scopedcss";
 
 // Modules.
+import Events from "./events";
 import View from "./view";
 
 // The View base class for the Component.
@@ -15,6 +16,14 @@ var Component = View.extend({
 
     // Ensure the View is correctly set up.
     Component.super("constructor", this, arguments);
+  },
+
+  connectChannel: function(channel) {
+    channel.on(this.channel, function(path, value) {
+      if (this.get(path) !== value) {
+        this.set(path, value);
+      }
+    }, this);
   },
 
   afterRender: function() {
@@ -37,6 +46,9 @@ Component.configure({
 Component.mixin({
   components: {},
 
+  // Channels provide an interconnected data bus.
+  channels: _.extend({}, Events),
+
   register: function(Component, identifier) {
     // Allow a manual override of the selector to use.
     identifier = identifier || Component.prototype.selector;
@@ -51,7 +63,7 @@ Component.mixin({
 
     if (cssText) {
       // Create the scoped object outside of the fetch.
-      ScopedCss(identifier, cssText).appendTo(document.body);
+      new ScopedCss(identifier, cssText).appendTo(document.body);
     }
 
     // Save a pointer for easier lookup.
@@ -71,7 +83,7 @@ Component.mixin({
   },
 
   activate: function($el, instances) {
-    var Component = this;
+    var CurrentComponent = this;
 
     // Convert all attributes on the Element into View properties.
     var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
@@ -83,7 +95,25 @@ Component.mixin({
     attrs.el = $el;
 
     // Create a new Component.
-    var component = new Component(attrs);
+    var component = new CurrentComponent(attrs);
+
+    // Set up the channel binding.
+    component.on("afterRender", function() {
+      var state = this.__state__;
+      var component = this;
+
+      if (!state.binding) {
+        return;
+      }
+
+      state.binding.on("set", function(path, value) {
+        Component.channels.trigger(component.channel, path, value);
+      });
+
+      if (component.channel) {
+        component.connectChannel(Component.channels);
+      }
+    });
 
     // Add to the internal cache.
     instances.push(component);

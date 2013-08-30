@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Data-binding</title>
+
+  <style>
+    body {
+      width: 720px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-1" style="float: left;">
+    <custom-slider channel="image-1"></custom-slider>
+
+    <my-photo src="http://tbranyen.com/u/0f144c70.png"></my-photo>
+  </div>
+
+  <script src="../test/vendor/require.js"></script>
+
+  <script>
+    require.config({
+      // Set the base path to the AMD build.
+      baseUrl: "../src",
+
+      // Point to correct depenencies.
+      paths: {
+        jquery: "../vendor/jquery/jquery",
+        lodash: "../vendor/lodash/dist/lodash",
+        scopedcss: "../vendor/scopedcss/dist/scopedcss",
+        ractive: "../vendor/ractive/build/Ractive"
+      }
+    });
+
+    var opts = { state: "normal", test: "example" };
+
+    // This is a mess.
+    require(["component"], function(Component) {
+      var inSync = { value: 10 };
+
+      // Demonstration of an Enhanced-Multi-View aka Component.
+      var CustomSlider = Component.extend({
+          // What elements to attach to.
+          selector: "custom-slider",
+
+          scope: {
+            value: 100
+          },
+          
+          // What to render (should be pulled from an external file).
+          template: "<input type='range' value='{{ value }}'><strong>{{ value }}</strong>",
+          // Any custom styles (should be pulled from an external file).
+          styles: "@host { display: block; } input { width: 240px; } strong { font-size: 20px; }"
+      });
+
+      // A component that can react to Custom-Slider.
+      var PhotoImage = Component.extend({
+          // What elements to attach to.
+          selector: "my-photo",
+          channel: "image-1",
+          value: 100,
+          template: "<img src='{{ src }}' width='{{ value }}%'>"
+      });
+
+      // You must register the Component and activate before use.
+      Component.register(CustomSlider);
+      Component.register(PhotoImage);
+      Component.activateAll(document.body);
+    });
+  </script>
+</body>
+</html>

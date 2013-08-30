@@ -1,6 +1,9 @@
 // Libraries.
 import $ from "jquery";
 import _ from "lodash";
+import Q from "q";
+import Ractive from "ractive";
+import ScopedCss from "scopedcss";
 
 // Modules.
 import Class from "./class";
@@ -42,6 +45,9 @@ WebApp.mixin({
   // Expose libraries.
   $: $,
   _: _,
+  Q: Q,
+  Ractive: Ractive,
+  ScopedCss: ScopedCss,
 
   // Expose modules.
   Class: Class,

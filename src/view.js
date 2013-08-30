@@ -281,13 +281,6 @@ var View = Class.extend({
         var console = window.console;
         var afterRender = view.afterRender;
 
-        if (afterRender) {
-          afterRender.call(view, view);
-        }
-
-        // Always emit an afterRender event.
-        view.trigger("afterRender", view);
-
         // If Ractive is included, apply the data binding.
         if (Ractive && !state.binding) {
           state.binding = new Ractive({
@@ -306,6 +299,13 @@ var View = Class.extend({
             return state.binding.get.apply(state.binding, arguments);
           };
         }
+
+        if (afterRender) {
+          afterRender.call(view, view);
+        }
+
+        // Always emit an afterRender event.
+        view.trigger("afterRender", view);
 
         // If there are multiple top level elements and `el: false` is used,
         // display a warning message and a stack trace.

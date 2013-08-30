@@ -55,6 +55,7 @@ module.exports = ->
     connect:
       options:
         base: "."
+        port: process.env.PORT || 8080
 
         middleware: (connect) -> [
           modules "src", sourceFormat: "es6",
