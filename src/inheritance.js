@@ -1,4 +1,3 @@
-// Libraries.
 import _ from "lodash";
 
 // Generalize the initialization of a new instance so that it can be easily

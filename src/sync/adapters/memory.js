@@ -1,4 +1,3 @@
-// Modules.
 import Adapter from "./sync/adapter";
 
 var Memory = Adapter.extend({

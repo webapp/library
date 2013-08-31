@@ -1,7 +1,4 @@
-// Libraries.
 import _ from "lodash";
-
-// Modules.
 import Class from "./class";
 
 // Cached regular expressions for matching named param parts and splatted

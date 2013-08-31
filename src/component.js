@@ -1,9 +1,6 @@
-// Libraries.
 import $ from "jquery";
 import _ from "lodash";
 import ScopedCss from "scopedcss";
-
-// Modules.
 import Events from "./events";
 import View from "./view";
 import Channel from "./channel";
@@ -106,8 +103,8 @@ Component.mixin({
       }
 
       // Replace the string channel name with an instance.
-      if (typeof component.channel === "string") {
-        component.channel = new Channel(component.channel);
+      if (typeof component.channels === "string") {
+        component.channel = new Channel(component.channels);
       }
 
       if (component.channel) {

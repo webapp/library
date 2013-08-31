@@ -1,4 +1,3 @@
-// Libraries.
 import _ from "lodash";
 
 var global = this;

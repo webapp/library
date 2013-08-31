@@ -1,5 +1,4 @@
 import _ from "lodash";
-
 import Events from "./events";
 import Class from "./class";
 
@@ -30,6 +29,10 @@ var Channel = Class.extend({
         callback.call(context, value, key);
       }
     });
+  },
+
+  unsubscribe: function(name) {
+    this.stopListening(Bus, name);
   },
 
   publish: function(key, val) {

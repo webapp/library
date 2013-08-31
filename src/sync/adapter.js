@@ -1,7 +1,4 @@
-// Libraries.
 import _ from "lodash";
-
-// Modules.
 import Class from "./class";
 
 var Adapter = Class.extend({

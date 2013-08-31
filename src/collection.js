@@ -1,7 +1,4 @@
-// Libraries.
 import _ from "lodash";
-
-// Modules.
 import Class from "./class";
 import Model from "./model";
 
@@ -50,6 +47,24 @@ var Collection = Class.extend({
     this._reset();
     this.initialize.apply(this, arguments);
     if (models) this.reset(models, _.extend({silent: true}, options));
+
+    // Replace the string channel name with an instance.
+    if (typeof this.channels === "string") {
+      this.channel = new Channel(this.channels);
+    }
+
+    // Set up custom Model handler logic for the channel.
+    if (this.channel) {
+      // Whenever new data comes in, update the internal data store.
+      this.channel.subscribe(function(models, key) {
+        this.reset(models);
+      }, this);
+
+      // Whenever this internal data changes, update.
+      this.on("all", function() {
+        this.channel.publish("models", this.models);
+      }, this);
+    }
   },
 
   // The default model for a collection is just a **Backbone.Model**.

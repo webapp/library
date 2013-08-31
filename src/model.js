@@ -1,7 +1,4 @@
-// Libraries.
 import _ from "lodash";
-
-// Modules.
 import Class from "./class";
 import Channel from "./channel";
 
@@ -47,21 +44,23 @@ var Model = Class.extend({
     this.initialize.apply(this, arguments);
 
     // Replace the string channel name with an instance.
-    if (typeof this.channel === "string") {
-      this.channel = new Channel(this.channel);
+    if (typeof this.channels === "string") {
+      this.channel = new Channel(this.channels);
     }
 
+    // Set up custom Model handler logic for the channel.
     if (this.channel) {
+      // Whenever new data comes in, update the internal data store unless it's
+      // already changed.
       this.channel.subscribe(function(value, path) {
         if (this.get(path) !== value) {
           this.set(path, value);
         }
       }, this);
 
+      // Whenever this internal data changes, update.
       this.on("change", function() {
-        _.each(this.changed, function(val, key) {
-          this.channel.publish(key, val);
-        }, this);
+        this.channel.publish(this.changed);
       }, this);
     }
   },

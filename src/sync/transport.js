@@ -1,41 +1,34 @@
-define(function(require) {
-  "use strict";
+import _ from "lodash";
+import Class from "./class";
 
-  // Libraries.
-  var _ = require("lodash");
+var Transport = Class.extend({
+  constructor: function(properties) {
+    // Merge in the additional properties.
+    _.extend(this, properties);
 
-  // Modules.
-  var Class = require("./class");
+    // Call the initialize method if it exists.
+    _.result(this, "initialize");
+  },
 
-  var Transport = Class.extend({
-    constructor: function(properties) {
-      // Merge in the additional properties.
-      _.extend(this, properties);
+  isAvailable: function() {
+    throw "Method not implemented.";
+  },
 
-      // Call the initialize method if it exists.
-      _.result(this, "initialize");
-    },
+  connect: function() {
+    throw "Method not implemented.";
+  },
 
-    isAvailable: function() {
-      throw "Method not implemented.";
-    },
+  disconnect: function() {
+    throw "Method not implemented.";
+  },
 
-    connect: function() {
-      throw "Method not implemented.";
-    },
+  request: function() {
+    throw "Method not implemented.";
+  },
 
-    disconnect: function() {
-      throw "Method not implemented.";
-    },
-
-    request: function() {
-      throw "Method not implemented.";
-    },
-
-    requestIfModified: function() {
-      throw "Method not implemented.";
-    }
-  });
-
-  return Transport;
+  requestIfModified: function() {
+    throw "Method not implemented.";
+  }
 });
+
+export default Transport;

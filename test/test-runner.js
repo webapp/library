@@ -26,7 +26,7 @@ window.expect = chai.expect;
 require({
   // Set the application endpoint.
   paths: {
-    tests: "http://localhost:8000/test/tests",
+    tests: "http://localhost:8080/test/tests",
 
     jquery: "../../vendor/jquery/jquery",
     lodash: "../../vendor/lodash/dist/lodash",

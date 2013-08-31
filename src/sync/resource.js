@@ -1,14 +1,7 @@
-// Libraries.
 import $ from "jquery";
 import _ from "lodash";
-
-// Modules.
 import Model from "./model";
-
-// Internal adapters.
 import MemoryAdapter from "./sync/adapters/memory";
-
-// Internal transports.
 import XhrTransport from "./sync/transports/xhr";
 
 var Resource = Model.extend({

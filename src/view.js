@@ -1,9 +1,6 @@
-// Libraries.
 import $ from "jquery";
 import _ from "lodash";
 import Ractive from "ractive";
-
-// Modules.
 import Class from "./class";
 
 // Cached regex to split keys for `delegate`.

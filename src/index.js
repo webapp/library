@@ -1,11 +1,8 @@
-// Libraries.
 import $ from "jquery";
 import _ from "lodash";
 import Q from "q";
 import Ractive from "ractive";
 import ScopedCss from "scopedcss";
-
-// Modules.
 import Channel from "./channel";
 import Class from "./class";
 import Collection from "./collection";

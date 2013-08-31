@@ -14,13 +14,13 @@
   </style>
 </head>
 <body>
-  <custom-slider channel="image-1"></custom-slider>
-  <my-photo channel="image-1" value="100" src="http://tbranyen.com/u/0f144c70.png"></my-photo>
+  <custom-slider channels="image-1"></custom-slider>
+  <my-photo channels="image-1" value="100" src="http://tbranyen.com/u/0f144c70.png"></my-photo>
 
   <hr>
       
-  <custom-slider channel="image-2"></custom-slider>
-  <my-photo channel="image-2" value="100" src="http://tbranyen.com/u/0a1c2c60.png"></my-photo>
+  <custom-slider channels="image-2"></custom-slider>
+  <my-photo channels="image-2" value="100" src="http://tbranyen.com/u/0a1c2c60.png"></my-photo>
 
   <script src="../test/vendor/require.js"></script>
 
@@ -66,7 +66,7 @@
       });
 
       dimensionModel = Model.create({
-        channel: "image-1"
+        channels: "image-1"
       });
 
       // You must register the Components and activate them before use.

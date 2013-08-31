@@ -1,8 +1,5 @@
-// Libraries.
 import $ from "jquery";
 import _ from "lodash";
-
-// Modules.
 import Transport from "./sync/transport";
 
 var Xhr = Transport.extend({
