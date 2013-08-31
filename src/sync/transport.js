@@ -5,9 +5,6 @@ var Transport = Class.extend({
   constructor: function(properties) {
     // Merge in the additional properties.
     _.extend(this, properties);
-
-    // Call the initialize method if it exists.
-    _.result(this, "initialize");
   },
 
   isAvailable: function() {

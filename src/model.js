@@ -87,7 +87,7 @@ var Model = Class.extend({
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    //return Backbone.sync.apply(this, arguments);
+    //return Sync.apply(this, arguments);
   },
 
   // Get the value of an attribute.

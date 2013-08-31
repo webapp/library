@@ -96,7 +96,7 @@ module.exports = ->
         ]
 
         preprocessors:
-          "dist/amd/*.js": "coverage"
+          "dist/amd/**/*.js": "coverage"
 
         coverageReporter:
           type: "html"

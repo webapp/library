@@ -6,7 +6,7 @@ function Class() {}
 
 // All Classes should provide events.
 _.extend(Class.prototype, Events, {
-  // Set the default constructor to the above named constructor.
+  // There needs to be a top level constructor, so we're setting it to itself.
   constructor: Class
 });
 

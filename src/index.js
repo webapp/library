@@ -14,16 +14,17 @@ import Model from "./model";
 import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
+import Sync from "./sync";
 
-// The `WebApp` object.
+// For testing purposes atm until actually figure out what to
+// do with these.
+import MemoryAdapter from "./sync/adapters/memory";
+import XhrTransport from "./sync/transports/xhr";
+
 var WebApp = Class.extend({
-  constructor: function() {
-    this.components = {};
-  },
-
   start: function() {
     // The application element.
-    this.$el = $(this.mainElement || "main");
+    this.$el = $(this.mainElement || "body");
 
     // If the main element entry point is not found.
     if (!this.$el.length) {
@@ -35,7 +36,6 @@ var WebApp = Class.extend({
   }
 });
 
-// Directly attached to the Class.
 WebApp.mixin({
   // Expose a version.
   VERSION: "0.1.0-wip",
@@ -57,12 +57,17 @@ WebApp.mixin({
   Inheritance: Inheritance,
   Model: Model,
   Router: Router,
-  //Sync: require("./sync"),
   View: View,
+
+  // Expose compatibility helper.
+  noConflict: function() { return WebApp; },
+
+  // Expose the sync functionality.
+  sync: Sync.sync,
+  ajax: Sync.ajax,
 
   // Create new history.
   history: new History()
 });
 
-// Export.
 export default WebApp;

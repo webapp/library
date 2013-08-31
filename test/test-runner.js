@@ -1,6 +1,13 @@
 var baseUrl = window.__karma__ ? "/base/dist/" : "../";
 
 var tests = [
+  "tests/component/view",
+  "tests/sync/adapters/memory",
+  "tests/sync/transports/xhr",
+  "tests/sync/adapter",
+  "tests/sync/resource",
+  "tests/sync/transport",
+  "tests/channel",
   "tests/class",
   "tests/collection",
   "tests/component",
