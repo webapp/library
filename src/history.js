@@ -1,5 +1,8 @@
-import _ from "lodash";
 import Class from "./class";
+
+import bindAll from "lodash/functions/bindAll";
+import extend from "lodash/objects/assign";
+import any from "lodash/collections/some";
 
 // Cached regex for stripping a leading hash/slash and trailing space.
 var routeStripper = /^[#\/]|\s+$/g;
@@ -24,7 +27,7 @@ var trailingSlash = /\/$/;
 var History = Class.extend({
   constructor: function() {
     this.handlers = [];
-    _.bindAll(this, 'checkUrl');
+    bindAll(this, 'checkUrl');
 
     // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {
@@ -67,7 +70,7 @@ var History = Class.extend({
 
     // Figure out the initial configuration. Do we need an iframe?
     // Is pushState desired ... is it available?
-    this.options          = _.extend({}, {root: '/'}, this.options, options);
+    this.options          = extend({}, {root: '/'}, this.options, options);
     this.root             = this.options.root;
     this._wantsHashChange = this.options.hashChange !== false;
     this._wantsPushState  = !!this.options.pushState;
@@ -155,7 +158,7 @@ var History = Class.extend({
   // returns `false`.
   loadUrl: function(fragmentOverride) {
     var fragment = this.fragment = this.getFragment(fragmentOverride);
-    return _.any(this.handlers, function(handler) {
+    return any(this.handlers, function(handler) {
       if (handler.route.test(fragment)) {
         handler.callback(fragment);
         return true;

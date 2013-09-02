@@ -1,10 +1,10 @@
-import _ from "lodash";
+import assign from "lodash/objects/assign";
 
 // Generalize the initialization of a new instance so that it can be easily
 // called from either `new` or `create`.
 function initialize(parent, child, args) {
   // Mix in `instanceProperties` passed.
-  _.extend(child, args[0]);
+  assign(child, args[0]);
 
   // Invoke the constructor, passing along all arguments.
   child.constructor.apply(child, args);
@@ -39,22 +39,20 @@ export function extend(instanceProperties, classProperties) {
   });
 
   // Apply the class properties.
-  _.extend(Surrogate, classProperties);
+  assign(Surrogate, classProperties);
 
   // Ensure there is a direct reference to the parent.  `__proto__` will be
   // standardized in ES6.
   Surrogate.__proto__ = Parent;
 
-  // Ensure the prototype inherits from `this`.
-  Surrogate.prototype = Object.create(Parent.prototype);
-
-  // Populate prototype with `instanceProperties`.
-  _.extend(Surrogate.prototype, instanceProperties);
+  // Ensure the prototype inherits from `this` and is populated with
+  // `instanceProperties`.
+  assign(Object.create(Parent.prototype), instanceProperties);
 
   return Surrogate;
 }
 
 // Allow class properties to be mixed into the constructor.
 export function mixin(classProperties) {
-  _.extend(this, classProperties);
+  assign(this, classProperties);
 }

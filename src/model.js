@@ -1,6 +1,24 @@
-import _ from "lodash";
 import Class from "./class";
 import Channel from "./channel";
+import { sync } from "./sync";
+
+import result from "lodash/utilities/result";
+import uniqueId from "lodash/utilities/uniqueId";
+import defaults from "lodash/objects/defaults";
+import clone from "lodash/objects/clone";
+import escape from "lodash/utilities/escape";
+import isEqual from "lodash/objects/isEqual";
+import isEmpty from "lodash/objects/isEmpty";
+import extend from "lodash/objects/assign";
+import has from "lodash/objects/has";
+import isObject from "lodash/objects/isObject";
+import forEach from "lodash/collections/forEach";
+
+// FIXME
+var array = [];
+var push = array.push;
+var slice = array.slice;
+var splice = array.splice;
 
 // Throw an error when a URL is needed, and none is supplied.
 var urlError = function() {
@@ -31,13 +49,13 @@ var Model = Class.extend({
     var defaults;
     var attrs = attributes || {};
     options || (options = {});
-    this.cid = _.uniqueId('c');
+    this.cid = uniqueId('c');
     this.attributes = {};
     if (options.collection) this.collection = options.collection;
     if (options.parse) attrs = this.parse(attrs, options) || {};
     options._attrs || (options._attrs = attrs);
-    if (defaults = _.result(this, 'defaults')) {
-      attrs = _.defaults({}, attrs, defaults);
+    if (defaults = result(this, 'defaults')) {
+      attrs = defaults({}, attrs, defaults);
     }
     this.set(attrs, options);
     this.changed = {};
@@ -81,13 +99,13 @@ var Model = Class.extend({
 
   // Return a copy of the model's `attributes` object.
   toJSON: function(options) {
-    return _.clone(this.attributes);
+    return clone(this.attributes);
   },
 
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    //return Sync.apply(this, arguments);
+    return sync.apply(this, arguments);
   },
 
   // Get the value of an attribute.
@@ -97,7 +115,7 @@ var Model = Class.extend({
 
   // Get the HTML-escaped value of an attribute.
   escape: function(attr) {
-    return _.escape(this.get(attr));
+    return escape(this.get(attr));
   },
 
   // Returns `true` if the attribute contains a value that is not null
@@ -134,7 +152,7 @@ var Model = Class.extend({
     this._changing  = true;
 
     if (!changing) {
-      this._previousAttributes = _.clone(this.attributes);
+      this._previousAttributes = clone(this.attributes);
       this.changed = {};
     }
     current = this.attributes, prev = this._previousAttributes;
@@ -145,8 +163,8 @@ var Model = Class.extend({
     // For each `set` attribute, update or delete the current value.
     for (attr in attrs) {
       val = attrs[attr];
-      if (!_.isEqual(current[attr], val)) changes.push(attr);
-      if (!_.isEqual(prev[attr], val)) {
+      if (!isEqual(current[attr], val)) changes.push(attr);
+      if (!isEqual(prev[attr], val)) {
         this.changed[attr] = val;
       } else {
         delete this.changed[attr];
@@ -179,21 +197,21 @@ var Model = Class.extend({
   // Remove an attribute from the model, firing `"change"`. `unset` is a noop
   // if the attribute doesn't exist.
   unset: function(attr, options) {
-    return this.set(attr, void 0, _.extend({}, options, {unset: true}));
+    return this.set(attr, void 0, extend({}, options, {unset: true}));
   },
 
   // Clear all attributes on the model, firing `"change"`.
   clear: function(options) {
     var attrs = {};
     for (var key in this.attributes) attrs[key] = void 0;
-    return this.set(attrs, _.extend({}, options, {unset: true}));
+    return this.set(attrs, extend({}, options, {unset: true}));
   },
 
   // Determine if the model has changed since the last `"change"` event.
   // If you specify an attribute name, determine if that attribute has changed.
   hasChanged: function(attr) {
-    if (attr == null) return !_.isEmpty(this.changed);
-    return _.has(this.changed, attr);
+    if (attr == null) return !isEmpty(this.changed);
+    return has(this.changed, attr);
   },
 
   // Return an object containing all the attributes that have changed, or
@@ -203,11 +221,11 @@ var Model = Class.extend({
   // You can also pass an attributes object to diff against the model,
   // determining if there *would be* a change.
   changedAttributes: function(diff) {
-    if (!diff) return this.hasChanged() ? _.clone(this.changed) : false;
+    if (!diff) return this.hasChanged() ? clone(this.changed) : false;
     var val, changed = false;
     var old = this._changing ? this._previousAttributes : this.attributes;
     for (var attr in diff) {
-      if (_.isEqual(old[attr], (val = diff[attr]))) continue;
+      if (isEqual(old[attr], (val = diff[attr]))) continue;
       (changed || (changed = {}))[attr] = val;
     }
     return changed;
@@ -223,14 +241,14 @@ var Model = Class.extend({
   // Get all of the attributes of the model at the time of the previous
   // `"change"` event.
   previousAttributes: function() {
-    return _.clone(this._previousAttributes);
+    return clone(this._previousAttributes);
   },
 
   // Fetch the model from the server. If the server's representation of the
   // model differs from its current attributes, they will be overridden,
   // triggering a `"change"` event.
   fetch: function(options) {
-    options = options ? _.clone(options) : {};
+    options = options ? clone(options) : {};
     if (options.parse === void 0) options.parse = true;
     var model = this;
     var success = options.success;
@@ -257,7 +275,7 @@ var Model = Class.extend({
       (attrs = {})[key] = val;
     }
 
-    options = _.extend({validate: true}, options);
+    options = extend({validate: true}, options);
 
     // If we're not waiting and attributes exist, save acts as
     // `set(attr).save(null, opts)` with validation. Otherwise, check if
@@ -270,7 +288,7 @@ var Model = Class.extend({
 
     // Set temporary attributes if `{wait: true}`.
     if (attrs && options.wait) {
-      this.attributes = _.extend({}, attributes, attrs);
+      this.attributes = extend({}, attributes, attrs);
     }
 
     // After a successful server-side save, the client is (optionally)
@@ -282,8 +300,8 @@ var Model = Class.extend({
       // Ensure attributes are restored during synchronous saves.
       model.attributes = attributes;
       var serverAttrs = model.parse(resp, options);
-      if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
-      if (_.isObject(serverAttrs) && !model.set(serverAttrs, options)) {
+      if (options.wait) serverAttrs = extend(attrs || {}, serverAttrs);
+      if (isObject(serverAttrs) && !model.set(serverAttrs, options)) {
         return false;
       }
       if (success) success(model, resp, options);
@@ -305,7 +323,7 @@ var Model = Class.extend({
   // Optimistically removes the model from its collection, if it has one.
   // If `wait: true` is passed, waits for the server to respond before removal.
   destroy: function(options) {
-    options = options ? _.clone(options) : {};
+    options = options ? clone(options) : {};
     var model = this;
     var success = options.success;
 
@@ -334,7 +352,7 @@ var Model = Class.extend({
   // using Backbone's restful methods, override this to change the endpoint
   // that will be called.
   url: function() {
-    var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
+    var base = result(this, 'urlRoot') || result(this.collection, 'url') || urlError();
     if (this.isNew()) return base;
     return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + encodeURIComponent(this.id);
   },
@@ -357,17 +375,17 @@ var Model = Class.extend({
 
   // Check if the model is currently in a valid state.
   isValid: function(options) {
-    return this._validate({}, _.extend(options || {}, { validate: true }));
+    return this._validate({}, extend(options || {}, { validate: true }));
   },
 
   // Run validation against the next complete set of model attributes,
   // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
   _validate: function(attrs, options) {
     if (!options.validate || !this.validate) return true;
-    attrs = _.extend({}, this.attributes, attrs);
+    attrs = extend({}, this.attributes, attrs);
     var error = this.validationError = this.validate(attrs, options) || null;
     if (!error) return true;
-    this.trigger('invalid', this, error, _.extend(options, {validationError: error}));
+    this.trigger('invalid', this, error, extend(options, {validationError: error}));
     return false;
   }
 
@@ -377,7 +395,7 @@ var Model = Class.extend({
 var modelMethods = ['keys', 'values', 'pairs', 'invert', 'pick', 'omit'];
 
 // Mix in each Underscore method as a proxy to `Model#attributes`.
-_.each(modelMethods, function(method) {
+forEach(modelMethods, function(method) {
   Model.prototype[method] = function() {
     var args = slice.call(arguments);
     args.unshift(this.attributes);

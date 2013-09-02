@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Adapter from "./sync/adapter";
 import Resource from "./sync/resource";
 import Transport from "./sync/transport";

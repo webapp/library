@@ -1,9 +1,14 @@
 import $ from "jquery";
-import _ from "lodash";
 import ScopedCss from "scopedcss";
 import Events from "./events";
 import View from "./view";
 import Channel from "./channel";
+
+import template from "lodash/utilities/template";
+import extend from "lodash/objects/assign";
+import each from "lodash/collections/forEach";
+import reduce from "lodash/collections/reduce";
+import unescape from "lodash/utilities/unescape";
 
 // The View base class for the Component.
 var Component = View.extend({
@@ -29,7 +34,7 @@ Component.configure({
   // By default the template property contains the contents of the template.
   fetchTemplate: function(contents) {
     // Convert into a Lo-Dash template.
-    return _.template(contents);
+    return template(contents);
   }
 });
 
@@ -37,7 +42,7 @@ Component.mixin({
   components: {},
 
   // Channels provide an interconnected data bus.
-  channels: _.extend({}, Events),
+  channels: extend({}, Events),
 
   register: function(Component, identifier) {
     // Allow a manual override of the selector to use.
@@ -67,7 +72,7 @@ Component.mixin({
   },
 
   augment: function(cb) {
-    _.each(this.__pointer__.instances, function(instance) {
+    each(this.__pointer__.instances, function(instance) {
       cb.call(instance, instance);
     });
   },
@@ -76,7 +81,7 @@ Component.mixin({
     var CurrentComponent = this;
 
     // Convert all attributes on the Element into View properties.
-    var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
+    var attrs = reduce($el[0].attributes, function(attrs, attr) {
       // Optionally consume data attributes.
       if (attr.name.indexOf("data-") === 0) {
         attr.name = attr.name.slice(5);
@@ -118,9 +123,6 @@ Component.mixin({
         state.binding.on("set", function(key, value) {
           component.channel.publish(key, value);
         });
-
-        // Publish the initial view.
-        component.channel.publish(component);
       }
     });
 
@@ -130,7 +132,7 @@ Component.mixin({
     // By default use the template property provided, otherwise pull the
     // template contents from the DOM.
     if (!component.template) {
-      component.template = _.template(_.unescape($el.html()));
+      component.template = template(unescape($el.html()));
     }
 
     // Render and apply to the Document.
@@ -138,7 +140,7 @@ Component.mixin({
   },
 
   activateAll: function(el) {
-    _.each(this.components, function(Component, selector) {
+    each(this.components, function(Component, selector) {
       $(el).find(selector).each(function() {
         Component.ctor.activate($(this), Component.instances);
       });

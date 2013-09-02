@@ -3,10 +3,13 @@ require.config({
     name: "webapp",
     location: ".",
     main: "index.js"
+  }, {
+    name: "lodash",
+    location: "../vendor/lodash-amd",
+    main: "lodash.js"
   }],
 
   globals: {
-    lodash: "_",
     jquery: "jQuery",
     q: "Q",
     scopedcss: "ScopedCss",
@@ -15,7 +18,6 @@ require.config({
 
   paths: {
     jquery: "../vendor/jquery/jquery",
-    lodash: "../vendor/lodash/dist/lodash",
     q: "../vendor/q/q",
     scopedcss: "../vendor/scopedcss/dist/scopedcss",
     ractive: "../vendor/ractive/build/Ractive"

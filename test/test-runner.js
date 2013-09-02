@@ -36,7 +36,6 @@ require({
     tests: "http://localhost:8080/test/tests",
 
     jquery: "../../vendor/jquery/jquery",
-    lodash: "../../vendor/lodash/dist/lodash",
     q: "../../vendor/q/q",
     scopedcss: "../../vendor/scopedcss/dist/scopedcss",
     ractive: "../../vendor/ractive/build/Ractive"
@@ -48,7 +47,11 @@ require({
   packages: [{
     name: "webapp",
     location: ".",
-    main: "webapp.js"
+    main: "index.js"
+  }, {
+    name: "lodash",
+    location: "../../vendor/lodash-amd",
+    main: "lodash.js"
   }],
 }, [], function() {
 

@@ -2,13 +2,12 @@
   "name": "webapp",
   "version": "0.1.0-wip",
   "description": "a tool for writing web applications",
-  "main": "dist/cjs/webapp.js",
+  "main": "webapp.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/WebApp/library.git"
   },
   "dependencies": {
-    "lodash": "*",
     "jquery": "*"
   },
   "devDependencies": {

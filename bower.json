@@ -11,7 +11,7 @@
 
   "dependencies": {
     "jquery": "~2.0.3",
-    "lodash": "~1.3.1",
+    "lodash-amd": "master",
     "q": "~0.9.6",
     "scopedcss": "~0.1.0",
     "ractive": "~0.3.6"

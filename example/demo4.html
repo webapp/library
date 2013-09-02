@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Data-binding</title>
+
+  <style>
+    body {
+      width: 720px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <script src="../test/vendor/require.js"></script>
+
+  <script>
+    require.config({
+      // Set the base path to the AMD build.
+      baseUrl: "../src",
+
+      // Point to correct depenencies.
+      paths: {
+        jquery: "../vendor/jquery/jquery",
+        lodash: "../vendor/lodash/dist/lodash",
+        scopedcss: "../vendor/scopedcss/dist/scopedcss",
+        ractive: "../vendor/ractive/build/Ractive"
+      }
+    });
+
+    define("test", function(require, exports, module) {
+      var Collection = require("collection");
+      var Channel = require("channel");
+
+      var channel = new Channel("test");
+
+      testCollection = Collection.create({
+          channels: "test"
+      });
+
+      channel.publish("models", [{}]);
+    });
+
+    require(["test"]);
+  </script>
+</body>
+</html>

@@ -1,7 +1,21 @@
 import $ from "jquery";
-import _ from "lodash";
 import Ractive from "ractive";
 import Class from "./class";
+
+import extend from "lodash/objects/assign";
+import each from "lodash/collections/forEach";
+import isArray from "lodash/objects/isArray";
+import clone from "lodash/objects/clone";
+import isFunction from "lodash/objects/isFunction";
+import keys from "lodash/objects/keys";
+import map from "lodash/collections/map";
+import reduce from "lodash/collections/reduce";
+import result from "lodash/utilities/result";
+import union from "lodash/arrays/union";
+import bind from "lodash/functions/bind";
+import isString from "lodash/objects/isString";
+import template from "lodash/utilities/template";
+import chain from "lodash/chaining/chain";
 
 // Cached regex to split keys for `delegate`.
 var delegateEventSplitter = /^(\S+)\s*(.*)$/;
@@ -73,7 +87,7 @@ var View = Class.extend({
 
   // Configure this View.
   configure: function(propertiesObject) {
-    _.extend(this, {
+    extend(this, {
       // Used to contain nested Views.
       views: {},
 
@@ -125,11 +139,11 @@ var View = Class.extend({
       // If Views is undefined you are concatenating an `undefined` to an
       // array resulting in a value being returned.  Defaulting to an array
       // prevents this.
-      return _([].concat(views));
+      return chain([].concat(views));
     }
 
     // Generate an array of all top level (no deeply nested) Views flattened.
-    views = _(this.views).map(function(view) {
+    views = chain(this.views).map(function(view) {
       return Array.isArray(view) ? view : [view];
     }, this).flatten();
 
@@ -165,7 +179,7 @@ var View = Class.extend({
       return this.setViews({ "": views });
     }
 
-    _.each(views, function(view, selector) {
+    each(views, function(view, selector) {
       views[selector] = Array.isArray(view) ? view : [view];
     });
 
@@ -203,9 +217,9 @@ var View = Class.extend({
 
       // If this is an array of items remove items that are not marked to
       // keep.
-      if (_.isArray(parentViews)) {
+      if (isArray(parentViews)) {
         // Remove duplicate Views.
-        return _.each(_.clone(parentViews), function(view, i) {
+        return each(clone(parentViews), function(view, i) {
           // If the state's match, splice off this View.
           if (view && view.__state__ === state) {
             aSplice.call(parentViews, i, 1);
@@ -309,12 +323,12 @@ var View = Class.extend({
         if (state.noel && view.$el.length > 1) {
           // Do not display a warning while testing or if warning suppression
           // is enabled.
-          if (_.isFunction(console.warn) && !view.suppressWarnings) { 
+          if (isFunction(console.warn) && !view.suppressWarnings) { 
             console.warn("`el: false` with multiple top level elements is " +
               "not supported.");
 
             // Provide a stack trace if available to aid with debugging.
-            if (_.isFunction(console.trace)) {
+            if (isFunction(console.trace)) {
               console.trace();
             }
           }
@@ -343,22 +357,22 @@ var View = Class.extend({
       view._render(View._viewRender, options).done(function() {
         // If there are no children to worry about, complete the render
         // instantly.
-        if (!_.keys(view.views).length) {
+        if (!keys(view.views).length) {
           return resolve();
         }
 
         // Create a list of promises to wait on until rendering is done.
         // Since this method will run on all children as well, its sufficient
         // for a full hierarchical.
-        var promises = _.map(view.views, function(view) {
-          var insert = _.isArray(view);
+        var promises = map(view.views, function(view) {
+          var insert = isArray(view);
 
           // If items are being inserted, they will be in a non-zero length
           // Array.
           if (insert && view.length) {
             // Schedule each view to be rendered in order and return a promise
             // representing the result of the final rendering.
-            return _.reduce(view.slice(1), function(prevRender, view) {
+            return reduce(view.slice(1), function(prevRender, view) {
               return prevRender.then(function() {
                 return view.render().__state__.renderDeferred;
               });
@@ -447,23 +461,23 @@ var View = Class.extend({
       return this;
     } else if (this.el) {
       // If this View has an element property evaluate and use that value.
-      this.$el = View.$(_.result(this.options, "el"));
+      this.$el = View.$(result(this.options, "el"));
 
       return this;
     }
 
     // Assemble a master list of attributes.
-    var attrs = _.extend({}, _.result(this, "attributes"), {
+    var attrs = extend({}, result(this, "attributes"), {
       // Attach an id if it exists.
-      id: _.result(this, "id"),
+      id: result(this, "id"),
 
       // Attach classes if they were added.
-      class: _.result(this, "className")
+      class: result(this, "className")
     });
 
     // If neither an element was provided nor derived from the `el` property,
     // then craft an element from the `tagName` property.  Defaults to `div`.
-    this.$el = View.$("<" + _.result(this, "tagName") + ">");
+    this.$el = View.$("<" + result(this, "tagName") + ">");
 
     // Configure the element.
     this.$el.attr(attrs);
@@ -494,7 +508,7 @@ var View = Class.extend({
     state.parent = this;
 
     // Call the `setup` method, since we now have a relationship created.
-    _.result(view, "setup");
+    result(view, "setup");
 
     // Code path is less complex for Views that are not being inserted.
     // Simply remove existing Views and bail out with the assignment.
@@ -515,7 +529,7 @@ var View = Class.extend({
 
     // Ensure this.views[selector] is an array and push this View to
     // the end.
-    this.views[state.selector] = _.union(this.views[name] || [], view);
+    this.views[state.selector] = union(this.views[name] || [], view);
 
     // Put the view into `insert` mode.
     state.insert = true;
@@ -526,10 +540,10 @@ var View = Class.extend({
   // Allows the setting of multiple views instead of a single view.
   setViews: function(views) {
     // Iterate over all the views and use the View's view method to assign.
-    _.each(views, function(view, name) {
+    each(views, function(view, name) {
       // If the view is an array put all views into insert mode.
       if (Array.isArray(view)) {
-        return _.each(view, function(view) {
+        return each(view, function(view) {
           this.insertView(name, view);
         }, this);
       }
@@ -543,16 +557,16 @@ var View = Class.extend({
   },
 
   delegateEvents: function(events) {
-    if (!(events || (events = _.result(this, 'events')))) return this;
+    if (!(events || (events = result(this, 'events')))) return this;
     this.undelegateEvents();
     for (var key in events) {
       var method = events[key];
-      if (!_.isFunction(method)) method = this[events[key]];
+      if (!isFunction(method)) method = this[events[key]];
       if (!method) continue;
 
       var match = key.match(delegateEventSplitter);
       var eventName = match[1], selector = match[2];
-      method = _.bind(method, this);
+      method = bind(method, this);
       eventName += '.delegateEvents' + this.cid;
       if (selector === '') {
         this.$el.on(eventName, method);
@@ -615,7 +629,7 @@ View.mixin({
   // events internal model and collection references and all Events.
   cleanViews: function(views) {
     // Clear out all existing views.
-    _.each(aConcat.call([], views), function(view) {
+    each(aConcat.call([], views), function(view) {
       var cleanup;
 
       // Remove all custom events attached to this View.
@@ -630,7 +644,7 @@ View.mixin({
       // If a custom cleanup method was provided on the view, call it after
       // the initial cleanup is done
       cleanup = view.getAllOptions().cleanup;
-      if (_.isFunction(cleanup)) {
+      if (isFunction(cleanup)) {
         cleanup.call(view);
       }
     });
@@ -638,7 +652,7 @@ View.mixin({
 
   // This Class method allows for global configuration of Views.
   configure: function(propertiesObject) {
-    _.extend(this.prototype, propertiesObject);
+    extend(this.prototype, propertiesObject);
   },
 
   // Creates a deferred and returns a function to call when finished.
@@ -652,7 +666,7 @@ View.mixin({
     // the DOM element.
     function applyTemplate(rendered) {
       // Actually put the rendered contents into the element.
-      if (_.isString(rendered)) {
+      if (isString(rendered)) {
         // If no container is specified, we must replace the content.
         if (state.noel) {
           // Trim off the whitespace, since the contents are passed into `$()`.
@@ -722,7 +736,7 @@ View.mixin({
         def = view.deferred();
 
         // If data is a function, immediately call it.
-        if (_.isFunction(context)) {
+        if (isFunction(context)) {
           context = context.call(view);
         }
 
@@ -794,7 +808,7 @@ View.configure({
   // Fetch is passed a path and is expected to return template contents as a
   // function or string.
   fetchTemplate: function(path) {
-    return _.template(View.$(path).html());
+    return template(View.$(path).html());
   },
 
   // By default, render using underscore's templating.

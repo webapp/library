@@ -31,10 +31,10 @@
 
       // Point to correct depenencies.
       paths: {
-        jquery: "../vendor/jquery/jquery",
-        lodash: "../vendor/lodash/dist/lodash",
-        scopedcss: "../vendor/scopedcss/dist/scopedcss",
-        ractive: "../vendor/ractive/build/Ractive"
+          jquery: "../vendor/jquery/jquery",
+          lodash: "../vendor/lodash/dist/lodash",
+          scopedcss: "../vendor/scopedcss/dist/scopedcss",
+          ractive: "../vendor/ractive/build/Ractive"
       }
     });
 
@@ -42,37 +42,37 @@
 
     // This is a mess.
     require(["component", "model"], function(Component, Model) {
-      // Demonstration of an Enhanced-Multi-View aka Component.
-      var CustomSlider = Component.extend({
-          // What elements to attach to.
-          selector: "custom-slider",
+        // Demonstration of an Enhanced-Multi-View aka Component.
+        var CustomSlider = Component.extend({
+            // What elements to attach to.
+            selector: "custom-slider",
 
-          scope: {
-            value: 100
-          },
-          
-          // What to render (should be pulled from an external file).
-          template: "<input type='range' value='{{ value }}'><strong>{{ value }}</strong>",
-          // Any custom styles (should be pulled from an external file).
-          styles: "@host { display: block; } input { width: 240px; } strong { font-size: 20px; }"
-      });
+            scope: {
+              value: 100
+            },
+            
+            // What to render (should be pulled from an external file).
+            template: "<input type='range' value='{{ value }}'><strong>{{ value }}</strong>",
+            // Any custom styles (should be pulled from an external file).
+            styles: "@host { display: block; } input { width: 240px; } strong { font-size: 20px; }"
+        });
 
-      // A component that can react to Custom-Slider.
-      var PhotoImage = Component.extend({
-          // What elements to attach to.
-          selector: "my-photo",
-          // What to render (should be pulled from an external file).
-          template: "<img src='{{ src }}' width='{{ value }}%'>"
-      });
+        // A component that can react to Custom-Slider.
+        var PhotoImage = Component.extend({
+            // What elements to attach to.
+            selector: "my-photo",
+            // What to render (should be pulled from an external file).
+            template: "<img src='{{ src }}' width='{{ value }}%'>"
+        });
 
-      dimensionModel = Model.create({
-        channels: "image-1"
-      });
+        var testCollection = Model.create({
+            channels: "image-1"
+        });
 
-      // You must register the Components and activate them before use.
-      Component.register(CustomSlider);
-      Component.register(PhotoImage);
-      Component.activateAll(document.body);
+        // You must register the Components and activate them before use.
+        Component.register(CustomSlider);
+        Component.register(PhotoImage);
+        Component.activateAll(document.body);
     });
   </script>
 </body>

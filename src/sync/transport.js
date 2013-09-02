@@ -1,10 +1,11 @@
-import _ from "lodash";
 import Class from "./class";
+
+import extend from "lodash/objects/assign";
 
 var Transport = Class.extend({
   constructor: function(properties) {
     // Merge in the additional properties.
-    _.extend(this, properties);
+    extend(this, properties);
   },
 
   isAvailable: function() {

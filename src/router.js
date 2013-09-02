@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Class from "./class";
 
 // Cached regular expressions for matching named param parts and splatted

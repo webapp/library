@@ -1,6 +1,18 @@
-import _ from "lodash";
 import Class from "./class";
 import Model from "./model";
+import Channel from "./channel";
+
+import extend from "lodash/objects/assign";
+import isArray from "lodash/objects/isArray";
+import defaults from "lodash/objects/defaults";
+import isString from "lodash/objects/isString";
+import isEmpty from "lodash/objects/isEmpty";
+import bind from "lodash/functions/bind";
+import isFunction from "lodash/objects/isFunction";
+import sortedIndex from "lodash/arrays/sortedIndex";
+import invoke from "lodash/collections/invoke";
+import clone from "lodash/objects/clone";
+import each from "lodash/collections/forEach";
 
 // Default options for `Collection#set`.
 var setOptions = {add: true, remove: true, merge: true};
@@ -46,7 +58,7 @@ var Collection = Class.extend({
     if (options.comparator !== void 0) this.comparator = options.comparator;
     this._reset();
     this.initialize.apply(this, arguments);
-    if (models) this.reset(models, _.extend({silent: true}, options));
+    if (models) this.reset(models, extend({silent: true}, options));
 
     // Replace the string channel name with an instance.
     if (typeof this.channels === "string") {
@@ -56,9 +68,9 @@ var Collection = Class.extend({
     // Set up custom Model handler logic for the channel.
     if (this.channel) {
       // Whenever new data comes in, update the internal data store.
-      this.channel.subscribe(function(models, key) {
-        this.reset(models);
-      }, this);
+      //this.channel.subscribe(function(models, key) {
+      //  this[key] = value;
+      //}, this);
 
       // Whenever this internal data changes, update.
       this.on("all", function() {
@@ -88,12 +100,12 @@ var Collection = Class.extend({
 
   // Add a model, or list of models to the set.
   add: function(models, options) {
-    return this.set(models, _.extend({merge: false}, options, addOptions));
+    return this.set(models, extend({merge: false}, options, addOptions));
   },
 
   // Remove a model, or a list of models from the set.
   remove: function(models, options) {
-    models = _.isArray(models) ? models.slice() : [models];
+    models = isArray(models) ? models.slice() : [models];
     options || (options = {});
     var i, l, index, model;
     for (i = 0, l = models.length; i < l; i++) {
@@ -118,13 +130,13 @@ var Collection = Class.extend({
   // already exist in the collection, as necessary. Similar to **Model#set**,
   // the core operation for updating the data contained by the collection.
   set: function(models, options) {
-    options = _.defaults({}, options, setOptions);
+    options = defaults({}, options, setOptions);
     if (options.parse) models = this.parse(models, options);
-    if (!_.isArray(models)) models = models ? [models] : [];
+    if (!isArray(models)) models = models ? [models] : [];
     var i, l, model, attrs, existing, sort;
     var at = options.at;
     var sortable = this.comparator && (at == null) && options.sort !== false;
-    var sortAttr = _.isString(this.comparator) ? this.comparator : null;
+    var sortAttr = isString(this.comparator) ? this.comparator : null;
     var toAdd = [], toRemove = [], modelMap = {};
     var add = options.add, merge = options.merge, remove = options.remove;
     var order = !sortable && add && remove ? [] : false;
@@ -204,7 +216,7 @@ var Collection = Class.extend({
     }
     options.previousModels = this.models;
     this._reset();
-    this.add(models, _.extend({silent: true}, options));
+    this.add(models, extend({silent: true}, options));
     if (!options.silent) this.trigger('reset', this, options);
     return this;
   },
@@ -212,7 +224,7 @@ var Collection = Class.extend({
   // Add a model to the end of the collection.
   push: function(model, options) {
     model = this._prepareModel(model, options);
-    this.add(model, _.extend({at: this.length}, options));
+    this.add(model, extend({at: this.length}, options));
     return model;
   },
 
@@ -226,7 +238,7 @@ var Collection = Class.extend({
   // Add a model to the beginning of the collection.
   unshift: function(model, options) {
     model = this._prepareModel(model, options);
-    this.add(model, _.extend({at: 0}, options));
+    this.add(model, extend({at: 0}, options));
     return model;
   },
 
@@ -256,7 +268,7 @@ var Collection = Class.extend({
   // Return models with matching attributes. Useful for simple cases of
   // `filter`.
   where: function(attrs, first) {
-    if (_.isEmpty(attrs)) return first ? void 0 : [];
+    if (isEmpty(attrs)) return first ? void 0 : [];
     return this[first ? 'find' : 'filter'](function(model) {
       for (var key in attrs) {
         if (attrs[key] !== model.get(key)) return false;
@@ -279,10 +291,10 @@ var Collection = Class.extend({
     options || (options = {});
 
     // Run sort based on type of `comparator`.
-    if (_.isString(this.comparator) || this.comparator.length === 1) {
+    if (isString(this.comparator) || this.comparator.length === 1) {
       this.models = this.sortBy(this.comparator, this);
     } else {
-      this.models.sort(_.bind(this.comparator, this));
+      this.models.sort(bind(this.comparator, this));
     }
 
     if (!options.silent) this.trigger('sort', this, options);
@@ -293,22 +305,22 @@ var Collection = Class.extend({
   // to maintain order.
   sortedIndex: function(model, value, context) {
     value || (value = this.comparator);
-    var iterator = _.isFunction(value) ? value : function(model) {
+    var iterator = isFunction(value) ? value : function(model) {
       return model.get(value);
     };
-    return _.sortedIndex(this.models, model, iterator, context);
+    return sortedIndex(this.models, model, iterator, context);
   },
 
   // Pluck an attribute from each model in the collection.
   pluck: function(attr) {
-    return _.invoke(this.models, 'get', attr);
+    return invoke(this.models, 'get', attr);
   },
 
   // Fetch the default set of models for this collection, resetting the
   // collection when they arrive. If `reset: true` is passed, the response
   // data will be passed through the `reset` method instead of `set`.
   fetch: function(options) {
-    options = options ? _.clone(options) : {};
+    options = options ? clone(options) : {};
     if (options.parse === void 0) options.parse = true;
     var success = options.success;
     var collection = this;
@@ -326,7 +338,7 @@ var Collection = Class.extend({
   // collection immediately, unless `wait: true` is passed, in which case we
   // wait for the server to agree.
   create: function(model, options) {
-    options = options ? _.clone(options) : {};
+    options = options ? clone(options) : {};
     if (!(model = this._prepareModel(model, options))) return false;
     if (!options.wait) this.add(model, options);
     var collection = this;
@@ -405,7 +417,7 @@ var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
   'lastIndexOf', 'isEmpty', 'chain'];
 
 // Mix in each Underscore method as a proxy to `Collection#models`.
-_.each(methods, function(method) {
+each(methods, function(method) {
   Collection.prototype[method] = function() {
     var args = slice.call(arguments);
     args.unshift(this.models);
@@ -417,9 +429,9 @@ _.each(methods, function(method) {
 var attributeMethods = ['groupBy', 'countBy', 'sortBy'];
 
 // Use attributes instead of properties.
-_.each(attributeMethods, function(method) {
+each(attributeMethods, function(method) {
   Collection.prototype[method] = function(value, context) {
-    var iterator = _.isFunction(value) ? value : function(model) {
+    var iterator = isFunction(value) ? value : function(model) {
       return model.get(value);
     };
     return _[method](this.models, iterator, context);
