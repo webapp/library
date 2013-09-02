@@ -29,8 +29,8 @@ var require = function(moduleName) {
   // mapped.
   require.conf.packages && require.conf.packages.forEach(function(package) {
     if (moduleName.indexOf(package.location) === 0) {
-    console.log(moduleName, package);
       moduleName = package.name + moduleName.slice(moduleName.indexOf("/"));
+      return;
     }
   });
 
