@@ -48,6 +48,9 @@ export function extend(instanceProperties, classProperties) {
   // Ensure the prototype inherits from `this`.
   Surrogate.prototype = Object.create(Parent.prototype);
 
+  // Backbone compatibility.
+  Surrogate.__super__ = Parent.prototype;
+
   // Populate prototype with `instanceProperties`.
   _extend(Surrogate.prototype, instanceProperties);
 

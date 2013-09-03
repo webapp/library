@@ -129,4 +129,4 @@ module.exports = ->
 
   # Tasks.
   @registerTask "test", ["connect:test", "karma"]
-  @registerTask "default", ["jshint", "clean", "modules", "requirejs", "test"]
+  @registerTask "default", ["clean", "jshint", "modules", "requirejs", "test"]

@@ -13,13 +13,7 @@ import Model from "./model";
 import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
-
-// For testing purposes atm until actually figure out what to
-// do with these.
-
-// Save the previous value of the `Backbone` variable, so that it can be
-// restored later on, if `noConflict` is used.
-var previousBackbone = window.Backbone;
+import { sync, xhr } from "./sync";
 
 var WebApp = Class.extend({
   start: function() {
@@ -62,13 +56,12 @@ WebApp.mixin({
 
   // Expose compatibility helper.
   noConflict: function() {
-    window.Backbone = previousBackbone;
-    return this;
+    window.Backbone = WebApp.Backbone;
+    return WebApp;
   },
 
   // Expose the sync functionality.
-  sync: function() {},
-  ajax: function() {},
+  sync: sync,
 
   // Create new history.
   history: new History()

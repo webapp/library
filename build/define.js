@@ -90,8 +90,6 @@ var require = function(moduleName) {
         dep = dirParts.reverse().join("/") + "/" + dep;
       }
 
-      console.log(dep);
-
       return require(dep);
     });
 

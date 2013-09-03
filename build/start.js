@@ -16,7 +16,7 @@
     // Detect if Backbone exists on the page and run `noConflict` on it, saving
     // to an accessible property on the WebApp object.
     if (window.Backbone) {
-      window.WebApp.Backbone = window.Backbone.noConflict();
+      window.WebApp.Backbone = window.Backbone;
     }
 
     // Overwrite the Backbone global with this object.

@@ -1,7 +1,3 @@
-import Adapter from "./sync/adapter";
-import Resource from "./sync/resource";
-import Transport from "./sync/transport";
-
 export function sync(method, model, options) {
   var type = methodMap[method];
 

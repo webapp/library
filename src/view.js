@@ -110,7 +110,7 @@ var View = Class.extend({
     }, propertiesObject);
 
     // Attach the element.
-    this.setElement(this.el);
+    this.setElement(_result(this, "el"));
 
     // Internal state object.
     this.__state__ = {
@@ -126,6 +126,9 @@ var View = Class.extend({
   // Simply pass along the options to configure this new instance.
   constructor: function(propertiesObject) {
     this.configure(propertiesObject || {});
+
+    // Backbone compatibility.
+    _result(this, "initialize");
   },
 
   // Returns the View that matches the `getViews` filter function.
@@ -469,10 +472,8 @@ var View = Class.extend({
       // precedence.
       this.$el = View.$(element);
 
-      return this;
-    } else if (this.el) {
-      // If this View has an element property evaluate and use that value.
-      this.$el = View.$(_result(this.options, "el"));
+      // Backbone compatibility.
+      this.el = this.$el.get()[0];
 
       return this;
     }
@@ -492,6 +493,9 @@ var View = Class.extend({
 
     // Configure the element.
     this.$el.attr(attrs);
+
+    // Backbone compatibility.
+    this.el = this.$el.get()[0];
 
     return this;
   },

@@ -19,6 +19,12 @@ import _invert from "lodash/objects/invert";
 import _pick from "lodash/objects/pick";
 import _omit from "lodash/objects/omit";
 
+// FIXME
+var array = [];
+var push = array.push;
+var slice = array.slice;
+var splice = array.splice;
+
 // Throw an error when a URL is needed, and none is supplied.
 var urlError = function() {
   throw new Error('A "url" property or function must be specified');
@@ -364,7 +370,7 @@ var Model = Class.extend({
 
   // Create a new model with identical attributes to this one.
   clone: function() {
-    return new this.constructor(this.attributes);
+    return Model.create(this.attributes);
   },
 
   // A model is new if it has never been saved to the server, and lacks an id.
@@ -391,14 +397,14 @@ var Model = Class.extend({
 });
 
 // Underscore methods that we want to implement on the Model.
-var modelMethods = [
-  { "keys": _keys },
-  { "values": _values },
-  { "pairs": _pairs },
-  { "invert": _invert },
-  { "pick": _pick },
-  { "omit": _omit }
-];
+var modelMethods = {
+  "keys": _keys,
+  "values": _values,
+  "pairs": _pairs,
+  "invert": _invert,
+  "pick": _pick,
+  "omit": _omit
+};
 
 // Mix in each Underscore method as a proxy to `Model#attributes`.
 _each(modelMethods, function(func, method) {
