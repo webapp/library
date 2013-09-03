@@ -1,11 +1,11 @@
 import Events from "./events";
 import Class from "./class";
 
-import extend from "lodash/objects/assign";
-import forEach from "lodash/collections/forEach";
+import _extend from "lodash/objects/assign";
+import _each from "lodash/collections/forEach";
 
 // Global event bus that handles message passing.
-var Bus = extend({}, Events);
+var Bus = _extend({}, Events);
 
 // A channel is subscribed to and managed from this formal construct.
 var Channel = Class.extend({
@@ -39,7 +39,7 @@ var Channel = Class.extend({
 
   publish: function(key, val) {
     if (typeof key !== "string") {
-      forEach(key, function(val, key) {
+      _each(key, function(val, key) {
         Bus.trigger(this.name, key, val);
       }, this);
     } else {

@@ -52,6 +52,11 @@ var require = function(moduleName) {
   if (inlined && !inlined.value) {
     // This will appropriate the correct behavior for modules.
     inlined.deps = (inlined.deps || []).map(function(dep) {
+      // Break the directory names into parts.
+      var dirParts = moduleName.split("/").reverse();
+      // Dirty
+      var isDirty = false;
+
       if (dep === "require") {
         return require;
       }
@@ -63,6 +68,29 @@ var require = function(moduleName) {
       if (dep === "module") {
         return module;
       }
+
+      // Remove directory traversals.
+      dep = dep.replace(/\.\.\//g, function() {
+        dirParts.shift();
+        dirParts.shift();
+        isDirty = true;
+        return "";
+      });
+
+      // Nothing needs to change here.
+      dep = dep.replace(/\.\//g, function() {
+        isDirty = true;
+        dirParts.shift();
+        return "";
+      });
+
+      // Trim off relative lookups.
+      if (isDirty) {
+        // Reassemble.
+        dep = dirParts.reverse().join("/") + "/" + dep;
+      }
+
+      console.log(dep);
 
       return require(dep);
     });

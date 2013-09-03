@@ -33,8 +33,21 @@ module.exports = ->
 
     modules:
       options:
-        sourceFormat: "es6"
+        formats: ["amd", "cjs"]
+        root: "src/"
+
+      convert:
+        files: [
+          src: ["src/**/*.js"]
+          dest: "dist"
+        ]
+
+    requirejs:
+      options:
         mainConfigFile: "build/config.js"
+        findNestedDependencies: true
+        logLevel: 2
+        skipModuleInsertion: false
 
         wrap:
           startFile: "build/start.js"
@@ -110,9 +123,10 @@ module.exports = ->
   @loadNpmTasks "grunt-contrib-clean"
   @loadNpmTasks "grunt-contrib-connect"
   @loadNpmTasks "grunt-contrib-jshint"
+  @loadNpmTasks "grunt-contrib-requirejs"
   @loadNpmTasks "grunt-webapp-modules"
   @loadNpmTasks "grunt-karma"
 
   # Tasks.
   @registerTask "test", ["connect:test", "karma"]
-  @registerTask "default", ["jshint", "clean", "modules", "test"]
+  @registerTask "default", ["jshint", "clean", "modules", "requirejs", "test"]

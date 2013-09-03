@@ -1,7 +1,7 @@
-import once from "lodash/functions/once";
-import keys from "lodash/objects/keys";
-import each from "lodash/collections/forEach";
-import uniqueId from "lodash/utilities/uniqueId";
+import _once from "lodash/functions/once";
+import _keys from "lodash/objects/keys";
+import _each from "lodash/collections/forEach";
+import _uniqueId from "lodash/utilities/uniqueId";
 
 var global = this;
 var slice = Array.prototype.slice;
@@ -33,7 +33,7 @@ export function once(name, callback, context) {
   }
 
   var self = this;
-  var onceCallback = once(function() {
+  var onceCallback = _once(function() {
     self.off(name, once);
     callback.apply(this, arguments);
   });
@@ -59,7 +59,7 @@ export function off(name, callback, context) {
     return this;
   }
 
-  names = name ? [name] : keys(this._events);
+  names = name ? [name] : _keys(this._events);
 
   for (i = 0, l = names.length; i < l; i++) {
     name = names[i];
@@ -166,13 +166,13 @@ var listenMethods = {listenTo: 'on', listenToOnce: 'once'};
 // Inversion-of-control versions of `on` and `once`. Tell *this* object to
 // listen to an event in another object ... keeping track of what it's
 // listening to.
-each(listenMethods, function(implementation, method) {
+_each(listenMethods, function(implementation, method) {
   // FIXME Hack at the moment.
   var exports = typeof __exports__ === "object" ? __exports__ : exports || {};
 
   exports[method] = function(obj, name, callback) {
     var listeners = this._listeners || (this._listeners = {});
-    var id = obj._listenerId || (obj._listenerId = uniqueId('l'));
+    var id = obj._listenerId || (obj._listenerId = _uniqueId('l'));
     listeners[id] = obj;
     if (typeof name === 'object') callback = this;
     obj[implementation](name, callback, this);

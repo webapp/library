@@ -5,7 +5,7 @@ require.config({
     main: "index.js"
   }, {
     name: "lodash",
-    location: "../vendor/lodash-amd",
+    location: "../../vendor/lodash-amd",
     main: "lodash.js"
   }],
 
@@ -17,13 +17,13 @@ require.config({
   },
 
   paths: {
-    jquery: "../vendor/jquery/jquery",
-    q: "../vendor/q/q",
-    scopedcss: "../vendor/scopedcss/dist/scopedcss",
-    ractive: "../vendor/ractive/build/Ractive"
+    jquery: "../../vendor/jquery/jquery",
+    q: "../../vendor/q/q",
+    scopedcss: "../../vendor/scopedcss/dist/scopedcss",
+    ractive: "../../vendor/ractive/build/Ractive"
   },
 
-  baseUrl: "../src",
-  include: ["../build/define", "../build/config", "webapp"],
+  baseUrl: "../dist/amd",
+  include: ["../../build/define", "../../build/config", "webapp"],
   excludeShallow: ["jquery", "q", "ractive"]
 });

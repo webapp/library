@@ -13,7 +13,6 @@ import Model from "./model";
 import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
-import Sync from "./sync";
 
 // For testing purposes atm until actually figure out what to
 // do with these.
@@ -68,8 +67,8 @@ WebApp.mixin({
   },
 
   // Expose the sync functionality.
-  sync: Sync.sync,
-  ajax: Sync.ajax,
+  sync: function() {},
+  ajax: function() {},
 
   // Create new history.
   history: new History()
