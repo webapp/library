@@ -11,8 +11,6 @@ import _each from "lodash/collections/forEach";
 import _reduce from "lodash/collections/reduce";
 import _unescape from "lodash/utilities/unescape";
 
-_templateSettings.imports._.templateSettings = {};
-
 // The View base class for the Component.
 var Component = View.extend({
   constructor: function() {
