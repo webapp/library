@@ -13,7 +13,7 @@ import Model from "./model";
 import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
-import { sync, xhr } from "./sync";
+import { sync } from "./sync";
 
 var WebApp = Class.extend({
   start: function() {
@@ -62,6 +62,11 @@ WebApp.mixin({
 
   // Expose the sync functionality.
   sync: sync,
+
+  // No idea...
+  ajax: function() {
+    return WebApp.$.ajax.apply(WebApp.$, arguments);
+  },
 
   // Create new history.
   history: new History()

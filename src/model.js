@@ -1,5 +1,6 @@
 import Class from "./class";
 import Channel from "./channel";
+import { sync } from "./sync";
 
 import _result from "lodash/utilities/result";
 import _uniqueId from "lodash/utilities/uniqueId";
@@ -110,7 +111,7 @@ var Model = Class.extend({
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    //return Sync.apply(this, arguments);
+    return sync.apply(this, arguments);
   },
 
   // Get the value of an attribute.

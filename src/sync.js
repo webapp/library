@@ -1,8 +1,21 @@
+import _defaults from "lodash/objects/defaults";
+import _result from "lodash/utilities/result";
+import _extend from "lodash/objects/assign";
+
+// Map from CRUD to HTTP for our default `Backbone.sync` implementation.
+var methodMap = {
+  'create': 'POST',
+  'update': 'PUT',
+  'patch':  'PATCH',
+  'delete': 'DELETE',
+  'read':   'GET'
+};
+
 export function sync(method, model, options) {
   var type = methodMap[method];
 
   // Default options, unless specified.
-  _.defaults(options || (options = {}), {
+  _defaults(options || (options = {}), {
     emulateHTTP: Backbone.emulateHTTP,
     emulateJSON: Backbone.emulateJSON
   });
@@ -12,7 +25,7 @@ export function sync(method, model, options) {
 
   // Ensure that we have a URL.
   if (!options.url) {
-    params.url = _.result(model, 'url') || urlError();
+    params.url = _result(model, 'url') || urlError();
   }
 
   // Ensure that we have the appropriate request data.
@@ -54,24 +67,9 @@ export function sync(method, model, options) {
   }
 
   // Make the request, allowing the user to override any Ajax options.
-  var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+  var xhr = options.xhr = Backbone.ajax(_extend(params, options));
   model.trigger('request', model, xhr, options);
   return xhr;
 };
 
 var noXhrPatch = typeof window !== 'undefined' && !!window.ActiveXObject && !(window.XMLHttpRequest && (new XMLHttpRequest).dispatchEvent);
-
-// Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-var methodMap = {
-  'create': 'POST',
-  'update': 'PUT',
-  'patch':  'PATCH',
-  'delete': 'DELETE',
-  'read':   'GET'
-};
-
-// Set the default implementation of `Backbone.ajax` to proxy through to `$`.
-// Override this if you'd like to use a different library.
-export function ajax() {
-  return Backbone.$.ajax.apply(Backbone.$, arguments);
-}
