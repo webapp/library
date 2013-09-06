@@ -48,6 +48,9 @@ var wrapError = function(model, options) {
 // A discrete chunk of data and a bunch of useful, related methods for
 // performing computations and transformations on that data.
 
+// A list of options to be attached directly to the model, if provided.
+var modelOptions = ['url', 'urlRoot', 'collection'];
+
 // Create a new model with the specified attributes. A client id (`cid`)
 // is automatically generated and assigned for you.
 var Model = Class.extend({
@@ -57,9 +60,8 @@ var Model = Class.extend({
     options || (options = {});
     this.cid = _uniqueId('c');
     this.attributes = {};
-    if (options.collection) this.collection = options.collection;
+    _extend(this, _.pick(options, modelOptions));
     if (options.parse) attrs = this.parse(attrs, options) || {};
-    options._attrs || (options._attrs = attrs);
     if (defaults = _result(this, 'defaults')) {
       attrs = _defaults({}, attrs, defaults);
     }
@@ -111,7 +113,8 @@ var Model = Class.extend({
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    return sync.apply(this, arguments);
+    var _sync = typeof WebApp !== "undefined" ? WebApp.sync : sync;
+    return _sync.apply(this, arguments);
   },
 
   // Get the value of an attribute.

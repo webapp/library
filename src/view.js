@@ -18,6 +18,7 @@ import _template from "lodash/utilities/template";
 import _chain from "lodash/chaining/chain";
 import _templateSettings from "lodash/utilities/templateSettings";
 import _escape from "lodash/utilities/escape";
+import _uniqueId from "lodash/utilities/uniqueId";
 
 // TODO Temporary hack until more is understood about LoDash AMD.
 // Possible suggestion is that if you need the entirety of LoDash in your
@@ -109,6 +110,13 @@ var View = Class.extend({
       observable: {}
     }, propertiesObject);
 
+    // Backbone compatibility <= 1.0.0.
+    if (!this.options) {
+      this.options = propertiesObject;
+    }
+
+    this.options = _result(this, "options");
+
     // Attach the element.
     this.setElement(_result(this, "el"));
 
@@ -125,10 +133,17 @@ var View = Class.extend({
 
   // Simply pass along the options to configure this new instance.
   constructor: function(propertiesObject) {
+    // Backbone compatibility.
+    this.cid = _uniqueId("view");
+
     this.configure(propertiesObject || {});
 
     // Backbone compatibility.
     _result(this, "initialize");
+
+    var events = _result(propertiesObject, "events") || _result(this, "events");
+
+    this.delegateEvents(events);
   },
 
   // Returns the View that matches the `getViews` filter function.
@@ -467,25 +482,32 @@ var View = Class.extend({
 
   // Clean up and then set a new element.
   setElement: function(element) {
+    if (this.$el) {
+      this.undelegateEvents();
+    }
+
     if (element) {
       // If an element was immediately provided, give that highest
       // precedence.
-      this.$el = View.$(element);
+      this.$el = element instanceof View.$ ? element : View.$(element);
 
       // Backbone compatibility.
       this.el = this.$el.get()[0];
+
+      // Bind new events.
+      this.delegateEvents();
 
       return this;
     }
 
     // Assemble a master list of attributes.
-    var attrs = _extend({}, _result(this, "attributes"), {
+    var attrs = _extend({}, {
       // Attach an id if it exists.
       id: _result(this, "id"),
 
       // Attach classes if they were added.
       class: _result(this, "className")
-    });
+    }, _result(this, "attributes"));
 
     // If neither an element was provided nor derived from the `el` property,
     // then craft an element from the `tagName` property.  Defaults to `div`.
@@ -496,6 +518,9 @@ var View = Class.extend({
 
     // Backbone compatibility.
     this.el = this.$el.get()[0];
+
+    // Bind new events.
+    this.delegateEvents();
 
     return this;
   },

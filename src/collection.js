@@ -11,14 +11,20 @@ import _isEmpty from "lodash/objects/isEmpty";
 import _bind from "lodash/functions/bind";
 import _isFunction from "lodash/objects/isFunction";
 import _sortedIndex from "lodash/arrays/sortedIndex";
+import _without from "lodash/arrays/without";
+import _rest from "lodash/arrays/rest";
 import _invoke from "lodash/collections/invoke";
 import _clone from "lodash/objects/clone";
 import _each from "lodash/collections/forEach";
+import _chain from "lodash/chaining/chain";
 
 import _collections from "lodash/collections";
 import _first from "lodash/arrays/first";
 import _last from "lodash/arrays/last";
 import _indexOf from "lodash/arrays/indexOf";
+
+delete _collections.at;
+delete _collections.where;
 
 // Default options for `Collection#set`.
 var setOptions = {add: true, remove: true, merge: true};
@@ -101,7 +107,9 @@ var Collection = Class.extend({
 
   // Proxy `Backbone.sync` by default.
   sync: function() {
-    return sync.apply(this, arguments);
+    // Backbone compatibility.
+    var _sync = typeof Backbone !== "undefined" ? Backbone.sync : sync;
+    return _sync.apply(this, arguments);
   },
 
   // Add a model, or list of models to the set.
@@ -365,7 +373,7 @@ var Collection = Class.extend({
 
   // Create a new collection with an identical list of models as this one.
   clone: function() {
-    return new this.constructor(this.models);
+    return new Collection(this.models);
   },
 
   // Private method to reset all internal state. Called when the collection
@@ -412,18 +420,17 @@ var Collection = Class.extend({
   }
 });
 
-  // Underscore methods that we want to implement on the Collection.
-  // 90% of the core usefulness of Backbone Collections is actually implemented
-  // right here:
-  var methods = ['forEach', 'each', 'map', 'collect', 'reduce', 'foldl',
-    'inject', 'reduceRight', 'foldr', 'find', 'detect', 'filter', 'select',
-    'reject', 'every', 'all', 'some', 'any', 'include', 'contains', 'invoke',
-    'max', 'min', 'toArray', 'size', 'first', 'head', 'take', 'initial', 'rest',
-    'tail', 'drop', 'last', 'without', 'indexOf', 'shuffle', 'lastIndexOf',
-    'isEmpty', 'chain'];
-
 _collections["first"] = _first;
 _collections["last"] = _last;
+_collections["indexOf"] = _indexOf;
+_collections["rest"] = _rest;
+_collections["isEmpty"] = _isEmpty;
+_collections["chain"] = _chain;
+_collections["without"] = _without;
+
+// Rename.
+_collections["any"] = _collections.some;
+_collections["include"] = _collections.contains;
 
 // Mix in each Underscore method as a proxy to `Collection#models`.
 _each(_collections, function(func, method) {

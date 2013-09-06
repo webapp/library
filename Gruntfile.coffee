@@ -71,8 +71,8 @@ module.exports = ->
         port: process.env.PORT || 8080
 
         middleware: (connect) -> [
-          modules "src", sourceFormat: "es6",
-          modules "test/tests", sourceFormat: "es6",
+          modules "src"
+          modules "test/tests"
           connect.static __dirname
         ]
 
