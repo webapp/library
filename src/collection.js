@@ -373,7 +373,7 @@ var Collection = Class.extend({
 
   // Create a new collection with an identical list of models as this one.
   clone: function() {
-    return new Collection(this.models);
+    return Collection.create(this.models);
   },
 
   // Private method to reset all internal state. Called when the collection

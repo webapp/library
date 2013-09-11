@@ -113,7 +113,8 @@ var Model = Class.extend({
   // Proxy `Backbone.sync` by default -- but override this if you need
   // custom syncing semantics for *this* particular model.
   sync: function() {
-    var _sync = typeof WebApp !== "undefined" ? WebApp.sync : sync;
+    // Backbone compatibility.
+    var _sync = typeof Backbone !== "undefined" ? Backbone.sync : sync;
     return _sync.apply(this, arguments);
   },
 
@@ -374,7 +375,7 @@ var Model = Class.extend({
 
   // Create a new model with identical attributes to this one.
   clone: function() {
-    return Model.create(this.attributes);
+    return Model.create(this.attributes, this.__proto__);
   },
 
   // A model is new if it has never been saved to the server, and lacks an id.
