@@ -35,7 +35,7 @@ require({
   paths: {
     tests: "http://localhost:8080/test/tests",
 
-    jquery: "../../vendor/jquery/jquery",
+    sizzle: "../../vendor/jquery/bower_components/sizzle/dist/sizzle",
     q: "../../vendor/q/q",
     scopedcss: "../../vendor/scopedcss/dist/scopedcss",
     ractive: "../../vendor/ractive/build/Ractive"
@@ -52,6 +52,10 @@ require({
     name: "lodash",
     location: "../../vendor/lodash-amd",
     main: "lodash.js"
+  }, {
+    name: "jquery",
+    location: "../../vendor/jquery/src",
+    main: "jquery.js"
   }],
 }, [], function() {
 

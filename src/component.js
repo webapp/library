@@ -1,4 +1,3 @@
-import $ from "jquery";
 import ScopedCss from "scopedcss";
 import Events from "./events";
 import View from "./view";
@@ -10,6 +9,10 @@ import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
 import _reduce from "lodash/collections/reduce";
 import _unescape from "lodash/utilities/unescape";
+
+import $ from "jquery/core";
+import $manipulation from "jquery/manipulation";
+import $traversing from "jquery/traversing";
 
 // The View base class for the Component.
 var Component = View.extend({

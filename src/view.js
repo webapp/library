@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Ractive from "ractive";
 import Class from "./class";
 
@@ -19,6 +18,12 @@ import _chain from "lodash/chaining/chain";
 import _templateSettings from "lodash/utilities/templateSettings";
 import _escape from "lodash/utilities/escape";
 import _uniqueId from "lodash/utilities/uniqueId";
+
+import $ from "jquery/core";
+import $parseHTML from "jquery/core/parseHTML";
+import $manipulation from "jquery/manipulation";
+import $traversing from "jquery/traversing";
+import $attributes from "jquery/attributes";
 
 // TODO Temporary hack until more is understood about LoDash AMD.
 // Possible suggestion is that if you need the entirety of LoDash in your

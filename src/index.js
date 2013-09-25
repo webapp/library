@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Q from "q";
 import Ractive from "ractive";
 import ScopedCss from "scopedcss";
@@ -14,6 +13,8 @@ import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
 import { sync } from "./sync";
+
+import $ from "jquery/core";
 
 var WebApp = Class.extend({
   start: function() {

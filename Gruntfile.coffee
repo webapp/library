@@ -90,7 +90,8 @@ module.exports = ->
         singleRun: true
 
         frameworks: ["mocha"]
-        reporters: ["progress", "coverage"]
+        reporters: ["dots", "coverage"]
+        logLevel: "ERROR"
 
         plugins: [
           "karma-coverage"

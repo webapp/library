@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Model from "./model";
 import MemoryAdapter from "./sync/adapters/memory";
 import XhrTransport from "./sync/transports/xhr";
@@ -7,6 +6,9 @@ import _chain from "lodash/chaining/chain";
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
 import _findWhere from "lodash/collections/find";
+
+import $ from "jquery/core";
+import $deferred from "jquery/deferred";
 
 var Resource = Model.extend({
   filter: function() {
