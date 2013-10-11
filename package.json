@@ -1,6 +1,6 @@
 {
   "name": "webapp",
-  "version": "0.1.0-wip",
+  "version": "0.1.0",
   "description": "a tool for writing web applications",
   "main": "dist/cjs/index.js",
   "repository": {
@@ -8,7 +8,6 @@
     "url": "https://github.com/WebApp/library.git"
   },
   "dependencies": {
-    "jquery": "*",
     "lodash-node": "~2.2.1",
     "esprima": "~1.0.4"
   },

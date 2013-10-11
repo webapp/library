@@ -2,7 +2,6 @@
   "use strict";
 
   var karma = window.__karma__;
-
   var baseUrl = karma ? "/base/" : "../";
 
   var tests = [
@@ -27,21 +26,17 @@
 
   // Prefer the BDD testing style.
   mocha.setup("bdd");
+  // Use Chai as the assertion library.
+  window.expect = chai.expect;
 
   // Make async.
   if (karma) { karma.loaded = function() {}; }
-
-  // Set up the assertion library.
-  // Compatible libraries: http://visionmedia.github.io/mocha/#assertions
-  window.expect = chai.expect;
 
   require({
     // Set the application endpoint.
     paths: {
       tests: "../test/tests",
-
       sizzle: "../bower_components/jquery/bower_components/sizzle/dist/sizzle",
-      q: "../bower_components/q/q",
       scopedcss: "../bower_components/scopedcss/dist/scopedcss",
       ractive: "../bower_components/ractive/build/Ractive"
     },
@@ -63,18 +58,6 @@
       main: "jquery.js"
     }],
   }, [], function() {
-
-    // Load all tests.
-    require(tests, function() {
-
-      // Only once the dependencies have finished loading, call `mocha.run`.
-      // Ignore all globals that jQuery creates.
-      mocha.globals(["jQuery*"]).run();
-
-
-      // This will start Karma if it exists.
-      if (karma) { karma.start(); }
-    
-    });
+    require(tests, karma ? karma.start : function() {});
   });
 })(this);

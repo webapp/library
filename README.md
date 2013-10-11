@@ -1,22 +1,23 @@
-WebApp Library
+WebApp/Library
 ==============
 
 > a tool for writing web applications
 
-**v0.1.0-pre** [![Build
+**Stable:** 0.1.0 [![Build
 Status](https://travis-ci.org/webapp/library.png)](https://travis-ci.org/webapp/library)
 [![Dependency
 Status](https://gemnasium.com/webapp/library.png)](https://gemnasium.com/webapp/library)
 
-A modern fork of the popular MVC library, Backbone.js.  Authored in ES6 and
-aimed to be highly compatible and flexible.  Several developers have found
-initial bliss in Backbone and angst once they realize it's limitations.
+A modern fork of the popular MV\* library, Backbone.js.  Authored in ES6, it is
+highly compatible and flexible.
 
 This library provides mechanisms to remain productive and flexible, without
 bottlenecking you on naming conventions, manual View construction, and
 opinioned feature sets.
 
-## Features ##
+## What's new and different from Backbone? ##
+
+## Features: ##
 
 * Custom builds
   - Raw build (no dependencies).
@@ -40,3 +41,7 @@ opinioned feature sets.
   - Define custom transports that define how to make a request.
   - Define adapters on how to store and work with the requested data locally.
   - Define resource handlers to communicate with event channels.
+
+## Release notes: ##
+
+## License: ##

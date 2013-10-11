@@ -1,7 +1,6 @@
 module.exports = ->
   modules = require "webapp-modules"
 
-  # Configuration.
   @initConfig
 
     clean: ["dist", "test/reports"]
@@ -87,14 +86,15 @@ module.exports = ->
     karma:
       options:
         basePath: process.cwd()
-        singleRun: true
+        autoWatch: true
 
-        frameworks: ["mocha", "es6"]
+        browsers: ["PhantomJS"]
+        frameworks: ["mocha"]
         reporters: ["dots", "coverage"]
         logLevel: "ERROR"
 
         plugins: [
-          "karma-coverage"
+          "karma-coverage-es6"
           "karma-mocha"
           "karma-phantomjs-launcher"
           "karma-es6"
@@ -121,14 +121,12 @@ module.exports = ->
 
       run:
         options:
-          browsers: ["PhantomJS"]
+          singleRun: true
 
       daemon:
         options:
           singleRun: false
-          autoWatch: true
 
-  # Plugins.
   @loadNpmTasks "grunt-contrib-clean"
   @loadNpmTasks "grunt-contrib-connect"
   @loadNpmTasks "grunt-contrib-jshint"
@@ -136,6 +134,5 @@ module.exports = ->
   @loadNpmTasks "grunt-webapp-modules"
   @loadNpmTasks "grunt-karma"
 
-  # Tasks.
-  @registerTask "test", ["connect:test", "karma:run"]
+  @registerTask "test", ["karma:run"]
   @registerTask "default", ["clean", "jshint", "modules", "requirejs", "test"]
