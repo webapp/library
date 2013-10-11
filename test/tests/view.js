@@ -1,6 +1,6 @@
 import _ from "lodash";
-import Class from "webapp/class";
-import View from "webapp/view";
+import Class from "class";
+import View from "view";
 
 var testUtil = {
   trim: function(str) {

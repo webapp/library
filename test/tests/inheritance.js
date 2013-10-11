@@ -1,5 +1,5 @@
 import _ from "lodash";
-import Inheritance from "webapp/inheritance";
+import Inheritance from "inheritance";
 
 describe("Inheritance", function() {
   it("is an object", function() {

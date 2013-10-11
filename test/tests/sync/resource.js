@@ -1,4 +1,4 @@
-import Resource from "webapp/sync/resource";
+import Resource from "sync/resource";
 
 describe("Resource", function() {
   it("is a constructor", function() {

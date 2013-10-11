@@ -1,5 +1,5 @@
 import _ from "lodash";
-import Events from "webapp/events";
+import Events from "events";
 
 describe("Events", function() {
   it("is an object", function() {

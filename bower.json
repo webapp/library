@@ -2,17 +2,15 @@
   "name": "webapp",
   "version": "0.1.0",
   "main": "dist/webapp.js",
-
   "ignore": [
     "**/.*",
     "node_modules",
     "components"
   ],
-
   "dependencies": {
-    "jquery": "master",
-    "lodash-amd": "master",
+    "lodash-amd": "~2.2.1",
     "scopedcss": "~0.1.0",
-    "ractive": "~0.3.6"
+    "ractive": "~0.3.6",
+    "jquery": "git://github.com/jquery/jquery.git#a9f1cb89df999805038ef2ff2c2fdceb3b78dd76"
   }
 }

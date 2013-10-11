@@ -23,15 +23,15 @@
       main: "index.js"
     }, {
       name: "lodash",
-      location: "http://localhost:8080/vendor/lodash-amd",
-      main: "lodash.js"
+      location: "../bower_components/lodash-amd/modern",
+      main: "main.js"
     }, {
       name: "jquery",
-      location: "../vendor/jquery/src",
+      location: "../bower_components/jquery/src",
       main: "jquery.js"
     }],
 
-    baseUrl: "/base/dist/amd"
+    baseUrl: "/base/src"
   });
 
   require([

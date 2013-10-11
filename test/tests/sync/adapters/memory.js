@@ -1,4 +1,4 @@
-import MemoryAdapter from "webapp/sync/adapters/memory";
+import MemoryAdapter from "sync/adapters/memory";
 
 describe("MemoryAdapter", function() {
   it("is a constructor", function() {

@@ -1,4 +1,4 @@
-import Model from "webapp/model";
+import Model from "model";
 
 describe("Model", function() {
   it("is a constructor", function() {

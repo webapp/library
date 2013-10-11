@@ -1,4 +1,4 @@
-import Component from "webapp/component";
+import Component from "component";
 
 describe("Component", function() {
   it("is a constructor", function() {

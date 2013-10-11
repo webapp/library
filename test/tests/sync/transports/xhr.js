@@ -1,4 +1,4 @@
-import XhrTransport from "webapp/sync/transports/xhr";
+import XhrTransport from "sync/transports/xhr";
 
 describe("XhrTransport", function() {
   it("is a constructor", function() {

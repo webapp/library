@@ -1,20 +1,19 @@
-import Q from "q";
 import Ractive from "ractive";
 import ScopedCss from "scopedcss";
-import Channel from "./channel";
-import Class from "./class";
-import Collection from "./collection";
-import Component from "./component";
-import Events from "./events";
-import History from "./history";
-import Inheritance from "./inheritance";
-import Model from "./model";
-import Router from "./router";
-import View from "./view";
-import ViewComponent from "./component/view";
-import { sync } from "./sync";
+import Channel from "channel";
+import Class from "class";
+import Collection from "collection";
+import Component from "component";
+import Events from "events";
+import History from "history";
+import Inheritance from "inheritance";
+import Model from "model";
+import Router from "router";
+import View from "view";
+import ViewComponent from "component/view";
+import { sync } from "sync";
 
-import $ from "jquery/core";
+import $ from "jquery";
 
 var WebApp = Class.extend({
   start: function() {
@@ -33,13 +32,15 @@ var WebApp = Class.extend({
 
 WebApp.mixin(Events);
 
-WebApp.mixin({
+WebApp.mixin(Events, {
   // Expose a version.
   VERSION: "0.1.0-wip",
 
-  // Expose libraries.
+  // Expose jQuery if it's included, also helps remain compatible with
+  // Backbone.
   $: $,
-  Q: Q,
+
+  // Expose other libraries (if they are included).
   Ractive: Ractive,
   ScopedCss: ScopedCss,
 
@@ -55,7 +56,7 @@ WebApp.mixin({
   Router: Router,
   View: View,
 
-  // Expose compatibility helper.
+  // Backbone compatibility helper.
   noConflict: function() {
     window.Backbone = WebApp.Backbone;
     return WebApp;

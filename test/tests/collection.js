@@ -1,4 +1,4 @@
-import Collection from "webapp/collection";
+import Collection from "collection";
 
 describe("Collection", function() {
   it("is a constructor", function() {

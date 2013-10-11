@@ -89,7 +89,7 @@ module.exports = ->
         basePath: process.cwd()
         singleRun: true
 
-        frameworks: ["mocha"]
+        frameworks: ["mocha", "es6"]
         reporters: ["dots", "coverage"]
         logLevel: "ERROR"
 
@@ -97,11 +97,13 @@ module.exports = ->
           "karma-coverage"
           "karma-mocha"
           "karma-phantomjs-launcher"
+          "karma-es6"
         ]
 
         files: [
-          { pattern: "dist/amd/**/*.js", included: false }
-          { pattern: "vendor/**/*.js", included: false }
+          { pattern: "src/**/*.js", included: false }
+          { pattern: "test/tests/**/*.js", included: false }
+          { pattern: "bower_components/**/*.js", included: false }
           { pattern: "build/**/*.js", included: false }
 
           "test/vendor/chai.js"
@@ -110,15 +112,21 @@ module.exports = ->
         ]
 
         preprocessors:
-          "dist/amd/**/*.js": "coverage"
+          "test/tests/**/*.js": ["es6"]
+          "src/**/*.js": ["es6", "coverage"]
 
         coverageReporter:
           type: "html"
           dir: "test/reports/coverage/"
 
-      default:
+      run:
         options:
           browsers: ["PhantomJS"]
+
+      daemon:
+        options:
+          singleRun: false
+          autoWatch: true
 
   # Plugins.
   @loadNpmTasks "grunt-contrib-clean"
@@ -129,5 +137,5 @@ module.exports = ->
   @loadNpmTasks "grunt-karma"
 
   # Tasks.
-  @registerTask "test", ["connect:test", "karma"]
+  @registerTask "test", ["connect:test", "karma:run"]
   @registerTask "default", ["clean", "jshint", "modules", "requirejs", "test"]

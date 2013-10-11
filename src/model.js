@@ -1,7 +1,8 @@
-import Class from "./class";
-import Channel from "./channel";
-import { sync } from "./sync";
+import Class from "class";
+import Channel from "channel";
+import { sync } from "sync";
 
+import _ from "lodash/internals/lodashWrapper";
 import _result from "lodash/utilities/result";
 import _uniqueId from "lodash/utilities/uniqueId";
 import _defaults from "lodash/objects/defaults";
@@ -60,7 +61,7 @@ var Model = Class.extend({
     options || (options = {});
     this.cid = _uniqueId('c');
     this.attributes = {};
-    _extend(this, _.pick(options, modelOptions));
+    _extend(this, _pick(options, modelOptions));
     if (options.parse) attrs = this.parse(attrs, options) || {};
     if (defaults = _result(this, 'defaults')) {
       attrs = _defaults({}, attrs, defaults);

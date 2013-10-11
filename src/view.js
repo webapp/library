@@ -1,5 +1,5 @@
 import Ractive from "ractive";
-import Class from "./class";
+import Class from "class";
 
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";

@@ -1,74 +1,80 @@
-var baseUrl = window.__karma__ ? "/base/dist/" : "../";
+(function(window) {
+  "use strict";
 
-var tests = [
-  "tests/component/view",
-  "tests/sync/adapters/memory",
-  "tests/sync/transports/xhr",
-  "tests/sync/adapter",
-  "tests/sync/resource",
-  "tests/sync/transport",
-  "tests/channel",
-  "tests/class",
-  "tests/collection",
-  "tests/component",
-  "tests/events",
-  "tests/index",
-  "tests/inheritance",
-  "tests/model",
-  "tests/router",
-  "tests/sync",
-  "tests/view"
-];
+  var karma = window.__karma__;
 
-// Prefer the BDD testing style.
-mocha.setup("bdd");
+  var baseUrl = karma ? "/base/" : "../";
 
-// Make async.
-if (window.__karma__) { window.__karma__.loaded = function() {}; }
+  var tests = [
+    "tests/component/view",
+    "tests/sync/adapters/memory",
+    "tests/sync/transports/xhr",
+    "tests/sync/adapter",
+    "tests/sync/resource",
+    "tests/sync/transport",
+    "tests/channel",
+    "tests/class",
+    "tests/collection",
+    "tests/component",
+    "tests/events",
+    "tests/index",
+    "tests/inheritance",
+    "tests/model",
+    "tests/router",
+    "tests/sync",
+    "tests/view"
+  ];
 
-// Set up the assertion library.
-// Compatible libraries: http://visionmedia.github.io/mocha/#assertions
-window.expect = chai.expect;
+  // Prefer the BDD testing style.
+  mocha.setup("bdd");
 
-require({
-  // Set the application endpoint.
-  paths: {
-    tests: "http://localhost:8080/test/tests",
+  // Make async.
+  if (karma) { karma.loaded = function() {}; }
 
-    sizzle: "../../vendor/jquery/bower_components/sizzle/dist/sizzle",
-    q: "../../vendor/q/q",
-    scopedcss: "../../vendor/scopedcss/dist/scopedcss",
-    ractive: "../../vendor/ractive/build/Ractive"
-  },
+  // Set up the assertion library.
+  // Compatible libraries: http://visionmedia.github.io/mocha/#assertions
+  window.expect = chai.expect;
 
-  // Determine the baseUrl if we are in Karma or not.
-  baseUrl: baseUrl + (window.__karma__ ? "amd" : "src"),
+  require({
+    // Set the application endpoint.
+    paths: {
+      tests: "../test/tests",
 
-  packages: [{
-    name: "webapp",
-    location: ".",
-    main: "index.js"
-  }, {
-    name: "lodash",
-    location: "../../vendor/lodash-amd",
-    main: "lodash.js"
-  }, {
-    name: "jquery",
-    location: "../../vendor/jquery/src",
-    main: "jquery.js"
-  }],
-}, [], function() {
+      sizzle: "../bower_components/jquery/bower_components/sizzle/dist/sizzle",
+      q: "../bower_components/q/q",
+      scopedcss: "../bower_components/scopedcss/dist/scopedcss",
+      ractive: "../bower_components/ractive/build/Ractive"
+    },
 
-  // Load all tests.
-  require(tests, function() {
+    // Determine the baseUrl if we are in Karma or not.
+    baseUrl: baseUrl + "src",
 
-    // Only once the dependencies have finished loading, call `mocha.run`.
-    // Ignore all globals that jQuery creates.
-    mocha.globals(["jQuery*"]).run();
+    packages: [{
+      name: "webapp",
+      location: ".",
+      main: "index.js"
+    }, {
+      name: "lodash",
+      location: "../bower_components/lodash-amd/modern",
+      main: "main.js"
+    }, {
+      name: "jquery",
+      location: "../bower_components/jquery/src",
+      main: "jquery.js"
+    }],
+  }, [], function() {
+
+    // Load all tests.
+    require(tests, function() {
+
+      // Only once the dependencies have finished loading, call `mocha.run`.
+      // Ignore all globals that jQuery creates.
+      mocha.globals(["jQuery*"]).run();
 
 
-    // This will start Karma if it exists.
-    if (window.__karma__) { window.__karma__.start(); }
-  
+      // This will start Karma if it exists.
+      if (karma) { karma.start(); }
+    
+    });
   });
-});
+})(this);

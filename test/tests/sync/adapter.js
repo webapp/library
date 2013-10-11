@@ -1,4 +1,4 @@
-import Adapter from "webapp/sync/adapter";
+import Adapter from "sync/adapter";
 
 describe("Adapter", function() {
   it("is a constructor", function() {

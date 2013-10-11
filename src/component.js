@@ -1,7 +1,8 @@
+import Events from "events";
+import View from "view";
+import Channel from "channel";
+
 import ScopedCss from "scopedcss";
-import Events from "./events";
-import View from "./view";
-import Channel from "./channel";
 
 import _template from "lodash/utilities/template";
 import _templateSettings from "lodash/utilities/templateSettings";

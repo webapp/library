@@ -1,4 +1,4 @@
-import Transport from "webapp/sync/transport";
+import Transport from "sync/transport";
 
 describe("Transport", function() {
   it("is a constructor", function() {

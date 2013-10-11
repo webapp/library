@@ -5,11 +5,11 @@ require.config({
     main: "index.js"
   }, {
     name: "lodash",
-    location: "../../vendor/lodash-amd",
+    location: "../../bower_components/lodash-amd/modern",
     main: "lodash.js"
   }, {
     name: "jquery",
-    location: "../../vendor/jquery/src",
+    location: "../../bower_components/jquery/src",
     main: "jquery.js"
   }],
 
@@ -19,13 +19,12 @@ require.config({
   },
 
   paths: {
-    sizzle: "../../vendor/jquery/bower_components/sizzle/dist/sizzle",
-    q: "../../vendor/q/q",
-    scopedcss: "../../vendor/scopedcss/dist/scopedcss",
-    ractive: "../../vendor/ractive/build/Ractive"
+    sizzle: "../../bower_components/jquery/bower_components/sizzle/dist/sizzle",
+    scopedcss: "../../bower_components/scopedcss/dist/scopedcss",
+    ractive: "../../bower_components/ractive/build/Ractive"
   },
 
   baseUrl: "../dist/amd",
   include: ["../../build/define", "../../build/config", "webapp"],
-  excludeShallow: ["q", "ractive"]
+  excludeShallow: ["jquery", "scopedcss", "ractive"]
 });

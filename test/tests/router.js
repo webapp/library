@@ -1,4 +1,4 @@
-import Router from "webapp/router";
+import Router from "router";
 
 describe("Router", function() {
   it("is a constructor", function() {
