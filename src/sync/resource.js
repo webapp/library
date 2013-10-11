@@ -1,6 +1,6 @@
-import Model from "model";
-import MemoryAdapter from "sync/adapters/memory";
-import XhrTransport from "sync/transports/xhr";
+import Model from "../model";
+import MemoryAdapter from "./adapters/memory";
+import XhrTransport from "./transports/xhr";
 
 import _chain from "lodash/chaining/chain";
 import _extend from "lodash/objects/assign";

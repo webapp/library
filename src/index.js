@@ -1,17 +1,16 @@
-import Ractive from "ractive";
 import ScopedCss from "scopedcss";
-import Channel from "channel";
-import Class from "class";
-import Collection from "collection";
-import Component from "component";
-import Events from "events";
-import History from "history";
-import Inheritance from "inheritance";
-import Model from "model";
-import Router from "router";
-import View from "view";
-import ViewComponent from "component/view";
-import { sync } from "sync";
+import Channel from "./channel";
+import Class from "./class";
+import Collection from "./collection";
+import Component from "./component";
+import Events from "./events";
+import History from "./history";
+import Inheritance from "./inheritance";
+import Model from "./model";
+import Router from "./router";
+import View from "./view";
+import ViewComponent from "./component/view";
+import { sync } from "./sync";
 
 import $ from "jquery";
 
@@ -41,7 +40,7 @@ WebApp.mixin(Events, {
   $: $,
 
   // Expose other libraries (if they are included).
-  Ractive: Ractive,
+  //Ractive: Ractive,
   ScopedCss: ScopedCss,
 
   // Expose modules.

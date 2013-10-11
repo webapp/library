@@ -1,4 +1,4 @@
-import Adapter from "sync/adapter";
+import Adapter from "../adapter";
 
 var Memory = Adapter.extend({
   isAvailable: function() {

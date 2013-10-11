@@ -1,6 +1,6 @@
-import Events from "events";
-import View from "view";
-import Channel from "channel";
+import Events from "./events";
+import View from "./view";
+import Channel from "./channel";
 
 import ScopedCss from "scopedcss";
 

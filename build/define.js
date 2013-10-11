@@ -25,6 +25,7 @@ define.amd = {};
 define.map = {};
 
 var require = function(moduleName) {
+  console.log(moduleName);
   // If there are any packages defined, ensure that modules are correctly
   // mapped.
   require.conf.packages && require.conf.packages.forEach(function(package) {

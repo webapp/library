@@ -1,4 +1,4 @@
-import Class from "class";
+import Class from "./class";
 
 // Cached regular expressions for matching named param parts and splatted
 // parts of route strings.

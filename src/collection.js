@@ -1,7 +1,7 @@
-import Class from "class";
-import Model from "model";
-import Channel from "channel";
-import { sync } from "sync";
+import Class from "./class";
+import Model from "./model";
+import Channel from "./channel";
+import { sync } from "./sync";
 
 import _extend from "lodash/objects/assign";
 import _isArray from "lodash/objects/isArray";

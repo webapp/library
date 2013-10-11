@@ -1,6 +1,6 @@
-import Class from "class";
-import Channel from "channel";
-import { sync } from "sync";
+import Class from "./class";
+import Channel from "./channel";
+import { sync } from "./sync";
 
 import _ from "lodash/internals/lodashWrapper";
 import _result from "lodash/utilities/result";

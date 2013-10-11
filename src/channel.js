@@ -1,7 +1,6 @@
-import Events from "events";
-import Class from "class";
-import Model from "model";
-import Collection from "collection";
+import Events from "./events";
+import Class from "./class";
+import Model from "./model";
 
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
@@ -76,18 +75,6 @@ var Channel = Class.extend({
     } else {
       Bus.trigger(this.name, key, val);
     }
-  }
-});
-
-// Handles multiple Channels.
-Channel.List = Collection.extend({
-  constructor: function(names) {
-    // Convert a string of names to an Array of Channel models.
-    var models = _map(names.split(" "), function(name) {
-      return Channel.create(name).model;
-    });
-
-    Channel.List.super("constructor", this, [models]);
   }
 });
 

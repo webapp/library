@@ -1,4 +1,4 @@
-import Transport from "sync/transport";
+import Transport from "../transport";
 
 import _defaults from "lodash/objects/defaults";
 
