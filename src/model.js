@@ -1,5 +1,4 @@
 import Class from "./class";
-import Channel from "./channel";
 import { sync } from "./sync";
 
 import _ from "lodash/internals/lodashWrapper";
@@ -71,9 +70,9 @@ var Model = Class.extend({
     this.initialize.apply(this, arguments);
 
     // Replace the string channel name with an instance.
-    if (typeof this.channels === "string") {
-      this.channel = new Channel(this.channels);
-    }
+    //if (typeof this.channels === "string") {
+    //  this.channel = new Channel(this.channels);
+    //}
 
     // Set up custom Model handler logic for the channel.
     if (this.channel) {

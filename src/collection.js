@@ -1,6 +1,5 @@
 import Class from "./class";
 import Model from "./model";
-import Channel from "./channel";
 import { sync } from "./sync";
 
 import _extend from "lodash/objects/assign";
@@ -73,9 +72,9 @@ var Collection = Class.extend({
     if (models) this.reset(models, _extend({silent: true}, options));
 
     // Replace the string channel name with an instance.
-    if (typeof this.channels === "string") {
-      this.channel = new Channel(this.channels);
-    }
+    //if (typeof this.channels === "string") {
+    //  this.channel = new Channel(this.channels);
+    //}
 
     // Set up custom Model handler logic for the channel.
     if (this.channel) {

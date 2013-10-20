@@ -62,7 +62,7 @@ module.exports = ->
         options:
           optimize: "none"
           out: "dist/webapp.bundled.js"
-          excludeShallow: []
+          exclude: []
 
     connect:
       options:

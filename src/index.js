@@ -31,7 +31,7 @@ var WebApp = Class.extend({
 
 WebApp.mixin(Events);
 
-WebApp.mixin(Events, {
+WebApp.mixin({
   // Expose a version.
   VERSION: "0.1.0-wip",
 

@@ -11,6 +11,13 @@
     "lodash-amd": "~2.2.1",
     "scopedcss": "~0.1.0",
     "ractive": "~0.3.6",
-    "jquery": "git://github.com/jquery/jquery.git#a9f1cb89df999805038ef2ff2c2fdceb3b78dd76"
+    "jquery": "jquery/jquery#083edd60a6c189f17ff1087431e849dd11c111b2",
+    "sizzle": "~1.10.11"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.8",
+    "mocha": "~1.13.0",
+    "chai": "~1.8.0",
+    "sinon": "~1.7.3"
   }
 }

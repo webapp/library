@@ -22,13 +22,13 @@
 </head>
 <body>
   <main>
-    <my-element>
+    <my-element channels="my-element">
       <span class="{{ state }}">Testing {{ test }} in.</span>
     </my-element>
 
     <hr>
 
-    <my-element>
+    <my-element channels="my-element">
       <span class="{{ state }}">Woah {{ test }} out.</span>
 
       <style scoped>
@@ -53,16 +53,16 @@
     // Registers the custom Component and activates it on the body.
     WebApp.Component.register(MyElement).activateAll(document.body);
 
+    // Create a channel.
+    var channel = new WebApp.Channel("my-element");
+
     // After one second, update the text on all components.
     window.setTimeout(function() {
       // The augment method is provided on the Component class itself.  It is a
       // singleton that will iterate over all active components.
-      MyElement.augment(function(component) {
-        // Updates the data-binding.
-        component.set({
-          state: "success",
-          test: "updated"
-        });
+      channel.publish({
+        state: "success",
+        test: "updated"
       });
     }, 1000);
   </script>

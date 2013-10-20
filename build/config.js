@@ -15,11 +15,16 @@ require.config({
   }],
 
   paths: {
-    sizzle: "../../bower_components/jquery/bower_components/sizzle/dist/sizzle",
-    scopedcss: "../../bower_components/scopedcss/dist/scopedcss"
+    sizzle: "../../bower_components/sizzle/dist/sizzle",
+    scopedcss: "../../bower_components/scopedcss/dist/scopedcss",
+    ractive: "../../bower_components/ractive/build/Ractive"
+  },
+
+  globals: {
+    "jquery/core": "jQuery"
   },
 
   baseUrl: "../dist/amd",
-  include: ["../../bower_components/almond/almond", "../../build/config", "webapp"],
-  excludeShallow: ["jquery", "scopedcss", "ractive"]
+  include: ["../../build/define", "../../build/config", "webapp"],
+  exclude: ["jquery", "lodash", "scopedcss", "ractive"]
 });

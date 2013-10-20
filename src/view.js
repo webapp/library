@@ -1,5 +1,7 @@
 import Class from "./class";
 
+import Ractive from "ractive";
+
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
 import _isArray from "lodash/objects/isArray";
@@ -326,23 +328,23 @@ var View = Class.extend({
         var afterRender = view.afterRender;
 
         // If Ractive is included, apply the data binding.
-        //if (Ractive && !state.binding) {
-        //  state.binding = new Ractive({
-        //    el: view.$el.get(),
-        //    template: view.$el.html(),
-        //    data: view.observable
-        //  });
+        if (Ractive && !state.binding) {
+          state.binding = new Ractive({
+            el: view.$el.get(),
+            template: view.$el.html(),
+            data: view.observable
+          });
 
-        //  // Proxy the accessor/mutator.
-        //  view.set = function() {
-        //    state.binding.set.apply(state.binding, arguments);
-        //    return this;
-        //  };
+          // Proxy the accessor/mutator.
+          view.set = function() {
+            state.binding.set.apply(state.binding, arguments);
+            return this;
+          };
 
-        //  view.get = function() {
-        //    return state.binding.get.apply(state.binding, arguments);
-        //  };
-        //}
+          view.get = function() {
+            return state.binding.get.apply(state.binding, arguments);
+          };
+        }
 
         if (afterRender) {
           afterRender.call(view, view);
