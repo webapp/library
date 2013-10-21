@@ -54,7 +54,7 @@ the main channel.
 ### Experimental API: ###
 
 ``` javascript
-import Channel from "./channel";
+import Channel from "webapp/channel";
  
 // Use the `hello` Channel throughout the application to get the right data.
 var first = new Channel("hello");
