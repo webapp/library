@@ -22,13 +22,13 @@
 </head>
 <body>
   <main>
-    <my-element channels="my-element">
+    <my-element channels="nsync">
       <span class="{{ state }}">Testing {{ test }} in.</span>
     </my-element>
 
     <hr>
 
-    <my-element channels="my-element">
+    <my-element channels="nsync">
       <span class="{{ state }}">Woah {{ test }} out.</span>
 
       <style scoped>
@@ -54,13 +54,13 @@
     WebApp.Component.register(MyElement).activateAll(document.body);
 
     // Create a channel.
-    var channel = new WebApp.Channel("my-element");
+    var nsyncChannel = new WebApp.Channel("nsync");
 
     // After one second, update the text on all components.
     window.setTimeout(function() {
       // The augment method is provided on the Component class itself.  It is a
       // singleton that will iterate over all active components.
-      channel.publish({
+      nsyncChannel.publish({
         state: "success",
         test: "updated"
       });

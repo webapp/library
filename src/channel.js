@@ -4,7 +4,6 @@ import Model from "./model";
 
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
-import _map from "lodash/collections/map";
 
 // Global event bus.
 var Bus = _extend({}, Events);
@@ -28,13 +27,10 @@ var Channel = Class.extend({
       this.__proto__ = Cache[name];
     }
 
-    // Channel name.
     this.name = name;
 
     // Create a new model if one hasn't been created yet.
     this.model = this.model || new Model();
-    // Set a reference to the channel in the model.
-    this.model.channel = Cache[name];
   },
 
   // Listen to broadcasted events.

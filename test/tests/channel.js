@@ -53,5 +53,8 @@ describe("Channel", function() {
       expect(channel3.model.get("Testing")).to.equal(undefined);
     });
   });
-});
 
+  describe("", function() {
+
+  });
+});
