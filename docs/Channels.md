@@ -19,7 +19,7 @@ constructs, such as Components and Models, have awareness on how to integrate
 with them.  This allows for transparent handling of data between components and
 application code.
 
-<bocoup-training>View this example on our documentation site.</bocoup-training>
+<a href="http://training.bocoup.com/processing-js/examples/1">View this example on our documentation site.</a>
 
 Initially no channels exist.  To create a new channel, simply import the
 constructor and initialize with a given name.  Names are any string value
