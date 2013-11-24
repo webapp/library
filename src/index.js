@@ -11,6 +11,7 @@ import Router from "./router";
 import View from "./view";
 import ViewComponent from "./component/view";
 import { sync } from "./sync";
+import XhrTransport from "./sync/transports/xhr";
 
 import $ from "jquery";
 
@@ -54,6 +55,11 @@ WebApp.mixin({
   Model: Model,
   Router: Router,
   View: View,
+
+  // Expose default transport.
+  Transports: {
+    Xhr: XhrTransport
+  },
 
   // Backbone compatibility helper.
   noConflict: function() {

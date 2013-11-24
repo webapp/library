@@ -42,7 +42,10 @@
   function(config, _) {
     var specs = _(karma.files).filter(function(id, file) {
       // Automatically load files from the specs directory.
-      return /^\/base\/test\/specs\/.*\.js$/.test(file);
+      var isMine = /^\/base\/test\/specs\/.*\.js$/.test(file);
+      var isBackbone = /^\/base/\bower_components/\backbone/\test/*\.js$/.test(file);
+
+      return isMine || isBackbone;
     }).map(function(file) {
       // Strip base from the base path.
       return file.slice("/base".length);

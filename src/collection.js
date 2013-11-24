@@ -71,11 +71,6 @@ var Collection = Class.extend({
     this.initialize.apply(this, arguments);
     if (models) this.reset(models, _extend({silent: true}, options));
 
-    // Replace the string channel name with an instance.
-    //if (typeof this.channels === "string") {
-    //  this.channel = new Channel(this.channels);
-    //}
-
     // Set up custom Model handler logic for the channel.
     if (this.channel) {
       // Whenever new data comes in, update the internal data store.
@@ -269,8 +264,7 @@ var Collection = Class.extend({
 
   // Get a model from the set by id.
   get: function(obj) {
-    if (obj == null) return void 0;
-    return this._byId[obj.id] || this._byId[obj.cid] || this._byId[obj];
+    return this._byId[obj.id || obj.cid || obj];
   },
 
   // Get the model at the given index.

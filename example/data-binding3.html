@@ -53,14 +53,11 @@
     // Registers the custom Component and activates it on the body.
     WebApp.Component.register(MyElement).activateAll(document.body);
 
-    // Create a channel.
-    var nsyncChannel = new WebApp.Channel("nsync");
-
     // After one second, update the text on all components.
     window.setTimeout(function() {
-      // The augment method is provided on the Component class itself.  It is a
-      // singleton that will iterate over all active components.
-      nsyncChannel.publish({
+      // Get access to the `nsync` channel reference and publish some data to
+      // it.
+      new WebApp.Channel("nsync").publish({
         state: "success",
         test: "updated"
       });

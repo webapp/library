@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>List Project Issues</title>
+</head>
+<body>
+  <template id="issues-template">
+    <ul>
+    {{#data}}
+      <li>{{id}}</li>
+    {{/data}}
+    </ul>
+  </template>
+
+  <github-issues channels="debug issues:combyne"></github-issues>
+  <hr>
+  <github-issues channels="debug issues:backbone.layoutmanager"></github-issues>
+
+  <script src="../dist/webapp.bundled.js"></script>
+  <script>
+    WebApp.Channel.create("debug").subscribe(function() {
+      console.log(arguments);
+    });
+
+    // Fetch Combyne issues.
+    WebApp.Transports.Xhr.create({
+      channel: WebApp.Channel.create("issues:combyne")
+    }).request({
+      url: "https://api.github.com/repos/tbranyen/combyne.js/issues"
+    });
+
+    // Fetch LM issues.
+    WebApp.Transports.Xhr.create({
+      channel: WebApp.Channel.create("issues:backbone.layoutmanager")
+    }).request({
+      url: "https://api.github.com/repos/tbranyen/backbone.layoutmanager/issues"
+    });
+
+    // Create new github-issues component.
+    var IssuesComponent = WebApp.Component.extend({
+      selector: "github-issues",
+      template: "#issues-template"
+    });
+
+    WebApp.Component.register(IssuesComponent);
+    WebApp.create().start();
+  </script>
+</body>
+</html>

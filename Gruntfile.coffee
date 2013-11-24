@@ -107,7 +107,9 @@ module.exports = ->
           { pattern: "build/**/*.js", included: false }
 
           "test/vendor/chai.js"
+          "test/vendor/mocha-qunit-ui.js"
           "test/vendor/require.js"
+          "test/vendor/adapter.js"
           "test/test-runner.js"
         ]
 

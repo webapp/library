@@ -1,6 +1,5 @@
 import Events from "./events";
 import Class from "./class";
-import Model from "./model";
 
 import _extend from "lodash/objects/assign";
 import _each from "lodash/collections/forEach";
@@ -24,13 +23,10 @@ var Channel = Class.extend({
       Cache[name] = this;
     } else {
       // Use that existing instance that was created.
-      this.__proto__ = Cache[name];
+      this.__proto__ = Cache[name].instance;
     }
 
     this.name = name;
-
-    // Create a new model if one hasn't been created yet.
-    this.model = this.model || new Model();
   },
 
   // Listen to broadcasted events.
@@ -62,9 +58,7 @@ var Channel = Class.extend({
 
   // Write changes into the Channel stream.
   publish: function(key, val) {
-    this.model.set(key, val);
-
-    if (typeof key !== "string") {
+    if (typeof key === "object" && !Array.isArray(key)) {
       _each(key, function(val, key) {
         Bus.trigger(this.name, key, val);
       }, this);

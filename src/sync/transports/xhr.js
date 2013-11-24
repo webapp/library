@@ -1,4 +1,4 @@
-import Transport from "../transport";
+import Transport from "sync/transport";
 
 import _defaults from "lodash/objects/defaults";
 
@@ -36,8 +36,18 @@ var Xhr = Transport.extend({
     // Merge in the instance to the options object.
     _defaults(options, this);
 
+    // Create a new connection.
+    var jqXHR = $.ajax(options);
+
+    // Publish fetched and parsed data to a passed channel.
+    if (this.channel) {
+      jqXHR.done(function(data) {
+        this.channel.publish({ data: data });
+      }.bind(this));
+    }
+
     // Return the connection.
-    return $.ajax(options);
+    return jqXHR;
   }
 });
 

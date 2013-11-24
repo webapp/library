@@ -11,7 +11,7 @@
     "tests/sync/adapter",
     "tests/sync/resource",
     "tests/sync/transport",
-    "tests/channel",
+    //"tests/channel",
     "tests/class",
     "tests/collection",
     "tests/component",
@@ -21,11 +21,21 @@
     "tests/model",
     "tests/router",
     "tests/sync",
-    "tests/view"
+    "tests/view",
+
+    //"backbone/test/collection",
+    "backbone/test/environment",
+    "backbone/test/noconflict",
+    "backbone/test/events",
+    "backbone/test/model",
+    "backbone/test/router",
+    "backbone/test/view",
+    "backbone/test/sync"
   ];
 
   // Prefer the BDD testing style.
   mocha.setup("bdd");
+  mocha.setup("qunit");
   // Use Chai as the assertion library.
   window.expect = chai.expect;
 
@@ -36,6 +46,7 @@
     // Set the application endpoint.
     paths: {
       tests: "../test/tests",
+      backbone: "../bower_components/backbone",
       sizzle: "../bower_components/jquery/bower_components/sizzle/dist/sizzle",
       scopedcss: "../bower_components/scopedcss/dist/scopedcss",
       ractive: "../bower_components/ractive/build/Ractive"
@@ -58,6 +69,11 @@
       main: "jquery.js"
     }],
   }, [], function() {
-    require(tests, karma ? karma.start : function() {});
+    require(['index', 'lodash'], function(WebApp, _) {
+      window.Backbone = WebApp;
+      window._ = _;
+      window.$ = WebApp.$;
+      require(tests, karma ? karma.start : function() {});
+    });
   });
 })(this);

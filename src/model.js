@@ -55,24 +55,17 @@ var modelOptions = ['url', 'urlRoot', 'collection'];
 // is automatically generated and assigned for you.
 var Model = Class.extend({
   constructor: function(attributes, options) {
-    var defaults;
     var attrs = attributes || {};
-    options || (options = {});
+    options = options || {};
+
     this.cid = _uniqueId('c');
     this.attributes = {};
-    _extend(this, _pick(options, modelOptions));
+    if (options.collection) this.collection = options.collection;
     if (options.parse) attrs = this.parse(attrs, options) || {};
-    if (defaults = _result(this, 'defaults')) {
-      attrs = _defaults({}, attrs, defaults);
-    }
+    attrs = _defaults({}, attrs, _result(this, 'defaults'));
     this.set(attrs, options);
     this.changed = {};
     this.initialize.apply(this, arguments);
-
-    // Replace the string channel name with an instance.
-    //if (typeof this.channels === "string") {
-    //  this.channel = new Channel(this.channels);
-    //}
 
     // Set up custom Model handler logic for the channel.
     if (this.channel) {
@@ -375,7 +368,7 @@ var Model = Class.extend({
 
   // Create a new model with identical attributes to this one.
   clone: function() {
-    return Model.create(this.attributes, this.__proto__);
+    return Model.create(this.attributes);
   },
 
   // A model is new if it has never been saved to the server, and lacks an id.
