@@ -1,2 +1,3 @@
-  return require("webapp");
+
+return require("webapp");
 }));

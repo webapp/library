@@ -1,4 +1,6 @@
 (function(window, factory) {
+  "use strict";
+
   if (typeof exports === "object") {
     // Node. Does not work with strict CommonJS, but only CommonJS-like
     // enviroments that support module.exports, like Node.
@@ -23,5 +25,7 @@
     window.Backbone = window.WebApp;
   }
 }(this, function() {
-  // Ensure the global window object is always `this`.
-  var window = this;
+"use strict";
+
+// Ensure the global window object is always `this`.
+var window = this;

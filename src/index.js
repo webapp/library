@@ -27,7 +27,9 @@ var WebApp = Class.extend({
 
     // Register the ViewComponent and activate on the initial element.
     Component.register(ViewComponent).activateAll(this.$el);
-  }
+  },
+
+  stop: function() {}
 });
 
 WebApp.mixin(Events);

@@ -1,17 +1,17 @@
 import Events from "./events";
 import Inheritance from "./inheritance";
 
-import _extend from "lodash/objects/assign";
+import _ from "lodash";
 
 function Class() {}
 
 // Classes provide events.
-_extend(Class.prototype, Events, {
+_.extend(Class.prototype, Events, {
   // Set the default constructor.
   constructor: Class
 });
 
 // Classes provide inheritance.
-_extend(Class, Inheritance);
+_.extend(Class, Inheritance);
 
-export default Class;
+export default = Class;

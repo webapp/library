@@ -47,6 +47,7 @@ module.exports = ->
         findNestedDependencies: true
         logLevel: 2
         skipModuleInsertion: false
+        useStrict: true
 
         wrap:
           startFile: "build/start.js"

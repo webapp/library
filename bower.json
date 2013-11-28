@@ -15,10 +15,11 @@
     "sizzle": "~1.10.11"
   },
   "devDependencies": {
-    "requirejs": "~2.1.8",
+    "requirejs": "~2.1.9",
     "mocha": "~1.13.0",
     "chai": "~1.8.0",
     "sinon": "~1.7.3",
-    "backbone": "~1.1.0"
+    "backbone": "~1.1.0",
+    "layoutmanager": "~0.9.4"
   }
 }
