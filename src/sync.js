@@ -1,6 +1,4 @@
-import _defaults from "lodash/objects/defaults";
-import _result from "lodash/utilities/result";
-import _extend from "lodash/objects/assign";
+module _ from "lodash";
 
 // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
 var methodMap = {
@@ -15,7 +13,7 @@ export function sync(method, model, options) {
   var type = methodMap[method];
 
   // Default options, unless specified.
-  _defaults(options || (options = {}), {
+  _.defaults(options || (options = {}), {
     emulateHTTP: Backbone.emulateHTTP,
     emulateJSON: Backbone.emulateJSON
   });
@@ -25,7 +23,7 @@ export function sync(method, model, options) {
 
   // Ensure that we have a URL.
   if (!options.url) {
-    params.url = _result(model, 'url') || urlError();
+    params.url = _.result(model, 'url') || urlError();
   }
 
   // Ensure that we have the appropriate request data.
@@ -67,7 +65,7 @@ export function sync(method, model, options) {
   }
 
   // Make the request, allowing the user to override any Ajax options.
-  var xhr = options.xhr = Backbone.ajax(_extend(params, options));
+  var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
   model.trigger('request', model, xhr, options);
   return xhr;
 };

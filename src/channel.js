@@ -1,11 +1,10 @@
-import Events from "./events";
+module Events from "./events";
 import Class from "./class";
 
-import _extend from "lodash/objects/assign";
-import _each from "lodash/collections/forEach";
+module _ from "lodash";
 
 // Global event bus.
-var Bus = _extend({}, Events);
+var Bus = _.extend({}, Events);
 
 // Global channel cache.
 var Cache = {};
@@ -59,7 +58,7 @@ var Channel = Class.extend({
   // Write changes into the Channel stream.
   publish: function(key, val) {
     if (typeof key === "object" && !Array.isArray(key)) {
-      _each(key, function(val, key) {
+      _.each(key, function(val, key) {
         Bus.trigger(this.name, key, val);
       }, this);
     } else {

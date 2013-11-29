@@ -2,13 +2,8 @@ import Model from "../model";
 import MemoryAdapter from "./adapters/memory";
 import XhrTransport from "./transports/xhr";
 
-import _chain from "lodash/chaining/chain";
-import _extend from "lodash/objects/assign";
-import _each from "lodash/collections/forEach";
-import _findWhere from "lodash/collections/find";
-
-import $ from "jquery/core";
-import $deferred from "jquery/deferred";
+module _ from "lodash";
+module $ from "jquery";
 
 var Resource = Model.extend({
   filter: function() {
@@ -28,11 +23,11 @@ var Resource = Model.extend({
     this.raw = objects;
 
     // A Lo-Dash wrapped version of the data.
-    this.dataset = _chain(objects);
+    this.dataset = _.chain(objects);
   },
 
   syncUpdate: function(options) {
-    options = _extend({}, this.options, options);
+    options = _.extend({}, this.options, options);
 
     // Attach the resource reference.
     options.model = this;
@@ -54,7 +49,7 @@ var Resource = Model.extend({
   url: "Property not implemented.",
 
   syncAll: function(options) {
-    options = _extend({}, this.options, options);
+    options = _.extend({}, this.options, options);
 
     // Attach the resource reference.
     options.model = this;
@@ -68,11 +63,11 @@ var Resource = Model.extend({
     var currentObjects = this.adapter.get();
     var currentLength = currentObjects.length;
 
-    _each(newObjects, function(object) {
-      var found = _findWhere(currentObjects, { id: object.id });
+    _.each(newObjects, function(object) {
+      var found = _.findWhere(currentObjects, { id: object.id });
 
       if (found) {
-        _extend(found, object);
+        _.extend(found, object);
       } else {
         currentObjects.push(object);
       }
@@ -146,10 +141,10 @@ var Resource = Model.extend({
 
     // Defaults.
     this.raw = [];
-    this.dataset = _chain(this.raw);
+    this.dataset = _.chain(this.raw);
 
     // Merge in the additional properties.
-    _extend(this, options);
+    _.extend(this, options);
   }
 });
 

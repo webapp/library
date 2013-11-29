@@ -3,9 +3,9 @@ import Channel from "./channel";
 import Class from "./class";
 import Collection from "./collection";
 import Component from "./component";
-import Events from "./events";
+module Events from "./events";
 import History from "./history";
-import Inheritance from "./inheritance";
+module Inheritance from "./inheritance";
 import Model from "./model";
 import Router from "./router";
 import View from "./view";
@@ -13,7 +13,7 @@ import ViewComponent from "./component/view";
 import { sync } from "./sync";
 import XhrTransport from "./sync/transports/xhr";
 
-import $ from "jquery";
+module $ from "jquery";
 
 var WebApp = Class.extend({
   start: function() {

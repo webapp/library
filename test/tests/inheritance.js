@@ -1,5 +1,5 @@
-import _ from "lodash";
-import Inheritance from "inheritance";
+module _ from "lodash";
+module Inheritance from "inheritance";
 
 describe("Inheritance", function() {
   it("is an object", function() {

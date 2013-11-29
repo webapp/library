@@ -1,9 +1,7 @@
 import Transport from "sync/transport";
 
-import _defaults from "lodash/objects/defaults";
-
-import $ from "jquery/core";
-import $ajax from "jquery/ajax";
+module _ from "lodash";
+module $ from "jquery";
 
 var Xhr = Transport.extend({
   isAvailable: function() {
@@ -34,7 +32,7 @@ var Xhr = Transport.extend({
     options.method = methodMap[options.method];
 
     // Merge in the instance to the options object.
-    _defaults(options, this);
+    _.defaults(options, this);
 
     // Create a new connection.
     var jqXHR = $.ajax(options);

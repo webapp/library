@@ -1,8 +1,7 @@
 import Class from "./class";
 
-import bindAll from "lodash/functions/bindAll";
-import extend from "lodash/objects/assign";
-import any from "lodash/collections/some";
+module _ from "lodash";
+module $ from "jquery";
 
 // Cached regex for stripping a leading hash/slash and trailing space.
 var routeStripper = /^[#\/]|\s+$/g;
@@ -30,7 +29,7 @@ var pathStripper = /[?#].*$/;
 var History = Class.extend({
   constructor: function() {
     this.handlers = [];
-    bindAll(this, 'checkUrl');
+    _.bindAll(this, 'checkUrl');
 
     // Ensure that `History` can be used outside of the browser.
     if (typeof window !== 'undefined') {

@@ -1,5 +1,5 @@
-import _ from "lodash";
-import Events from "events";
+module _ from "lodash";
+module Events from "events";
 
 describe("Events", function() {
   it("is an object", function() {

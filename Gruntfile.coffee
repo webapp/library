@@ -138,4 +138,10 @@ module.exports = ->
   @loadNpmTasks "grunt-karma"
 
   @registerTask "test", ["karma:run"]
-  @registerTask "default", ["clean", "jshint", "modules", "requirejs", "test"]
+  @registerTask "default", [
+    "clean"
+    #"jshint"
+    "modules"
+    "requirejs"
+    "test"
+  ]

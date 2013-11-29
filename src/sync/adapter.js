@@ -1,11 +1,11 @@
 import Class from "../class";
 
-import extend from "lodash/objects/assign";
+module _ from "lodash";
 
 var Adapter = Class.extend({
   constructor: function(properties) {
     // Merge in the additional properties.
-    extend(this, properties);
+    _.extend(this, properties);
   },
 
   isAvailable: function() {

@@ -2,7 +2,7 @@ import Class from "./class";
 import Model from "./model";
 import { sync } from "./sync";
 
-import _ from "lodash";
+module _ from "lodash";
 
 // Default options for `Collection#set`.
 var setOptions = {add: true, remove: true, merge: true};

@@ -1,8 +1,4 @@
-import _once from "lodash/functions/once";
-import _keys from "lodash/objects/keys";
-import _each from "lodash/collections/forEach";
-import _uniqueId from "lodash/utilities/uniqueId";
-import _isEmpty from "lodash/objects/isEmpty";
+module _ from "lodash";
 
 var slice = Array.prototype.slice;
 
@@ -65,7 +61,7 @@ export function once(name, callback, context) {
   if (!eventsApi(this, 'once', name, [callback, context]) || !callback) return this;
   var self = this;
 
-  var onceCallback = _once(function() {
+  var onceCallback = _.once(function() {
     self.off(name, onceCallback);
     callback.apply(this, arguments);
   });
@@ -85,7 +81,7 @@ export function off(name, callback, context) {
     this._events = {};
     return this;
   }
-  names = name ? [name] : _keys(this._events);
+  names = name ? [name] : _.keys(this._events);
   for (i = 0, l = names.length; i < l; i++) {
     name = names[i];
     if (events = this._events[name]) {
@@ -132,7 +128,7 @@ export function stopListening(obj, name, callback) {
   for (var id in listeningTo) {
     obj = listeningTo[id];
     obj.off(name, callback, this);
-    if (remove || _isEmpty(obj._events)) delete this._listeningTo[id];
+    if (remove || _.isEmpty(obj._events)) delete this._listeningTo[id];
   }
   return this;
 }
@@ -142,7 +138,7 @@ export function stopListening(obj, name, callback) {
 // listening to.
 export function listenTo(obj, name, callback) {
   var listeningTo = this._listeningTo || (this._listeningTo = {});
-  var id = obj._listenId || (obj._listenId = _uniqueId('l'));
+  var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
   listeningTo[id] = obj;
   if (!callback && typeof name === 'object') callback = this;
   obj.on(name, callback, this);
@@ -151,7 +147,7 @@ export function listenTo(obj, name, callback) {
 
 export function listenToOnce(obj, name, callback) {
   var listeningTo = this._listeningTo || (this._listeningTo = {});
-  var id = obj._listenId || (obj._listenId = _uniqueId('l'));
+  var id = obj._listenId || (obj._listenId = _.uniqueId('l'));
   listeningTo[id] = obj;
   if (!callback && typeof name === 'object') callback = this;
   obj.once(name, callback, this);

@@ -1,7 +1,7 @@
 import Events from "./events";
-import Inheritance from "./inheritance";
+module Inheritance from "./inheritance";
 
-import _ from "lodash";
+module _ from "lodash";
 
 function Class() {}
 
@@ -14,4 +14,4 @@ _.extend(Class.prototype, Events, {
 // Classes provide inheritance.
 _.extend(Class, Inheritance);
 
-export default = Class;
+export default Class;

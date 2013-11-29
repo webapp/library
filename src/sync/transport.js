@@ -1,11 +1,11 @@
 import Class from "../class";
 
-import _extend from "lodash/objects/assign";
+module _ from "lodash";
 
 var Transport = Class.extend({
   constructor: function(properties) {
     // Merge in the additional properties.
-    _extend(this, properties);
+    _.extend(this, properties);
 
     // If a channel is set, bind to it.
     // Set up custom Model handler logic for the channel.

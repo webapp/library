@@ -9,6 +9,7 @@
 
   <!-- Mocha styles. -->
   <link rel="stylesheet" href="vendor/mocha.css">
+  <link rel="stylesheet" href="vendor/qunit.css">
 
   <script type="text/template" id="dom-template">
     This template lives in the <b>DOM</b>
@@ -21,11 +22,15 @@
 
 <body>
   <div id="mocha"></div>
-  <div id="qunit-fixture"></div>
+  <div id="qunit-fixture">
+    <liv id="testElement">
+      <h1>Test</h1>
+    </div>
+  </div>
 
   <!-- Testing libraries. -->
-  <script src="vendor/chai.js"></script>
   <script src="vendor/mocha.js"></script>
+  <script src="vendor/chai.js"></script>
   <script src="vendor/mocha-qunit-ui.js"></script>
   <script src="vendor/require.js"></script>
 

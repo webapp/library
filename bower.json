@@ -8,11 +8,11 @@
     "components"
   ],
   "dependencies": {
-    "lodash-amd": "~2.2.1",
+    "lodash": "~2.2.1",
     "scopedcss": "~0.1.0",
     "ractive": "~0.3.6",
-    "jquery": "jquery/jquery#083edd60a6c189f17ff1087431e849dd11c111b2",
-    "sizzle": "~1.10.11"
+    "jquery": "~2.0.3",
+    "sizzle": "~1.10.14"
   },
   "devDependencies": {
     "requirejs": "~2.1.9",

@@ -1,8 +1,22 @@
 (function() {
-var qWin = {};
+
 (function() {
+// Shadow the global exports so that QUnit does not attempt to define itself
+// via CommonJS in such environments.
+var exports;
+
+// Temporarily define the required DOM API
+var _addEventListener = {
+  original: global.addEventListener,
+  wasDefined: 'addEventListener' in global
+};
+
+if (typeof global.addEventListener !== 'function') {
+  global.addEventListener = function() {};
+}
+
 /**
- * QUnit v1.13.0pre - A JavaScript Unit Testing Framework
+ * QUnit v1.12.0 - A JavaScript Unit Testing Framework
  *
  * http://qunitjs.com
  *
@@ -1139,7 +1153,7 @@ QUnit.load = function() {
 
 		addEvent( filter, "click", function() {
 			var tmp,
-				ol = id( "qunit-tests" );
+				ol = document.getElementById( "qunit-tests" );
 
 			if ( filter.checked ) {
 				ol.className = ol.className + " hidepass";
@@ -1159,7 +1173,7 @@ QUnit.load = function() {
 		if ( config.hidepassed || defined.sessionStorage && sessionStorage.getItem( "qunit-filter-passed-tests" ) ) {
 			filter.checked = true;
 			// `ol` initialized at top of scope
-			ol = id( "qunit-tests" );
+			ol = document.getElementById( "qunit-tests" );
 			ol.className = ol.className + " hidepass";
 		}
 		toolbar.appendChild( filter );
@@ -2213,11 +2227,24 @@ if ( typeof exports !== "undefined" ) {
 
 // get at whatever the global object is, like window in browsers
 }( (function() {return this;}.call()) ));
+
+// Ensure that QUnit does not start up automatically (to mimick Mocha's default
+// behavior).
 QUnit.config.autostart = false;
-}).call(qWin);
+
+// Restoring the global object to its previous state
+if (_addEventListener.wasDefined) {
+  global.addEventListener = _addEventListener.original;
+} else {
+  delete global.addEventListener;
+}
+}());
+
 (function(global, undefined) {
 "use strict";
-var Mocha = global.Mocha;
+
+var isBrowser = 'document' in global;
+var Mocha = isBrowser ? global.Mocha : require('mocha');
 var Suite = Mocha.Suite;
 var Test = Mocha.Test;
 var QUnit = global.QUnit;
@@ -2237,7 +2264,11 @@ var ui = function(suite) {
   function setContext(context) {
     config.current = {
       testEnvironment: context,
-      assertions: []
+      // QUnit appends to this array when an assertion runs
+      assertions: [],
+      // The QUnit Mocha UI maintains a separate assertion array in order to
+      // log assertion results with HTML-free messages
+      _assertions: []
     };
     QUnit.current_testEnvironment = context;
   }
@@ -2245,16 +2276,17 @@ var ui = function(suite) {
   // Ensure that all the assertions declared in the current context have
   // passed. This behavior differs somewhat from Mocha because (like QUnit)
   // more than one assertion may fail in a given test. Mocha can only report
-  // one failure per test, so report the first failure.
+  // one failure per test, so generate a single JavaScript Error object by
+  // concatenating the messages from each QUnit error.
   function checkAssertions() {
-    try {
-      config.current.assertions.forEach(function(assertion) {
-        if (!assertion.result) {
-          throw new Error(assertion.message);
-        }
-      });
-    } catch(err) {
-      return err;
+    var msgs = [];
+    config.current._assertions.forEach(function(assertion) {
+      if (!assertion.result) {
+        msgs.push(assertion.message);
+      }
+    });
+    if (msgs.length) {
+      return new Error(msgs);
     }
   }
 
@@ -2277,6 +2309,54 @@ var ui = function(suite) {
     };
   });
 
+  var assertMessages = {
+    equal: function(actual, expected) {
+      return 'expected ' + actual + ' to equal ' + expected;
+    },
+    notEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to not equal ' + expected;
+    },
+    propEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to prop equal ' + expected;
+    },
+    notPropEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to not prop equal ' + expected;
+    },
+    strictEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to strictly equal ' + expected;
+    },
+    notStrictEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to not strictly equal ' + expected;
+    },
+    deepEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to deeply equal ' + expected;
+    },
+    notDeepEqual: function(actual, expected) {
+      return 'expected ' + actual + ' to not deeply equal ' + expected;
+    }
+  };
+  for (var key in assertMessages) {
+    if (assertMessages.hasOwnProperty(key)) {
+      (function(key, orig) {
+        assert[key] = global[key] = function(a, b, message) {
+          var assertions = config.current._assertions;
+          var latest;
+          orig.apply(this, arguments);
+          latest = assertions[assertions.length - 1];
+
+          latest.message = message || '';
+          if (message) {
+            latest.message += ': ';
+          }
+          latest.message += assertMessages[key](
+            QUnit.jsDump.parse(a),
+            QUnit.jsDump.parse(b)
+          );
+        };
+      }(key, assert[key]));
+    }
+  }
+
   var push = QUnit.push;
   var ok = assert.ok;
   var spy = function(obj, name, fn) {
@@ -2285,6 +2365,7 @@ var ui = function(suite) {
       orig = orig.reset();
     }
     var spied = obj[name] = function() {
+      var res = orig.apply(this, arguments);
       fn.apply(this, arguments);
       return orig.apply(this, arguments);
     };
@@ -2293,8 +2374,19 @@ var ui = function(suite) {
       return orig;
     };
   };
+  QUnit.log(function(details) {
+    var assertions = config.current.assertions;
+    var last = assertions[assertions.length - 1];
+    last.message = details.message;
+  });
   var setLog = function(logDetails) {
     spy(QUnit, "push", function(result, actual, expected, message) {
+      config.current._assertions.push({
+        result: result,
+        actual: actual,
+        expected: expected,
+        message: message
+      });
       log("log", {
         name: logDetails.name,
         module: logDetails.module,
@@ -2305,6 +2397,18 @@ var ui = function(suite) {
       });
     });
     spy(assert, "ok", function(result, message) {
+      // TODO: Extend facility for assertion message overriding to allow
+      // argument type specification and move this logic there.
+      if (message === undefined) {
+        message = "expected " + QUnit.jsDump.parse(result) + " to be ok";
+      }
+
+      config.current._assertions.push({
+        result: result,
+        actual: result,
+        expected: true,
+        message: message
+      });
       log("log", {
         name: logDetails.name,
         module: logDetails.module,
@@ -2312,6 +2416,7 @@ var ui = function(suite) {
         message: message
       });
     });
+    global.ok = assert.ok;
   };
 
   suite.on('pre-require', function(context) {
@@ -2320,11 +2425,14 @@ var ui = function(suite) {
      * Describe a "suite" with the given `title`.
      */
 
-    context.module = function(title, opts) {
+    context.module = QUnit.module = function(title, opts) {
       if (suites.length > 1) suites.shift();
       var suite = Suite.create(suites[0], title);
+      var originalFixture;
       suites.unshift(suite);
-      var originalFixture = document.getElementById("qunit-fixture").innerHTML;
+      if (isBrowser) {
+        originalFixture = document.getElementById("qunit-fixture").innerHTML;
+      }
       var assertionCounts = {
         total: 0,
         passed: 0,
@@ -2346,7 +2454,9 @@ var ui = function(suite) {
 
       suite.beforeEach(function() {
         checkingDeferrals = false;
-        document.getElementById("qunit-fixture").innerHTML = originalFixture;
+        if (isBrowser) {
+          document.getElementById("qunit-fixture").innerHTML = originalFixture;
+        }
         deferrals = 0;
         inModule = true;
         setContext(this);
@@ -2377,7 +2487,7 @@ var ui = function(suite) {
         }
       }
       suite.afterEach(function(done) {
-        config.current.assertions.forEach(function(assertion) {
+        config.current._assertions.forEach(function(assertion) {
           var state = test.state;
           assertionCounts.total++;
           if (assertion.result) {
@@ -2415,7 +2525,7 @@ var ui = function(suite) {
     * Returns an Error object if it did, null otherwise;
     */
     var checkAssertionCount = function() {
-      var actualCount = config.current.assertions.length;
+      var actualCount = config.current._assertions.length;
       if(expectedAssertions > 0 && expectedAssertions != actualCount) {
         return new Error("Expected "+ expectedAssertions +
           " assertions but saw " + actualCount);
@@ -2465,6 +2575,11 @@ var ui = function(suite) {
 
     function addTest(title, expect, test) {
       suites[0].addTest(new Test(title, wrapTestFunction(test, function(test, done) {
+
+        // QUnit tests never timeout, unless `QUnit.config.testTimeout` is
+        // specified. Mocha allows tests with a 0 timeout value to run
+        // indefinitely.
+        this.timeout(config.testTimeout || 0);
         expectedAssertions = expect;
         currentDoneFn = done;
         context.stop();
@@ -2496,6 +2611,9 @@ var ui = function(suite) {
       }));
     });
 
+    // Since QUnit allows tests to be defined outside of a module, immediately
+    // create a nameless module.
+    context.module('');
   });
 };
 
@@ -2503,5 +2621,7 @@ Mocha.interfaces.qunit = ui;
 if (typeof module !== "undefined") {
   module.exports = ui;
 }
+
 }(this));
+
 }());

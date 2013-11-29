@@ -1,4 +1,4 @@
-import _ from "lodash";
+module _ from "lodash";
 import Class from "class";
 import View from "view";
 
