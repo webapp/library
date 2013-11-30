@@ -163,7 +163,7 @@ define(function(require, exports, module) {
       });
 
       it("will trigger the fetch provided during create", function() {
-        new TestView({ fetch: function() { hit = "create" } }).render();
+        new TestView({ fetch: function() { hit = "create"; } }).render();
         expect(hit, "Fetch gets called on a View.");
       });
     });

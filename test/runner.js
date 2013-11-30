@@ -2,56 +2,84 @@
   "use strict";
 
   var karma = window.__karma__;
+  var baseUrl = karma ? "/base/" : "../";
 
-  // Put Karma into an asynchronous waiting mode until we have loaded our
-  // tests.
-  karma.loaded = function() {};
+  var tests = [
+    // WebApp library tests.
+    "tests/component/view",
+    "tests/sync/adapters/memory",
+    "tests/sync/transports/xhr",
+    "tests/sync/adapter",
+    "tests/sync/resource",
+    "tests/sync/transport",
+    "tests/channel",
+    "tests/class",
+    "tests/collection",
+    "tests/component",
+    "tests/events",
+    //"tests/index",
+    "tests/inheritance",
+    "tests/model",
+    "tests/router",
+    //"tests/sync",
+    "tests/view",
 
-  // Use chai with Mocha.
-  window.expect = window.chai.expect;
+    // Backbone tests.
+    "backbone/test/environment",
+    "backbone/test/noconflict",
+    "backbone/test/events",
+    "backbone/test/model",
+    "backbone/test/collection",
+    "backbone/test/router",
+    "backbone/test/view",
+    "backbone/test/sync",
 
-  // Set the application endpoint and load the configuration.
-  require.config({
+    // LayoutManager tests.
+    //"layoutmanager/test/spec/configure",
+    //"layoutmanager/test/spec/dom",
+    //"layoutmanager/test/spec/setup",
+    //"layoutmanager/test/spec/views"
+  ];
+
+  // Prefer the BDD testing style.
+  mocha.setup("bdd");
+  mocha.setup("qunit");
+
+  // Use Chai as the assertion library.
+  window.expect = chai.expect;
+
+  // Make async.
+  if (karma) { karma.loaded = function() {}; }
+
+  require({
+    // Set the application endpoint.
     paths: {
-      specs: "http://localhost:8080/base/test/specs",
-      config: "../../build/config"
+      tests: "../test/tests",
+      backbone: "../bower_components/backbone",
+      layoutmanager: "../bower_components/layoutmanager",
+      sizzle: "../bower_components/sizzle/dist/sizzle",
+      scopedcss: "../bower_components/scopedcss/dist/scopedcss",
+      ractive: "../bower_components/ractive/build/Ractive",
+      jquery: "../bower_components/jquery/jquery",
+      lodash: "../bower_components/lodash/dist/lodash"
     },
+
+    // Determine the baseUrl if we are in Karma or not.
+    baseUrl: baseUrl + "src",
 
     packages: [{
       name: "webapp",
       location: ".",
       main: "index.js"
-    }, {
-      name: "lodash",
-      location: "../bower_components/lodash-amd/modern",
-      main: "main.js"
-    }, {
-      name: "jquery",
-      location: "../bower_components/jquery/src",
-      main: "jquery.js"
     }],
+  }, [], function() {
+    require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {
+      window.Backbone = WebApp;
+      window.Backbone.Layout = View;
+      window._ = _;
+      window.$ = Backbone.$;
 
-    baseUrl: "/base/src"
-  });
-
-  require([
-    "config",
-    "lodash"
-  ],
-
-  function(config, _) {
-    var specs = _(karma.files).filter(function(id, file) {
-      // Automatically load files from the specs directory.
-      var isMine = /^\/base\/test\/specs\/.*\.js$/.test(file);
-      var isBackbone = /^\/base/\bower_components/\backbone/\test/*\.js$/.test(file);
-
-      return isMine || isBackbone;
-    }).map(function(file) {
-      // Strip base from the base path.
-      return file.slice("/base".length);
-    }).value();
-
-    // Load all specs and start Karma.
-    require(specs, karma.start);
+      require(tests, karma ? karma.start : function() { mocha.run(); });
+    });
   });
 })(this);

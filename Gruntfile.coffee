@@ -5,12 +5,13 @@ module.exports = ->
 
     jshint:
       default: [
-        "src/**/*.js"
+        "src/**/*.js",
         "!src/collection.js"
         "!src/history.js"
         "!src/model.js"
         "!src/router.js"
         "!src/sync.js"
+        "test/tests/**/*.js"
       ]
 
       options:
@@ -25,6 +26,11 @@ module.exports = ->
           navigator: true
           define: true
           require: true
+          describe: true
+          it: true
+          expect: true
+          beforeEach: true
+          afterEach: true
 
     requirejs:
       options:
@@ -76,7 +82,7 @@ module.exports = ->
           "test/vendor/mocha-qunit-ui.js"
           "test/vendor/require.js"
           "test/vendor/adapter.js"
-          "test/test-runner.js"
+          "test/runner.js"
         ]
 
         preprocessors:
@@ -84,7 +90,7 @@ module.exports = ->
           "src/**/*.js": ["coverage"]
 
         coverageReporter:
-          type: "html"
+          type: "lcov"
           dir: "test/reports/coverage/"
 
       run:
@@ -96,7 +102,6 @@ module.exports = ->
           singleRun: false
 
   @loadNpmTasks "grunt-contrib-clean"
-  @loadNpmTasks "grunt-contrib-connect"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-contrib-requirejs"
   @loadNpmTasks "grunt-karma"
