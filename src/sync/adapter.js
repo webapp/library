@@ -1,24 +1,28 @@
-import Class from "../class";
+define(function(require, exports, module) {
+  "use strict";
 
-module _ from "lodash";
+  var Class = require("../class");
 
-var Adapter = Class.extend({
-  constructor: function(properties) {
-    // Merge in the additional properties.
-    _.extend(this, properties);
-  },
+  var _ = require("lodash");
 
-  isAvailable: function() {
-    throw "Method not implemented.";
-  },
+  var Adapter = Class.extend({
+    constructor: function(properties) {
+      // Merge in the additional properties.
+      _.extend(this, properties);
+    },
 
-  get: function() {
-    throw "Method not implemented.";
-  },
+    isAvailable: function() {
+      throw "Method not implemented.";
+    },
 
-  set: function() {
-    throw "Method not implemented.";
-  }
+    get: function() {
+      throw "Method not implemented.";
+    },
+
+    set: function() {
+      throw "Method not implemented.";
+    }
+  });
+
+  module.exports = Adapter;
 });
-
-export default Adapter;

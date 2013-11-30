@@ -1,41 +1,45 @@
-import Class from "../class";
+define(function(require, exports, module) {
+  "use strict";
 
-module _ from "lodash";
+  var Class = require("../class");
 
-var Transport = Class.extend({
-  constructor: function(properties) {
-    // Merge in the additional properties.
-    _.extend(this, properties);
+  var _ = require("lodash");
 
-    // If a channel is set, bind to it.
-    // Set up custom Model handler logic for the channel.
-    if (this.channel) {
-      // Whenever this internal data changes, update.
-      this.on("change", function() {
-        this.channel.publish(this.changed);
-      }, this);
+  var Transport = Class.extend({
+    constructor: function(properties) {
+      // Merge in the additional properties.
+      _.extend(this, properties);
+
+      // If a channel is set, bind to it.
+      // Set up custom Model handler logic for the channel.
+      if (this.channel) {
+        // Whenever this internal data changes, update.
+        this.on("change", function() {
+          this.channel.publish(this.changed);
+        }, this);
+      }
+    },
+
+    isAvailable: function() {
+      throw "Method not implemented.";
+    },
+
+    connect: function() {
+      throw "Method not implemented.";
+    },
+
+    disconnect: function() {
+      throw "Method not implemented.";
+    },
+
+    request: function() {
+      throw "Method not implemented.";
+    },
+
+    requestIfModified: function() {
+      throw "Method not implemented.";
     }
-  },
+  });
 
-  isAvailable: function() {
-    throw "Method not implemented.";
-  },
-
-  connect: function() {
-    throw "Method not implemented.";
-  },
-
-  disconnect: function() {
-    throw "Method not implemented.";
-  },
-
-  request: function() {
-    throw "Method not implemented.";
-  },
-
-  requestIfModified: function() {
-    throw "Method not implemented.";
-  }
+  module.exports = Transport;
 });
-
-export default Transport;

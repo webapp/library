@@ -1,7 +1,11 @@
-import Collection from "collection";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("Collection", function() {
-  it("is a constructor", function() {
-    expect(Collection).to.be.a("function");
+  var Collection = require("collection");
+
+  describe("Collection", function() {
+    it("is a constructor", function() {
+      expect(Collection).to.be.a("function");
+    });
   });
 });

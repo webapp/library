@@ -1,60 +1,64 @@
-module _ from "lodash";
+define(function(require, exports, module) {
+  "use strict";
 
-// Generalize the initialization of a new instance so that it can be easily
-// called from either `new` or `create`.
-function initialize(Surrogate, child, args) {
-  // Invoke the constructor, passing along all arguments.
-  Surrogate.prototype.constructor.apply(child, args);
+  var _ = require("lodash");
 
-  return child;
-}
+  // Generalize the initialization of a new instance so that it can be easily
+  // called from either `new` or `create`.
+  function initialize(Surrogate, child, args) {
+    // Invoke the constructor, passing along all arguments.
+    Surrogate.prototype.constructor.apply(child, args);
 
-// Optionally allow users to create instances without using the new keyword.
-export function create() {
-  return initialize(this, Object.create(this.prototype), arguments);
-}
-
-// Extends the parent Object, without triggering anything special.
-export function extend(instanceProperties, classProperties) {
-  var Parent = this;
-
-  // Extending creates a new constructor that will be based off the parent.
-  function Surrogate() {
-    return initialize(Surrogate, this, arguments);
+    return child;
   }
 
-  // Convenience method for accessing the parent.
-  Object.defineProperty(Surrogate, "super", {
-    // Keep this property protected.
-    writable: false,
+  // Optionally allow users to create instances without using the new keyword.
+  exports.create = function() {
+    return initialize(this, Object.create(this.prototype), arguments);
+  };
 
-    // If no arguments are passed, return the parent prototype, otherwise
-    // call the specified method on the parent and pass along all arguments.
-    value: function(method, context, args) {
-      return method ? Parent.prototype[method].apply(context, args) : Parent;
+  // Extends the parent Object, without triggering anything special.
+  exports.extend = function(instanceProperties, classProperties) {
+    var Parent = this;
+
+    // Extending creates a new constructor that will be based off the parent.
+    function Surrogate() {
+      return initialize(Surrogate, this, arguments);
     }
-  });
 
-  // Apply the class properties.
-  _.extend(Surrogate, classProperties);
+    // Convenience method for accessing the parent.
+    Object.defineProperty(Surrogate, "super", {
+      // Keep this property protected.
+      writable: false,
 
-  // Ensure there is a direct reference to the parent.  `__proto__` will be
-  // standardized in ES6.
-  Surrogate.__proto__ = Parent;
+      // If no arguments are passed, return the parent prototype, otherwise
+      // call the specified method on the parent and pass along all arguments.
+      value: function(method, context, args) {
+        return method ? Parent.prototype[method].apply(context, args) : Parent;
+      }
+    });
 
-  // Ensure the prototype inherits from `this`.
-  Surrogate.prototype = Object.create(Parent.prototype);
+    // Apply the class properties.
+    _.extend(Surrogate, classProperties);
 
-  // Backbone compatibility.
-  Surrogate.__super__ = Parent.prototype;
+    // Ensure there is a direct reference to the parent.  `__proto__` will be
+    // standardized in ES6.
+    Surrogate.__proto__ = Parent;
 
-  // Populate prototype with `instanceProperties`.
-  _.extend(Surrogate.prototype, instanceProperties);
+    // Ensure the prototype inherits from `this`.
+    Surrogate.prototype = Object.create(Parent.prototype);
 
-  return Surrogate;
-}
+    // Backbone compatibility.
+    Surrogate.__super__ = Parent.prototype;
 
-// Allow class properties to be mixed into the constructor.
-export function mixin(classProperties) {
-  _.extend(this, classProperties);
-}
+    // Populate prototype with `instanceProperties`.
+    _.extend(Surrogate.prototype, instanceProperties);
+
+    return Surrogate;
+  };
+
+  // Allow class properties to be mixed into the constructor.
+  exports.mixin = function(classProperties) {
+    _.extend(this, classProperties);
+  };
+});

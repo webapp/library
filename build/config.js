@@ -6,18 +6,26 @@ require.config({
   }],
 
   paths: {
-    sizzle: "../../bower_components/sizzle/dist/sizzle",
-    scopedcss: "../../bower_components/scopedcss/dist/scopedcss",
-    ractive: "../../bower_components/ractive/build/Ractive",
-    jquery: "../../bower_components/jquery/jquery",
-    lodash: "../../bower_components/lodash/dist/lodash"
+    sizzle: "../bower_components/sizzle/dist/sizzle",
+    scopedcss: "../bower_components/scopedcss/dist/scopedcss",
+    ractive: "../bower_components/ractive/build/Ractive",
+    jquery: "../bower_components/jquery/jquery",
+    lodash: "../bower_components/lodash/dist/lodash",
+    layoutmanager: "../bower_components/layoutmanager/backbone.layoutmanager"
   },
 
   globals: {
     "jquery": "jQuery"
   },
 
-  baseUrl: "../dist/amd",
-  include: ["../../build/define", "../../build/config", "webapp"],
+  map: {
+    "layoutmanager": {
+      "backbone": "webapp",
+      "underscore": "lodash"
+    }
+  },
+
+  baseUrl: "../src",
+  include: ["../build/define", "../build/config", "webapp"],
   exclude: ["jquery", "lodash", "scopedcss", "ractive"]
 });

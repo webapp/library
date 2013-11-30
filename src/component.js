@@ -1,148 +1,151 @@
-module Events from "./events";
-import View from "./view";
-import Channel from "./channel";
+define(function(require, exports, module) {
+  "use strict";
 
-module ScopedCss from "scopedcss";
+  var Events = require("./events");
+  var View = require("./view");
+  var Channel = require("./channel");
 
-module _ from "lodash";
-module $ from "jquery";
+  var ScopedCss = require("scopedcss");
+  var _ = require("lodash");
+  var $ = require("jquery");
 
-// The View base class for the Component.
-var Component = View.extend({
-  constructor: function() {
-    if (!this.selector) {
-      throw new Error("selector required to initialize component.");
+  // The View base class for the Component.
+  var Component = View.extend({
+    constructor: function() {
+      if (!this.selector) {
+        throw new Error("selector required to initialize component.");
+      }
+
+      // Ensure the View is correctly set up.
+      Component.super("constructor", this, arguments);
+    },
+
+    afterRender: function() {
+      // Seek out nested components and render them.
+      Component.activateAll(this.$el);
+
+      // Also activate all scoped stylesheets.
+      ScopedCss.applyTo(this.$el[0]);
     }
+  });
 
-    // Ensure the View is correctly set up.
-    Component.super("constructor", this, arguments);
-  },
-
-  afterRender: function() {
-    // Seek out nested components and render them.
-    Component.activateAll(this.$el);
-
-    // Also activate all scoped stylesheets.
-    ScopedCss.applyTo(this.$el[0]);
-  }
-});
-
-Component.configure({
-  // By default the template property contains the contents of the template.
-  fetchTemplate: function(contents) {
-    // Convert into a Lo-Dash template.
-    return _.template(contents);
-  }
-});
-
-Component.mixin({
-  components: {},
-
-  // Channels provide an interconnected data bus.
-  channels: _.extend({}, Events),
-
-  register: function(Component, identifier) {
-    // Allow a manual override of the selector to use.
-    identifier = identifier || Component.prototype.selector;
-
-    // Register a Component constructor, not an instance.
-    this.components[identifier] = {
-      ctor: Component,
-      instances: []
-    };
-
-    var cssText = Component.prototype.styles;
-
-    if (cssText) {
-      // Create the scoped object outside of the fetch.
-      new ScopedCss(identifier, cssText).appendTo(document.body);
+  Component.configure({
+    // By default the template property contains the contents of the template.
+    fetchTemplate: function(contents) {
+      // Convert into a Lo-Dash template.
+      return _.template(contents);
     }
+  });
 
-    // Save a pointer for easier lookup.
-    Component.__pointer__ = this.components[identifier];
+  Component.mixin({
+    components: {},
 
-    return Component;
-  },
+    // Channels provide an interconnected data bus.
+    channels: _.extend({}, Events),
 
-  unregister: function(identifier) {
-    delete this.components[identifier];
-  },
+    register: function(Component, identifier) {
+      // Allow a manual override of the selector to use.
+      identifier = identifier || Component.prototype.selector;
 
-  augment: function(cb) {
-    _.each(this.__pointer__.instances, function(instance) {
-      cb.call(instance, instance);
-    });
-  },
+      // Register a Component constructor, not an instance.
+      this.components[identifier] = {
+        ctor: Component,
+        instances: []
+      };
 
-  activate: function($el, instances) {
-    var CurrentComponent = this;
+      var cssText = Component.prototype.styles;
 
-    // Convert all attributes on the Element into View properties.
-    var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
-      // Optionally consume data attributes.
-      if (attr.name.indexOf("data-") === 0) {
-        attr.name = attr.name.slice(5);
+      if (cssText) {
+        // Create the scoped object outside of the fetch.
+        new ScopedCss(identifier, cssText).appendTo(document.body);
       }
 
-      attrs[attr.name] = attr.value;
+      // Save a pointer for easier lookup.
+      Component.__pointer__ = this.components[identifier];
 
-      return attrs;
-    }, {});
+      return Component;
+    },
 
-    // Associate the element as well.
-    attrs.el = $el;
+    unregister: function(identifier) {
+      delete this.components[identifier];
+    },
 
-    // Create a new Component.
-    var component = new CurrentComponent(attrs);
-
-    // Set up the channel binding.
-    component.on("afterRender", function() {
-      var state = this.__state__;
-      var component = this;
-
-      if (!state.binding) {
-        return;
-      }
-
-      // Replace the string channel name with an instance.
-      if (typeof component.channels === "string") {
-        component.channel = new Channel(component.channels);
-      }
-
-      if (component.channel) {
-        // If a channel exists, monitor changes.
-        component.channel.subscribe(function(value, key) {
-          if (this.get(key) !== value) {
-            this.set(key, value);
-          }
-        }, component);
-
-        state.binding.on("set", function(key, value) {
-          component.channel.publish(key, value);
-        });
-      }
-    });
-
-    // Add to the internal cache.
-    instances.push(component);
-
-    // By default use the template property provided, otherwise pull the
-    // template contents from the DOM.
-    if (!component.template) {
-      component.template = _.template(_.unescape($el.html()));
-    }
-
-    // Render and apply to the Document.
-    component.render();
-  },
-
-  activateAll: function(el) {
-    _.each(this.components, function(Component, selector) {
-      $(el).find(selector).each(function() {
-        Component.ctor.activate($(this), Component.instances);
+    augment: function(cb) {
+      _.each(this.__pointer__.instances, function(instance) {
+        cb.call(instance, instance);
       });
-    });
-  }
-});
+    },
 
-export default Component;
+    activate: function($el, instances) {
+      var CurrentComponent = this;
+
+      // Convert all attributes on the Element into View properties.
+      var attrs = _.reduce($el[0].attributes, function(attrs, attr) {
+        // Optionally consume data attributes.
+        if (attr.name.indexOf("data-") === 0) {
+          attr.name = attr.name.slice(5);
+        }
+
+        attrs[attr.name] = attr.value;
+
+        return attrs;
+      }, {});
+
+      // Associate the element as well.
+      attrs.el = $el;
+
+      // Create a new Component.
+      var component = new CurrentComponent(attrs);
+
+      // Set up the channel binding.
+      component.on("afterRender", function() {
+        var state = this.__state__;
+        var component = this;
+
+        if (!state.binding) {
+          return;
+        }
+
+        // Replace the string channel name with an instance.
+        if (typeof component.channels === "string") {
+          component.channel = new Channel(component.channels);
+        }
+
+        if (component.channel) {
+          // If a channel exists, monitor changes.
+          component.channel.subscribe(function(value, key) {
+            if (this.get(key) !== value) {
+              this.set(key, value);
+            }
+          }, component);
+
+          state.binding.on("set", function(key, value) {
+            component.channel.publish(key, value);
+          });
+        }
+      });
+
+      // Add to the internal cache.
+      instances.push(component);
+
+      // By default use the template property provided, otherwise pull the
+      // template contents from the DOM.
+      if (!component.template) {
+        component.template = _.template(_.unescape($el.html()));
+      }
+
+      // Render and apply to the Document.
+      component.render();
+    },
+
+    activateAll: function(el) {
+      _.each(this.components, function(Component, selector) {
+        $(el).find(selector).each(function() {
+          Component.ctor.activate($(this), Component.instances);
+        });
+      });
+    }
+  });
+
+  module.exports = Component;
+});

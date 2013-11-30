@@ -12,15 +12,14 @@
     "scopedcss": "~0.1.0",
     "ractive": "~0.3.6",
     "jquery": "~2.0.3",
-    "sizzle": "~1.10.14"
+    "sizzle": "~1.10.14",
+    "layoutmanager": "~0.9.4"
   },
   "devDependencies": {
     "requirejs": "~2.1.9",
     "mocha": "~1.13.0",
     "chai": "~1.8.0",
     "sinon": "~1.7.3",
-    "backbone": "~1.1.0",
-    "layoutmanager": "~0.9.4",
-    "mocha-qunit-ui": "~0.0.2"
+    "backbone": "~1.1.0"
   }
 }

@@ -1,7 +1,11 @@
-import XhrTransport from "sync/transports/xhr";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("XhrTransport", function() {
-  it("is a constructor", function() {
-    expect(XhrTransport).to.be.a("function");
+  var XhrTransport = require("sync/transports/xhr");
+
+  describe("XhrTransport", function() {
+    it("is a constructor", function() {
+      expect(XhrTransport).to.be.a("function");
+    });
   });
 });

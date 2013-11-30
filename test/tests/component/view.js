@@ -1,7 +1,11 @@
-import ViewComponent from "component/view";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("ViewComponent", function() {
-  it("is a constructor", function() {
-    expect(ViewComponent).to.be.a("function");
+  var ViewComponent = require("component/view");
+
+  describe("ViewComponent", function() {
+    it("is a constructor", function() {
+      expect(ViewComponent).to.be.a("function");
+    });
   });
 });

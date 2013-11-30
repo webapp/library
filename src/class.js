@@ -1,17 +1,21 @@
-module Events from "./events";
-module Inheritance from "./inheritance";
+define(function(require, exports, module) {
+  "use strict";
 
-module _ from "lodash";
+  var Events = require("./events");
+  var Inheritance = require("./inheritance");
 
-function Class() {}
+  var _ = require("lodash");
 
-// Classes provide events.
-_.extend(Class.prototype, Events, {
-  // Set the default constructor.
-  constructor: Class
+  function Class() {}
+
+  // Classes provide events.
+  _.extend(Class.prototype, Events, {
+    // Set the default constructor.
+    constructor: Class
+  });
+
+  // Classes provide inheritance.
+  _.extend(Class, Inheritance);
+
+  module.exports = Class;
 });
-
-// Classes provide inheritance.
-_.extend(Class, Inheritance);
-
-export default Class;

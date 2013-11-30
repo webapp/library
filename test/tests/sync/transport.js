@@ -1,7 +1,11 @@
-import Transport from "sync/transport";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("Transport", function() {
-  it("is a constructor", function() {
-    expect(Transport).to.be.a("function");
+  var Transport = require("sync/transport");
+
+  describe("Transport", function() {
+    it("is a constructor", function() {
+      expect(Transport).to.be.a("function");
+    });
   });
 });

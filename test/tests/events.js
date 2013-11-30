@@ -1,8 +1,12 @@
-module _ from "lodash";
-module Events from "events";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("Events", function() {
-  it("is an object", function() {
-    expect(Events).to.be.a("object");
+  var _ = require("lodash");
+  var Events = require("events");
+
+  describe("Events", function() {
+    it("is an object", function() {
+      expect(Events).to.be.a("object");
+    });
   });
 });

@@ -17,11 +17,11 @@
     "tests/collection",
     "tests/component",
     "tests/events",
-    "tests/index",
+    //"tests/index",
     "tests/inheritance",
     "tests/model",
     "tests/router",
-    "tests/sync",
+    //"tests/sync",
     "tests/view",
 
     // Backbone tests.
@@ -55,8 +55,6 @@
     // Set the application endpoint.
     paths: {
       tests: "../test/tests",
-      backbone: "../bower_components/backbone",
-      layoutmanager: "../bower_components/layoutmanager",
       sizzle: "../bower_components/sizzle/dist/sizzle",
       scopedcss: "../bower_components/scopedcss/dist/scopedcss",
       ractive: "../bower_components/ractive/build/Ractive",
@@ -67,15 +65,30 @@
     // Determine the baseUrl if we are in Karma or not.
     baseUrl: baseUrl + "src",
 
+    map: {
+      "layoutmanager": {
+        "backbone": "webapp",
+        "underscore": "lodash"
+      }
+    },
+
     packages: [{
       name: "webapp",
       location: ".",
       main: "index.js"
+    }, {
+      name: "backbone",
+      location: "../bower_components/backbone",
+      main: "backbone.js"
+    }, {
+      name: "layoutmanager",
+      location: "../bower_components/layoutmanager",
+      main: "backbone.layoutmanager.js"
     }],
   }, [], function() {
-    require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {
-      window.Backbone = WebApp.default;
-      window.Backbone.Layout = View.default;
+    require(['webapp', 'view', 'lodash'], function(WebApp, LM, _) {
+      window.Backbone = WebApp;
+      window.Backbone.Layout = LM;
       window._ = _;
       window.$ = Backbone.$;
 

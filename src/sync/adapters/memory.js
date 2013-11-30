@@ -1,17 +1,21 @@
-import Adapter from "../adapter";
+define(function(require, exports, module) {
+  "use strict";
 
-var Memory = Adapter.extend({
-  isAvailable: function() {
-    return !!this.cache;
-  },
+  var Adapter = require("../adapter");
 
-  get: function() {
-    return this.cache;
-  },
+  var Memory = Adapter.extend({
+    isAvailable: function() {
+      return !!this.cache;
+    },
 
-  set: function(objects) {
-    this.cache = objects;
-  }
+    get: function() {
+      return this.cache;
+    },
+
+    set: function(objects) {
+      this.cache = objects;
+    }
+  });
+
+  module.exports = Memory;
 });
-
-export default Memory;

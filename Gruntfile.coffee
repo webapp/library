@@ -1,6 +1,4 @@
 module.exports = ->
-  modules = require "webapp-modules"
-
   @initConfig
 
     clean: ["dist", "test/reports"]
@@ -16,7 +14,6 @@ module.exports = ->
       ]
 
       options:
-        esnext: true
         eqnull: true
         boss: true
         undef: true
@@ -28,18 +25,6 @@ module.exports = ->
           navigator: true
           define: true
           require: true
-          __exports__: true
-
-    modules:
-      options:
-        formats: ["amd", "cjs"]
-        root: "src/"
-
-      convert:
-        files: [
-          src: ["src/**/*.js"]
-          dest: "dist"
-        ]
 
     requirejs:
       options:
@@ -65,25 +50,6 @@ module.exports = ->
           out: "dist/webapp.bundled.js"
           exclude: []
 
-    connect:
-      options:
-        base: "."
-        port: process.env.PORT || 8080
-
-        middleware: (connect) -> [
-          modules "src"
-          modules "test/tests"
-          connect.static __dirname
-        ]
-
-      default:
-        options:
-          keepalive: true
-
-      test:
-        options:
-          keepalive: false
-
     karma:
       options:
         basePath: process.cwd()
@@ -95,10 +61,9 @@ module.exports = ->
         logLevel: "ERROR"
 
         plugins: [
-          "karma-coverage-es6"
+          "karma-coverage"
           "karma-mocha"
           "karma-phantomjs-launcher"
-          "karma-es6"
         ]
 
         files: [
@@ -115,8 +80,8 @@ module.exports = ->
         ]
 
         preprocessors:
-          "test/tests/**/*.js": ["es6"]
-          "src/**/*.js": ["es6"]
+          "test/tests/**/*.js": ["coverage"]
+          "src/**/*.js": ["coverage"]
 
         coverageReporter:
           type: "html"
@@ -134,14 +99,12 @@ module.exports = ->
   @loadNpmTasks "grunt-contrib-connect"
   @loadNpmTasks "grunt-contrib-jshint"
   @loadNpmTasks "grunt-contrib-requirejs"
-  @loadNpmTasks "grunt-webapp-modules"
   @loadNpmTasks "grunt-karma"
 
   @registerTask "test", ["karma:run"]
   @registerTask "default", [
     "clean"
-    #"jshint"
-    "modules"
+    "jshint"
     "requirejs"
     "test"
   ]

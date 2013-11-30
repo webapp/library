@@ -1,7 +1,11 @@
-import Router from "router";
+define(function(require, exports, module) {
+  "use strict";
 
-describe("Router", function() {
-  it("is a constructor", function() {
-    expect(Router).to.be.a("function");
+  var Router = require("router");
+
+  describe("Router", function() {
+    it("is a constructor", function() {
+      expect(Router).to.be.a("function");
+    });
   });
 });
