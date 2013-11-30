@@ -519,11 +519,7 @@ var View = Class.extend({
 
     state.selector = this.sections[name] || name;
 
-    // Add reference to the parent.
     state.parent = this;
-
-    // Call the `setup` method, since we now have a relationship created.
-    _.result(view, "setup");
 
     // Code path is less complex for Views that are not being inserted.
     // Simply remove existing Views and bail out with the assignment.

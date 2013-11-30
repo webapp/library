@@ -116,7 +116,7 @@ module.exports = ->
 
         preprocessors:
           "test/tests/**/*.js": ["es6"]
-          "src/**/*.js": ["es6", "coverage"]
+          "src/**/*.js": ["es6"]
 
         coverageReporter:
           type: "html"

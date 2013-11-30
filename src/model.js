@@ -351,7 +351,10 @@ var Model = Class.extend({
 
   // Create a new model with identical attributes to this one.
   clone: function() {
-    return Model.create(this.attributes);
+    var model = new Model(this.attributes);
+    model.cid = this.cid;
+    model.id = this.id;
+    return model;
   },
 
   // A model is new if it has never been saved to the server, and lacks an id.

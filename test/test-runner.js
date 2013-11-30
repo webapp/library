@@ -12,17 +12,17 @@
     "tests/sync/adapter",
     "tests/sync/resource",
     "tests/sync/transport",
-    //"tests/channel",
+    "tests/channel",
     "tests/class",
     "tests/collection",
     "tests/component",
-    //"tests/events",
+    "tests/events",
     "tests/index",
     "tests/inheritance",
     "tests/model",
     "tests/router",
     "tests/sync",
-    //"tests/view",
+    "tests/view",
 
     // Backbone tests.
     "backbone/test/environment",
@@ -35,10 +35,10 @@
     "backbone/test/sync",
 
     // LayoutManager tests.
-    "layoutmanager/test/spec/configure",
-    "layoutmanager/test/spec/dom",
-    "layoutmanager/test/spec/setup",
-    "layoutmanager/test/spec/views"
+    //"layoutmanager/test/spec/configure",
+    //"layoutmanager/test/spec/dom",
+    //"layoutmanager/test/spec/setup",
+    //"layoutmanager/test/spec/views"
   ];
 
   // Prefer the BDD testing style.
@@ -75,7 +75,7 @@
   }, [], function() {
     require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {
       window.Backbone = WebApp.default;
-      window.Backbone.Layout = View;
+      window.Backbone.Layout = View.default;
       window._ = _;
       window.$ = Backbone.$;
 

@@ -2,19 +2,16 @@ module _ from "lodash";
 
 // Generalize the initialization of a new instance so that it can be easily
 // called from either `new` or `create`.
-function initialize(parent, child, args) {
-  // Mix in `instanceProperties` passed.
-  _.extend(child, args[0]);
-
+function initialize(Surrogate, child, args) {
   // Invoke the constructor, passing along all arguments.
-  child.constructor.apply(child, args);
+  Surrogate.prototype.constructor.apply(child, args);
 
   return child;
 }
 
 // Optionally allow users to create instances without using the new keyword.
 export function create() {
-  return initialize(this.__proto__, Object.create(this.prototype), arguments);
+  return initialize(this, Object.create(this.prototype), arguments);
 }
 
 // Extends the parent Object, without triggering anything special.
@@ -23,7 +20,7 @@ export function extend(instanceProperties, classProperties) {
 
   // Extending creates a new constructor that will be based off the parent.
   function Surrogate() {
-    initialize(Parent, this, arguments);
+    return initialize(Surrogate, this, arguments);
   }
 
   // Convenience method for accessing the parent.

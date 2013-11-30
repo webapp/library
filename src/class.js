@@ -1,4 +1,4 @@
-import Events from "./events";
+module Events from "./events";
 module Inheritance from "./inheritance";
 
 module _ from "lodash";

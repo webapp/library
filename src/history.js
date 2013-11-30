@@ -72,7 +72,7 @@ var History = Class.extend({
 
     // Figure out the initial configuration. Do we need an iframe?
     // Is pushState desired ... is it available?
-    this.options          = extend({}, {root: '/'}, this.options, options);
+    this.options          = _.extend({}, {root: '/'}, this.options, options);
     this.root             = this.options.root;
     this._wantsHashChange = this.options.hashChange !== false;
     this._wantsPushState  = !!this.options.pushState;
@@ -160,7 +160,7 @@ var History = Class.extend({
   // returns `false`.
   loadUrl: function(fragment) {
     fragment = this.fragment = this.getFragment(fragment);
-    return any(this.handlers, function(handler) {
+    return _.any(this.handlers, function(handler) {
       if (handler.route.test(fragment)) {
         handler.callback(fragment);
         return true;
