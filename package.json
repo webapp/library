@@ -8,20 +8,18 @@
     "url": "https://github.com/WebApp/library.git"
   },
   "dependencies": {
-    "lodash-node": "~2.2.1",
-    "esprima": "~1.0.4"
+    "lodash": "~2.2.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "mocha": "~1.14.0",
+    "karma": "~0.9.2",
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-requirejs": "~0.4.0",
     "grunt-karma": "~0.5.1",
-    "karma": "~0.9.2",
-    "karma-mocha": "~0.0.1",
+    "karma-mocha": "~0.1.1",
     "karma-coverage": "~0.0.2",
-    "karma-phantomjs-launcher": "~0.0.2",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-connect": "~0.5.0"
+    "karma-phantomjs-launcher": "~0.0.2"
   }
 }
