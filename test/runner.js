@@ -7,7 +7,7 @@
   var tests = [
     // WebApp library tests.
     "tests/component/view",
-    "tests/sync/adapters/memory",
+    "tests/sync/adapters/rest",
     "tests/sync/transports/xhr",
     "tests/sync/adapter",
     "tests/sync/resource",

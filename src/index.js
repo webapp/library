@@ -13,7 +13,7 @@ define(function(require, exports, module) {
   var Router = require("./router");
   var View = require("./view");
   var ViewComponent = require("./component/view");
-  var sync = require("./sync").sync;
+  var Sync = require("./sync");
   var XhrTransport = require("./sync/transports/xhr");
 
   var $ = require("jquery");
@@ -73,9 +73,9 @@ define(function(require, exports, module) {
     },
 
     // Expose the sync functionality.
-    sync: sync,
+    sync: Sync,
 
-    // No idea...
+    // Replace with XhrTransport?
     ajax: function() {
       return WebApp.$.ajax.apply(WebApp.$, arguments);
     },

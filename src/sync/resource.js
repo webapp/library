@@ -2,7 +2,7 @@ define(function(require, exports, module) {
   "use strict";
 
   var Model = require("../model");
-  var MemoryAdapter = require("./adapters/memory");
+  var RestAdapter = require("./adapters/rest");
   var XhrTransport = require("./transports/xhr");
 
   var _ = require("lodash");
@@ -135,12 +135,13 @@ define(function(require, exports, module) {
       // Set the name for `where` lookups.
       this.set("name", options.name, { silent: true });
 
-      // By default use the XhrTransport.
+      // By default use XHR.
       this.transport = new XhrTransport(options);
-      this.on("update", this.updateNotify);
 
-      // Opt for basic memory caching by default.
-      this.adapter = new MemoryAdapter();
+      // By default use RESTful requests.
+      this.adapter = new RestAdapter();
+
+      this.on("update", this.updateNotify);
 
       // Defaults.
       this.raw = [];

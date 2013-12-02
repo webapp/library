@@ -3,7 +3,7 @@ define(function(require, exports, module) {
 
   var Class = require("./class");
   var Model = require("./model");
-  var sync = require("./sync").sync;
+  var Sync = require("./sync");
 
   var _ = require("lodash");
 
@@ -82,9 +82,7 @@ define(function(require, exports, module) {
     },
 
     // Proxy `Backbone.sync` by default.
-    sync: function() {
-      return Backbone.sync.apply(this, arguments);
-    },
+    sync: Sync,
 
     // Add a model, or list of models to the set.
     add: function(models, options) {

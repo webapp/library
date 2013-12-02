@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
   "use strict";
 
+  var Errors = require("../../util/errors");
   var Transport = require("../transport");
 
   var _ = require("lodash");
@@ -11,34 +12,61 @@ define(function(require, exports, module) {
       return navigator.onLine;
     },
 
-    connect: function() {
-      // Nothing needed here.
-    },
+    constructor: function() {
+      Xhr.super("constructor", this, arguments);
 
-    disconnect: function() {
-      // Nothing needed here.
-    },
+      // Ensure we have an adapter to initialize.
+      if (!options.adapter) {
+        throw new Errors.MissingAdapter();
+      }
 
-    url: "Property not implemented.",
+      // Initialize the adapter, passing along arguments.
+      this.adapter = options.adapter.create.apply(options.adapter, arguments);
+    },
 
     request: function(options) {
-      // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
-      var methodMap = {
-        "create": "POST",
-        "update": "PUT",
-        "patch": "PATCH",
-        "delete": "DELETE",
-        "read": "GET"
+      var params = _.extend({}, this.options);
+
+      // If no URL is present, throw a URL error.
+      if (!params.url || !options.url) {
+        throw new Errors.Url();
+      }
+
+      // For older servers, emulate JSON by encoding the request into an
+      // HTML-form.
+      if (options.emulateJSON) {
+        options.contentType = "application/x-www-form-urlencoded";
+        options.data = options.data ? { model: options.data } : {};
+      }
+
+      // For older servers, emulate HTTP by mimicking the HTTP method with
+      // `_method` And an `X-HTTP-Method-Override` header.
+      if (emulateHTTP && type !== "GET") {
+        options.type = "POST";
+        if (emulateJSON) params.data._method = type;
+        var beforeSend = options.beforeSend;
+        options.beforeSend = function(xhr) {
+          xhr.setRequestHeader("X-HTTP-Method-Override", type);
+          if (beforeSend) return beforeSend.apply(this, arguments);
+        };
+      }
+
+    // Don"t process data on a non-GET request.
+    if (params.type !== "GET" && !emulateJSON) {
+      params.processData = false;
+    }
+
+    // If we"re sending a `PATCH` request, and we"re in an old Internet Explorer
+    // that still has ActiveX enabled by default, override jQuery to use that
+    // for XHR instead. Remove this line when jQuery supports `PATCH` on IE8.
+    if (params.type === "PATCH" && noXhrPatch) {
+      params.xhr = function() {
+        return new ActiveXObject("Microsoft.XMLHTTP");
       };
+    }
 
-      // Remap.
-      options.method = methodMap[options.method];
-
-      // Merge in the instance to the options object.
-      _.defaults(options, this);
-
-      // Create a new connection.
-      var jqXHR = $.ajax(options);
+      // Create a new connection, overriding any additional options.
+      var jqXHR = $.ajax(_.extend(params, options));
 
       // Publish fetched and parsed data to a passed channel.
       if (this.channel) {
