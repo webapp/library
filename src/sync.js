@@ -10,7 +10,7 @@ define(function(require, exports, module) {
     !(window.XMLHttpRequest && (new XMLHttpRequest).dispatchEvent);
 
   var Sync = function(method, model, options) {
-    var args = ;
+    //var args = ;
 
     // Set the default options.
     options = _.defaults(options || {}, {
@@ -23,10 +23,10 @@ define(function(require, exports, module) {
       emulateJSON: Backbone.emulateJSON,
 
       // Default to the Model/Collection's URL.
-      url: _.result(model, "url"),
+      url: _.result(model, "url")//,
 
       // Ensure that we have the appropriate request data.
-      data: 
+      //data: 
     });
 
     // If no transport was set, default to Xhr.

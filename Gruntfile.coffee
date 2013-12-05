@@ -11,6 +11,7 @@ module.exports = ->
         "!src/model.js"
         "!src/router.js"
         "!src/sync.js"
+        "!src/sync/transports/xhr.js"
         "test/tests/**/*.js"
       ]
 

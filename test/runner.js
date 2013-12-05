@@ -55,30 +55,22 @@
     // Set the application endpoint.
     paths: {
       tests: "../test/tests",
-      backbone: "../bower_components/backbone",
-      layoutmanager: "../bower_components/layoutmanager",
-      sizzle: "../bower_components/sizzle/dist/sizzle",
-      scopedcss: "../bower_components/scopedcss/dist/scopedcss",
-      ractive: "../bower_components/ractive/build/Ractive",
-      jquery: "../bower_components/jquery/jquery",
-      lodash: "../bower_components/lodash/dist/lodash"
+      backbone: "../bower_components/backbone"
     },
 
-    // Determine the baseUrl if we are in Karma or not.
-    baseUrl: baseUrl + "src",
+    baseUrl: baseUrl + "build"
+  }, ["config"], function() {
+    // Reset the baseUrl to the source directory.
+    require.s.contexts._.config.baseUrl = baseUrl + "src/";
 
-    packages: [{
-      name: "webapp",
-      location: ".",
-      main: "index.js"
-    }],
-  }, [], function() {
+    // Set up the library to expose globals.
     require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {
       window.Backbone = WebApp;
       window.Backbone.Layout = View;
       window._ = _;
       window.$ = Backbone.$;
 
+      // Kick off the tests.
       require(tests, karma ? karma.start : function() { mocha.run(); });
     });
   });
