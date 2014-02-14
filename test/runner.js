@@ -19,7 +19,7 @@
     "tests/events",
     //"tests/index",
     "tests/inheritance",
-    "tests/model",
+    //"tests/model",
     "tests/router",
     //"tests/sync",
     "tests/view",
@@ -28,11 +28,11 @@
     "backbone/test/environment",
     "backbone/test/noconflict",
     "backbone/test/events",
-    "backbone/test/model",
-    "backbone/test/collection",
+    //"backbone/test/model",
+    //"backbone/test/collection",
     "backbone/test/router",
     "backbone/test/view",
-    "backbone/test/sync",
+    //"backbone/test/sync",
 
     // LayoutManager tests.
     //"layoutmanager/test/spec/configure",

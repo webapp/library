@@ -18,7 +18,7 @@ module.exports = ->
       ]
 
       files: [
-        { pattern: "src/**/*.js", included: false }
+        { pattern: "lib/**/*.js", included: false }
         { pattern: "test/tests/**/*.js", included: false }
         { pattern: "bower_components/**/*.js", included: false }
         { pattern: "build/**/*.js", included: false }
@@ -32,7 +32,7 @@ module.exports = ->
 
       preprocessors:
         "test/tests/**/*.js": ["coverage"]
-        "src/**/*.js": ["coverage"]
+        "lib/**/*.js": ["coverage"]
 
       coverageReporter:
         type: "lcov"
