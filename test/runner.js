@@ -61,7 +61,7 @@
     baseUrl: baseUrl + "build"
   }, ["config"], function() {
     // Reset the baseUrl to the source directory.
-    require.s.contexts._.config.baseUrl = baseUrl + "src/";
+    require.s.contexts._.config.baseUrl = baseUrl + "lib/";
 
     // Set up the library to expose globals.
     require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {

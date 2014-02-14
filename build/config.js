@@ -26,6 +26,6 @@ require.config({
   },
 
   baseUrl: "../src",
-  include: ["../build/define", "../build/config", "webapp"],
+  include: ["../build/almond", "../build/config", "webapp"],
   exclude: ["jquery", "lodash", "scopedcss", "ractive"]
 });

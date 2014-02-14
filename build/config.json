@@ -1,0 +1,10 @@
+{
+  "paths": {
+    "sizzle": "bower_components/sizzle/dist/sizzle",
+    "scopedcss": "bower_components/scopedcss/dist/scopedcss",
+    "ractive": "bower_components/ractive/build/Ractive",
+    "jquery": "bower_components/jquery/jquery",
+    "lodash": "bower_components/lodash/dist/lodash",
+    "layoutmanager": "bower_components/layoutmanager/backbone.layoutmanager"
+  }
+}
