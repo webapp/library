@@ -5,6 +5,27 @@ module.exports = ->
     options:
       name: "WebApp"
 
-    build:
+      paths:
+        scopedcss: "../bower_components/scopedcss/dist/scopedcss"
+        lodash: "../bower_components/lodash/dist/lodash"
+        jquery: "../bower_components/jquery/jquery"
+        ractive: "../bower_components/ractive/Ractive"
+
+    # Bundles all third party libraries necessary for this library to operate
+    # at full potential.
+    bundled:
       files:
-        "out.js": "lib/index.js"
+        "dist/webapp.bundled.js": "lib/index.js"
+
+    # A minimal build that only includes the official source code.
+    default:
+      options:
+        exclude: [
+          "scopedcss"
+          "lodash"
+          "jquery"
+          "ractive"
+        ]
+        
+      files:
+        "dist/webapp.js": "lib/index.js"

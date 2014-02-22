@@ -3,19 +3,21 @@ require.config({
     name: "webapp",
     location: ".",
     main: "index.js"
+  }, {
+    name: "lodash",
+    location: "../bower_components/lodash-amd/modern",
+    main: "main.js"
+  }, {
+    name: "jquery",
+    location: "../bower_components/jquery/src",
+    main: "jquery.js"
   }],
 
   paths: {
     sizzle: "../bower_components/sizzle/dist/sizzle",
-    scopedcss: "../bower_components/scopedcss/dist/scopedcss",
+    scopedcss: "../bower_components/scopedcss/scopedcss",
     ractive: "../bower_components/ractive/build/Ractive",
-    jquery: "../bower_components/jquery/jquery",
-    lodash: "../bower_components/lodash/dist/lodash",
     layoutmanager: "../bower_components/layoutmanager/backbone.layoutmanager"
-  },
-
-  globals: {
-    "jquery": "jQuery"
   },
 
   map: {
@@ -25,7 +27,7 @@ require.config({
     }
   },
 
-  baseUrl: "../src",
+  baseUrl: "../lib",
   include: ["../build/almond", "../build/config", "webapp"],
   exclude: ["jquery", "lodash", "scopedcss", "ractive"]
 });
