@@ -84,17 +84,30 @@ define(function(require, exports, module) {
 
       _.extend(Parent, Inheritance);
 
-      it("its prototype will be the parent", function() {
-        var child = Parent.create();
+      it("can be initialized with new", function() {
+        var parent = new Parent();
 
-        expect(child instanceof Parent).to.equal(true);
+        expect(parent instanceof Parent).to.equal(true);
+      });
+
+      it("can be initialized without new", function() {
+        var Child = Parent.extend();
+        var child = Child();
+
+        expect(child instanceof Child).to.equal(true);
+      });
+
+      it("its prototype will be the parent", function() {
+        var parent = Parent.create();
+
+        expect(parent instanceof Parent).to.equal(true);
       });
 
       it("will trigger the parent's constructor function", function() {
         var hit = false;
         Parent.prototype.constructor = function() { hit = true; };
 
-        var child = Parent.create();
+        var parent = Parent.create();
 
         expect(hit).to.equal(true);
       });
@@ -135,14 +148,14 @@ define(function(require, exports, module) {
       });
 
       describe("with no arguments", function() {
-        var child = Parent.create();
+        var parent = Parent.create();
 
         it("will not product a Child with an identical object", function() {
-          expect(child).to.not.equal(Parent);
+          expect(parent).to.not.equal(Parent);
         });
 
         it("will be identical to the parent otherwise", function() {
-          expect(child).to.eql(Parent.prototype);
+          expect(parent).to.eql(Parent.prototype);
         });
       });
 
@@ -153,7 +166,7 @@ define(function(require, exports, module) {
           args = arguments;
         };
 
-        var child = Parent.create({
+        var parent = Parent.create({
           str: "value"
         });
 

@@ -19,20 +19,19 @@
     "tests/events",
     //"tests/index",
     "tests/inheritance",
-    //"tests/model",
+    "tests/model",
     "tests/router",
     //"tests/sync",
     "tests/view",
 
     // Backbone tests.
-    "backbone/test/environment",
     "backbone/test/noconflict",
     "backbone/test/events",
     //"backbone/test/model",
     //"backbone/test/collection",
     "backbone/test/router",
     "backbone/test/view",
-    //"backbone/test/sync",
+    "backbone/test/sync",
 
     // LayoutManager tests.
     //"layoutmanager/test/spec/configure",
@@ -52,14 +51,14 @@
   if (karma) { karma.loaded = function() {}; }
 
   require({
-    // Set the application endpoint.
     paths: {
       tests: "../test/tests",
-      backbone: "../bower_components/backbone"
+      backbone: "../bower_components/backbone",
+      sinon: "../bower_components/sinon/lib/sinon"
     },
 
     baseUrl: baseUrl + "build"
-  }, ["config"], function() {
+  }, ["config"], function(config) {
     // Reset the baseUrl to the source directory.
     require.s.contexts._.config.baseUrl = baseUrl + "lib/";
 
@@ -70,8 +69,10 @@
       window._ = _;
       window.$ = Backbone.$;
 
-      // Kick off the tests.
-      require(tests, karma ? karma.start : function() { mocha.run(); });
+      require(["backbone/test/environment"], function() {
+        // Kick off the tests.
+        require(tests, karma ? karma.start : function() { mocha.run(); });
+      });
     });
   });
 })(this);

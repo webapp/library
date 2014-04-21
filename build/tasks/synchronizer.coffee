@@ -26,6 +26,13 @@ module.exports = ->
           "jquery"
           "ractive"
         ]
-        
+
+        deps: [
+          "scopedcss": "ScopedCSS"
+          "lodash": "_"
+          "jquery": "jQuery"
+          "ractive": "Ractive"
+        ]
+
       files:
         "dist/webapp.js": "lib/index.js"

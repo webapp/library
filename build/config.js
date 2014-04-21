@@ -1,4 +1,6 @@
 require.config({
+  name: "WebApp",
+
   packages: [{
     name: "webapp",
     location: ".",
@@ -16,18 +18,6 @@ require.config({
   paths: {
     sizzle: "../bower_components/sizzle/dist/sizzle",
     scopedcss: "../bower_components/scopedcss/scopedcss",
-    ractive: "../bower_components/ractive/build/Ractive",
-    layoutmanager: "../bower_components/layoutmanager/backbone.layoutmanager"
-  },
-
-  map: {
-    "layoutmanager": {
-      "backbone": "webapp",
-      "underscore": "lodash"
-    }
-  },
-
-  baseUrl: "../lib",
-  include: ["../build/almond", "../build/config", "webapp"],
-  exclude: ["jquery", "lodash", "scopedcss", "ractive"]
+    ractive: "../bower_components/ractive/build/Ractive"
+  }
 });

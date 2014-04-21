@@ -24,7 +24,7 @@ module.exports = ->
         { pattern: "build/**/*.js", included: false }
 
         "test/vendor/chai.js"
-        "test/vendor/mocha-qunit-ui.js"
+        "node_modules/mocha-qunit-ui/mocha-qunit-ui.js"
         "test/vendor/require.js"
         "test/vendor/adapter.js"
         "test/runner.js"
@@ -35,8 +35,8 @@ module.exports = ->
         "lib/**/*.js": ["coverage"]
 
       coverageReporter:
-        type: "lcov"
-        dir: "test/reports/coverage/"
+        type: "html"
+        dir: "test/coverage/"
 
     run:
       options:
