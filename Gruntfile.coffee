@@ -1,3 +1,8 @@
 module.exports = ->
   @loadTasks "build/tasks"
-  @registerTask "default", ["browserify"]
+  @registerTask "default", [
+    #"jshint"
+    #"jscs"
+    "browserify"
+    "karma"
+  ]
