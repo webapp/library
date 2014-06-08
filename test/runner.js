@@ -44,9 +44,6 @@
   mocha.setup("bdd");
   mocha.setup("qunit");
 
-  // Use Chai as the assertion library.
-  window.expect = chai.expect;
-
   // Make async.
   if (karma) { karma.loaded = function() {}; }
 

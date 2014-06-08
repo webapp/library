@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "lodash-amd": "~2.4.1",
-    "scopedcss": "~0.1.0",
+    "scopedcss": "~0.1.1",
     "ractive": "~0.3.9",
     "sizzle": "~1.10.16",
     "jquery": "~2.1.0",
@@ -17,9 +17,8 @@
   "devDependencies": {
     "requirejs": "~2.1.9",
     "mocha": "~1.14.0",
-    "chai": "~1.8.0",
-    "sinon": "tbranyen/Sinon.JS#fix-amd-dependencies",
-    "backbone": "git@github.com:jashkenas/backbone.git#1.1.0",
-    "qunit": "~1.12.0"
+    "sinon": "~1.10.2",
+    "qunit": "~1.12.0",
+    "assert": "~0.1.0"
   }
 }

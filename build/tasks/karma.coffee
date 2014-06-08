@@ -23,7 +23,7 @@ module.exports = ->
         { pattern: "bower_components/**/*.js", included: false }
         { pattern: "build/**/*.js", included: false }
 
-        "test/vendor/chai.js"
+        "bower_components/assert/assert.js"
         "node_modules/mocha-qunit-ui/mocha-qunit-ui.js"
         "test/vendor/require.js"
         "test/vendor/adapter.js"

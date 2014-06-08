@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
   describe("XhrTransport", function() {
     it("is a constructor", function() {
-      expect(XhrTransport).to.be.a("function");
+      assert.equal(XhrTransport, "function");
     });
   });
 });

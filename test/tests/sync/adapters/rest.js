@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
   describe("RestAdapter", function() {
     it("is a constructor", function() {
-      expect(RestAdapter).to.be.a("function");
+      assert(typeof RestAdapter, "function");
     });
   });
 });

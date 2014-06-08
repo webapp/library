@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
   describe("Adapter", function() {
     it("is a constructor", function() {
-      expect(Adapter).to.be.a("function");
+      assert.equal(Adapter, "function");
     });
   });
 });

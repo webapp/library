@@ -17,7 +17,7 @@ require.config({
 
   paths: {
     sizzle: "../bower_components/sizzle/dist/sizzle",
-    scopedcss: "../bower_components/scopedcss/scopedcss",
+    scopedcss: "../bower_components/scopedcss/dist/scopedcss",
     ractive: "../bower_components/ractive/build/Ractive"
   }
 });
