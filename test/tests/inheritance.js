@@ -6,15 +6,15 @@ define(function(require, exports, module) {
 
   describe("Inheritance", function() {
     it("is an object", function() {
-      expect(Inheritance).to.be.a("object");
+      assert.equal(typeof Inheritance, "object");
     });
     
     it("exposes an extend method", function() {
-      expect(Inheritance.extend).to.be.a("function");
+      assert.equal(typeof Inheritance.extend, "function");
     });
 
     it("exposes a create method", function() {
-      expect(Inheritance.create).to.be.a("function");
+      assert.equal(typeof Inheritance.create, "function");
     });
 
     describe("when extending a Parent object", function() {
@@ -30,11 +30,11 @@ define(function(require, exports, module) {
         var Child = Parent.extend();
 
         it("will not product a Child with an identical object", function() {
-          expect(Child).to.not.equal(Parent);
+          assert.notEqual(Child, Parent);
         });
 
         it("will have identical Parent functions", function() {
-          expect(Child.extend).to.equal(Parent.extend);
+          assert.equal(Child.extend, Parent.extend);
         });
       });
 
@@ -54,27 +54,27 @@ define(function(require, exports, module) {
         });
 
         it("will copy over all properties regardless of type", function() {
-          expect(Child.prototype).to.have.ownProperty("str");
-          expect(Child.prototype).to.have.ownProperty("bool");
-          expect(Child.prototype).to.have.ownProperty("num");
-          expect(Child.prototype).to.have.ownProperty("falsey");
-          expect(Child.prototype).to.have.ownProperty("fn");
-          expect(Child.prototype).to.have.ownProperty("obj");
-          expect(Child.prototype).to.have.ownProperty("array");
+          assert(Child.prototype.hasOwnProperty("str"));
+          assert(Child.prototype.hasOwnProperty("bool"));
+          assert(Child.prototype.hasOwnProperty("num"));
+          assert(Child.prototype.hasOwnProperty("falsey"));
+          assert(Child.prototype.hasOwnProperty("fn"));
+          assert(Child.prototype.hasOwnProperty("obj"));
+          assert(Child.prototype.hasOwnProperty("array"));
         });
 
         it("will copy over values correctly", function() {
-          expect(Child.prototype.str).to.equal("value");
-          expect(Child.prototype.bool).to.equal(true);
-          expect(Child.prototype.num).to.equal(5);
-          expect(Child.prototype.falsey).to.equal(undefined);
-          expect(Child.prototype.fn).to.equal(fn);
-          expect(Child.prototype.obj).to.equal(obj);
-          expect(Child.prototype.array).to.equal(array);
+          assert.equal(Child.prototype.str, "value");
+          assert.equal(Child.prototype.bool, true);
+          assert.equal(Child.prototype.num, 5);
+          assert.equal(Child.prototype.falsey, undefined);
+          assert.equal(Child.prototype.fn, fn);
+          assert.equal(Child.prototype.obj, obj);
+          assert.equal(Child.prototype.array, array);
         });
 
         it("will not modify the parent object", function() {
-          expect(Object.keys(Parent)).to.eql(["create", "extend", "mixin"]);
+          assert.deepEqual(Object.keys(Parent), ["create", "extend", "mixin"]);
         });
       });
     });
@@ -87,20 +87,20 @@ define(function(require, exports, module) {
       it("can be initialized with new", function() {
         var parent = new Parent();
 
-        expect(parent instanceof Parent).to.equal(true);
+        assert.equal(parent instanceof Parent, true);
       });
 
       it("can be initialized without new", function() {
         var Child = Parent.extend();
         var child = Child();
 
-        expect(child instanceof Child).to.equal(true);
+        assert.equal(child instanceof Child, true);
       });
 
       it("its prototype will be the parent", function() {
         var parent = Parent.create();
 
-        expect(parent instanceof Parent).to.equal(true);
+        assert.equal(parent instanceof Parent, true);
       });
 
       it("will trigger the parent's constructor function", function() {
@@ -109,7 +109,7 @@ define(function(require, exports, module) {
 
         var parent = Parent.create();
 
-        expect(hit).to.equal(true);
+        assert.equal(hit, true);
       });
 
       it("will provide super access to the Parent", function() {
@@ -127,11 +127,11 @@ define(function(require, exports, module) {
 
         var child = Child.create();
 
-        expect(Child.super).to.be.a("function");
-        expect(Child.super()).to.equal(Parent);
+        assert.equal(typeof Child.super, "function");
+        assert.equal(Child.super(), Parent);
 
         child.someMethod();
-        expect(hit).to.equal(true);
+        assert.equal(hit, true);
 
         hit = false;
 
@@ -144,18 +144,18 @@ define(function(require, exports, module) {
         var third = Third.create();
 
         third.someMethod();
-        expect(hit).to.equal(true);
+        assert.equal(hit, true);
       });
 
       describe("with no arguments", function() {
         var parent = Parent.create();
 
         it("will not product a Child with an identical object", function() {
-          expect(parent).to.not.equal(Parent);
+          assert.notEqual(parent, Parent);
         });
 
-        it("will be identical to the parent otherwise", function() {
-          expect(parent).to.eql(Parent.prototype);
+        it("will be deep equal to the parent prototype", function() {
+          assert.deepEqual(parent.__proto__, Parent.prototype);
         });
       });
 
@@ -173,8 +173,8 @@ define(function(require, exports, module) {
         delete Parent.prototype.constructor;
 
         it("will pass properties to constructor", function() {
-          expect(args.length).to.equal(1);
-          expect(args[0].str).to.equal("value");
+          assert.equal(args.length, 1);
+          assert.equal(args[0].str, "value");
         });
       });
     });

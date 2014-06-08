@@ -5,23 +5,23 @@ define(function(require, exports, module) {
 
   describe("Class", function() {
     it("is a constructor", function() {
-      expect(Class).to.be.a("function");
+      assert.equal(typeof Class, "function");
     });
 
     it("exposes a default constructor", function() {
-      expect(Class.constructor).to.be.a("function");
+      assert.equal(typeof Class.constructor, "function");
     });
 
     it("exposes an extend method", function() {
-      expect(Class.extend).to.be.a("function");
+      assert.equal(typeof Class.extend, "function");
     });
 
     it("exposes a mixin method", function() {
-      expect(Class.mixin).to.be.a("function");
+      assert.equal(typeof Class.mixin, "function");
     });
     
     it("has inheritance", function() {
-      expect(Class.extend).to.be.a("function");
+      assert.equal(typeof Class.extend, "function");
     });
 
     describe("when subclassed by extending", function() {
@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         it("will overwrite existing properties", function() {
           MyClass.mixin({ someProperty: false });
 
-          expect(MyClass.someProperty).to.equal(false);
+          assert.equal(MyClass.someProperty, false);
         });
       });
     });
@@ -42,7 +42,7 @@ define(function(require, exports, module) {
       var myClass = Class.create();
 
       it("will have a prototype equal to the Class", function() {
-        expect(myClass instanceof Class).to.be.equal(true);
+        assert.equal(myClass instanceof Class, true);
       });
     });
   });

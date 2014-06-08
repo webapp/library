@@ -3,6 +3,6 @@ module.exports = ->
   @registerTask "default", [
     #"jshint"
     #"jscs"
-    "browserify"
-    "karma"
+    #"browserify"
+    "karma:run"
   ]

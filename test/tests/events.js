@@ -6,7 +6,19 @@ define(function(require, exports, module) {
 
   describe("Events", function() {
     it("is an object", function() {
-      expect(Events).to.be.a("object");
+      assert.equal(typeof Events, "object");
+    });
+
+    // Test for triggerEvents 2, 3 and default.
+    // Test for invalid event name in `off`.
+    it("will not error with invalid event name in off method", function() {
+      var obj = _.extend({}, Events);
+
+      obj.on("valid", function() {});
+
+      assert.doesNotThrow(function() {
+        obj.off("invalid");
+      });
     });
   });
 });

@@ -6,32 +6,32 @@
 
   var tests = [
     // WebApp library tests.
-    "tests/component/view",
-    "tests/sync/adapters/rest",
-    "tests/sync/transports/xhr",
-    "tests/sync/adapter",
-    "tests/sync/resource",
-    "tests/sync/transport",
-    "tests/channel",
+    //"tests/component/view",
+    //"tests/sync/adapters/rest",
+    //"tests/sync/transports/xhr",
+    //"tests/sync/adapter",
+    //"tests/sync/resource",
+    //"tests/sync/transport",
+    //"tests/channel",
     "tests/class",
-    "tests/collection",
-    "tests/component",
+    //"tests/collection",
+    //"tests/component",
     "tests/events",
-    //"tests/index",
+    "tests/index",
     "tests/inheritance",
-    "tests/model",
-    "tests/router",
+    //"tests/model",
+    //"tests/router",
     //"tests/sync",
-    "tests/view",
+    //"tests/view",
 
     // Backbone tests.
-    "backbone/test/noconflict",
-    "backbone/test/events",
-    //"backbone/test/model",
     //"backbone/test/collection",
-    "backbone/test/router",
+    "backbone/test/events",
+    "backbone/test/model",
+    "backbone/test/noconflict",
+    //"backbone/test/router",
+    //"backbone/test/sync",
     "backbone/test/view",
-    "backbone/test/sync",
 
     // LayoutManager tests.
     //"layoutmanager/test/spec/configure",
@@ -50,7 +50,7 @@
   require({
     paths: {
       tests: "../test/tests",
-      backbone: "../bower_components/backbone",
+      backbone: "../test/vendor/backbone",
       sinon: "../bower_components/sinon/lib/sinon"
     },
 
@@ -60,14 +60,14 @@
     require.s.contexts._.config.baseUrl = baseUrl + "lib/";
 
     // Set up the library to expose globals.
-    require(['webapp', 'view', 'lodash'], function(WebApp, View, _) {
+    require(["webapp", "view", "lodash", "sync"], function(WebApp, View, _) {
       window.Backbone = WebApp;
       window.Backbone.Layout = View;
       window._ = _;
       window.$ = Backbone.$;
 
+      // Kick off the tests.
       require(["backbone/test/environment"], function() {
-        // Kick off the tests.
         require(tests, karma ? karma.start : function() { mocha.run(); });
       });
     });
