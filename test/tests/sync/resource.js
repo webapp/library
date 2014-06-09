@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
   describe("Resource", function() {
     it("is a constructor", function() {
-      assert.equal(Resource, "function");
+      assert.equal(typeof Resource, "function");
     });
   });
 });

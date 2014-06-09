@@ -6,34 +6,34 @@
 
   var tests = [
     // WebApp library tests.
-    //"tests/component/view",
-    //"tests/sync/adapters/rest",
-    //"tests/sync/transports/xhr",
-    //"tests/sync/adapter",
-    //"tests/sync/resource",
-    //"tests/sync/transport",
-    //"tests/channel",
+    "tests/component/view",
+    "tests/sync/adapters/rest",
+    "tests/sync/transports/xhr",
+    "tests/sync/adapter",
+    "tests/sync/resource",
+    "tests/sync/transport",
+    "tests/channel",
     "tests/class",
-    //"tests/collection",
-    //"tests/component",
+    "tests/collection",
+    "tests/component",
     "tests/events",
     "tests/index",
     "tests/inheritance",
-    //"tests/model",
-    //"tests/router",
-    //"tests/sync",
-    //"tests/view",
+    "tests/model",
+    "tests/router",
+    "tests/sync",
+    "tests/view",
 
     // Backbone tests.
-    //"backbone/test/collection",
+    "backbone/test/noconflict",
     "backbone/test/events",
     "backbone/test/model",
-    "backbone/test/noconflict",
-    //"backbone/test/router",
-    //"backbone/test/sync",
+    //"backbone/test/collection",
+    "backbone/test/router",
     "backbone/test/view",
+    //"backbone/test/sync",
 
-    // LayoutManager tests.
+    // TODO LayoutManager tests.
     //"layoutmanager/test/spec/configure",
     //"layoutmanager/test/spec/dom",
     //"layoutmanager/test/spec/setup",
@@ -51,7 +51,8 @@
     paths: {
       tests: "../test/tests",
       backbone: "../test/vendor/backbone",
-      sinon: "../bower_components/sinon/lib/sinon"
+      sinon: "../bower_components/sinon/lib/sinon",
+      layoutmanager: "../bower_components/layoutmanager/"
     },
 
     baseUrl: baseUrl + "build"

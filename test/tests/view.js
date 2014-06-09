@@ -7,7 +7,7 @@ define(function(require, exports, module) {
 
   var testUtil = {
     trim: function(str) {
-      return str ? str.replace(/^\s+|\s+$/g, "") : "";
+      return str.replace(/^\s+|\s+$/g, "");
     },
     templates: {
       main: "<div class='left'>Left</div><div class='right'></div>",
@@ -21,37 +21,21 @@ define(function(require, exports, module) {
       view2: "<div class='view2'>2</div>",
       view3: "<div class='view3'>3</div>",
       listItem: "<div class='listItem'><%= item %></div>"
-    },
-    inNodeJs: function() {
-      return typeof module !== "undefined" && module.exports;
-    },
-    // isDomNode
-    // Determine if the supplied object is a DOM node (in Node.js, DOM nodes are
-    // simulated by Cheerio objects)
-    isDomNode: function(obj) {
-      if (testUtil.inNodeJs()) {
-        return obj && "type" in obj && "children" in obj && "parent" in obj;
-      } else {
-        return obj && obj.nodeType != null;
-      }
     }
   };
 
   // If this code is running as a Node.js module, attach the utilities to the
   // module.
-  if (testUtil.inNodeJs()) {
-    exports.testUtil = testUtil;
-  }
+  exports.testUtil = testUtil;
 
   describe("View", function() {
     it("is a constructor", function() {
-      expect(View).to.be.a("function");
+      assert.equal(typeof View, "function");
     });
 
-    // FIXME
-    //it("has Class in the prototype chain", function() {
-    //  expect(View.__proto__).to.equal(Class);
-    //});
+    it("has Class in the prototype chain", function() {
+      assert.equal(View.__proto__, Class);
+    });
 
     describe("with no configuration", function() {
       var view;
@@ -65,16 +49,16 @@ define(function(require, exports, module) {
       });
 
       it("has predefined defaults", function() {
-        expect(view.prefix).to.equal("");
-        expect(view.tagName).to.equal("div");
-        expect(view.useFragment).to.equal(true);
-        expect(view.deferred).to.be.a("function");
-        expect(view.fetchTemplate).to.be.a("function");
-        expect(view.renderTemplate).to.be.a("function");
-        expect(view.partial).to.be.a("function");
-        expect(view.html).to.be.a("function");
-        expect(view.insert).to.be.a("function");
-        expect(view.when).to.be.a("function");
+        assert.equal(view.prefix, "");
+        assert.equal(view.tagName, "div");
+        assert.equal(view.useFragment, true);
+        assert.equal(typeof view.deferred, "function");
+        assert.equal(typeof view.fetchTemplate, "function");
+        assert.equal(typeof view.renderTemplate, "function");
+        assert.equal(typeof view.partial, "function");
+        assert.equal(typeof view.html, "function");
+        assert.equal(typeof view.insert, "function");
+        assert.equal(typeof view.when, "function");
       });
     });
 
@@ -92,8 +76,8 @@ define(function(require, exports, module) {
       });
 
       it("will configure options on a global and local level", function() {
-        expect(view.prefix).to.equal("/templates/");
-        expect(View.prototype.prefix).to.equal("/templates/");
+        assert.equal(view.prefix, "/templates/");
+        assert.equal(View.prototype.prefix, "/templates/");
       });
     });
 
@@ -109,11 +93,11 @@ define(function(require, exports, module) {
       });
 
       it("will configure the options object", function() {
-        expect(view.prefix).to.equal("/templates/raw/");
+        assert.equal(view.prefix, "/templates/raw/");
       });
 
       it("will not configure the global View", function() {
-        expect(View.prototype.prefix).to.not.equal("/templates/");
+        assert.notEqual(View.prototype.prefix, "/templates/");
       });
     });
 
@@ -136,7 +120,7 @@ define(function(require, exports, module) {
 
       it("will trigger the correct override", function() {
         layout.render();
-        expect(hit).to.equal(true);
+        assert.equal(hit, true);
       });
     });
 
@@ -159,12 +143,12 @@ define(function(require, exports, module) {
 
       it("will trigger the provided fetch", function() {
         new TestView().render();
-        expect(hit).to.equal("extend");
+        assert.equal(hit, "extend");
       });
 
       it("will trigger the fetch provided during create", function() {
-        new TestView({ fetch: function() { hit = "create"; } }).render();
-        expect(hit, "Fetch gets called on a View.");
+        new TestView().render();
+        assert(hit, "Fetch gets called on a View.");
       });
     });
 
@@ -183,7 +167,7 @@ define(function(require, exports, module) {
 
       it("will render the correct text", function() {
         var testView = new TestView().render();
-        expect(testUtil.trim(testView.$el.text())).to.equal("hi");
+        assert.equal(testUtil.trim(testView.$el.text()), "hi");
       });
     });
 
@@ -202,11 +186,11 @@ define(function(require, exports, module) {
       });
 
       it("will override special properties correctly", function() {
-        expect(layout.getView("").template).to.equal("template-two");
+        assert.equal(layout.getView("").template, "template-two");
       });
 
       it("will override arbitrary properties", function() {
-        expect(layout.getView("").lol).to.equal("hi");
+        assert.equal(layout.getView("").lol, "hi");
       });
     });
   });

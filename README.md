@@ -3,7 +3,7 @@ WebApp/Library
 
 > a tool for writing web applications
 
-**Stable:** 0.1.0
+**Stable: 0.1.0**
 
 A modern fork of the popular MV\* library, Backbone.js.  Authored using the
 simplified CommonJS AMD format.

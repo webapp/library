@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
   describe("Channel", function() {
     it("is a constructor", function() {
-      expect(Channel).to.be.a("function");
+      assert.equal(typeof Channel, "function");
     });
 
     it("requires a name", function() {
@@ -26,9 +26,9 @@ define(function(require, exports, module) {
 
       channel3 = Channel.create("name");
 
-      expect(channel).to.equal(undefined);
-      expect(channel2).to.equal(undefined);
-      expect(channel3).to.be.an.instanceof(Channel);
+      assert.equal(channel, undefined);
+      assert.equal(channel2, undefined);
+      assert(channel3 instanceof Channel);
     });
 
     describe("when initializing", function() {
@@ -39,12 +39,12 @@ define(function(require, exports, module) {
       it("will cache instances by name", function() {
         channel.testing = true;
 
-        expect(channel).to.not.equal(channel2);
-        expect(channel.testing).to.equal(true);
+        assert.notEqual(channel, channel2);
+        assert.equal(channel.testing, true);
       });
 
       it("will not share instances with different names", function() {
-        expect(channel3.testing).to.equal(undefined);
+        assert.equal(channel3.testing, undefined);
       });
     });
 
@@ -61,10 +61,10 @@ define(function(require, exports, module) {
         channel.subscribe(callback);
         channel.publish("value", "key");
 
-        expect(callback.calledOnce).to.equal(true);
-        expect(callback.thisValues[0]).to.equal(channel);
-        expect(callback.args[0][0]).to.equal("value");
-        expect(callback.args[0][1]).to.equal("key");
+        assert.equal(callback.calledOnce, true);
+        assert.equal(callback.thisValues[0], channel);
+        assert.equal(callback.args[0][0], "value");
+        assert.equal(callback.args[0][1], "key");
       });
     });
 
@@ -78,7 +78,7 @@ define(function(require, exports, module) {
         channel.unsubscribe();
         channel.publish("value", "key");
 
-        expect(callback.called).to.equal(false);
+        assert.equal(callback.called, false);
       });
     });
 
@@ -91,10 +91,10 @@ define(function(require, exports, module) {
         channel.subscribe(callback);
         channel.publish({ "key": "value" });
 
-        expect(callback.called).to.equal(true);
-        expect(callback.thisValues[0]).to.equal(channel);
-        expect(callback.args[0][0]).to.equal("key");
-        expect(callback.args[0][1]).to.equal("value");
+        assert.equal(callback.called, true);
+        assert.equal(callback.thisValues[0], channel);
+        assert.equal(callback.args[0][0], "key");
+        assert.equal(callback.args[0][1], "value");
       });
     });
   });
