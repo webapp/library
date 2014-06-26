@@ -21,7 +21,7 @@ module.exports = ->
       files: [
         { pattern: "lib/**/*.js", included: false }
         { pattern: "test/tests/**/*.js", included: false }
-        { pattern: "test/vendor/**/*.js", included: false }
+        { pattern: "vendor/**/*.js", included: false }
         { pattern: "build/**/*.js", included: false }
 
         "bower_components/assert/assert.js"
