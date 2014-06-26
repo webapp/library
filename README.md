@@ -1,23 +1,18 @@
 WebApp/Library
 --------------
 
-> a tool for writing web applications
-
 **Stable: 0.1.0**
+
+Created by Tim Branyen @tbranyen
 
 A modern fork of the popular MV\* library, Backbone.js.  Authored using the
 simplified CommonJS AMD format.
 
 ### Features: ###
 
-* Custom builds
+* Custom builds:
   - Raw build (no dependencies).
   - All bundled (Promise, jQuery, Lo-Dash, Ractive).
-
-* Flexible module/exports support
-  - Global (Just drop into the page with a script tag).
-  - AMD (RequireJS/Dojo).
-  - CJS (Node/Browserify).
 
 * Web Components
   - Scoped stylesheets.
@@ -33,4 +28,14 @@ simplified CommonJS AMD format.
   - Define adapters on how to store and work with the requested data locally.
   - Define resource handlers to communicate with event channels.
 
-### What's new and different from Backbone? ###
+### Getting started. ###
+
+
+### How to require. ###
+
+
+### Build process. ###
+
+### Testing. ###
+
+### Contribution. ###
