@@ -1,4 +1,4 @@
-## Contributing to LayoutManager ##
+## Contributing to WebApp/Library ##
 
 ### Filing an issue ###
 

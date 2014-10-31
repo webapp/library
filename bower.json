@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "lodash-amd": "~2.4.1",
-    "scopedcss": "~0.1.1",
+    "scopedcss": "~0.1.2",
     "ractive": "~0.5.5",
     "sizzle": "~2.0.0",
     "jquery": "~2.1.0",
