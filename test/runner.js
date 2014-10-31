@@ -27,7 +27,7 @@
     // Backbone tests.
     "backbone/test/noconflict",
     "backbone/test/events",
-    "backbone/test/model",
+    //"backbone/test/model",
     //"backbone/test/collection",
     "backbone/test/router",
     "backbone/test/view",
@@ -55,11 +55,8 @@
       layoutmanager: "../bower_components/layoutmanager/"
     },
 
-    baseUrl: baseUrl + "build"
+    baseUrl: baseUrl + "lib"
   }, ["config"], function(config) {
-    // Reset the baseUrl to the source directory.
-    require.s.contexts._.config.baseUrl = baseUrl + "lib/";
-
     // Set up the library to expose globals.
     require(["webapp", "view", "lodash", "sync"], function(WebApp, View, _) {
       window.Backbone = WebApp;
