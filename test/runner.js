@@ -27,11 +27,11 @@
     // Backbone tests.
     "backbone/test/noconflict",
     "backbone/test/events",
-    //"backbone/test/model",
-    //"backbone/test/collection",
+    "backbone/test/model",
+    "backbone/test/collection",
     "backbone/test/router",
     "backbone/test/view",
-    //"backbone/test/sync",
+    "backbone/test/sync",
 
     // TODO LayoutManager tests.
     //"layoutmanager/test/spec/configure",

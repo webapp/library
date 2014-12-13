@@ -68,7 +68,7 @@ var TodoView = WebApp.View.extend({
   tagName:  "li",
 
   // Cache the template function for a single item.
-  template: _.template($('#item-template').html()),
+  template: WebApp._.template($('#item-template').html()),
 
   // The DOM events specific to an item.
   events: {
@@ -136,7 +136,7 @@ var TodoView = WebApp.View.extend({
 // ---------------
 
 // Our overall **AppView** is the top-level piece of UI.
-var AppView = Backbone.View.extend({
+var AppView = WebApp.View.extend({
 
   // Instead of generating a new element, bind to the existing skeleton of
   // the App already present in the HTML.
