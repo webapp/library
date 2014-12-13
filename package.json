@@ -2,18 +2,19 @@
   "name": "webapp",
   "version": "0.1.0",
   "description": "a tool for writing web applications",
-  "main": "dist/cjs/index.js",
+  "main": "dist/webapp.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/WebApp/library.git"
   },
   "dependencies": {
     "lodash": "~2.4.1",
-    "ractive": "~0.5.5"
+    "ractive": "~0.5.5",
+    "scopedcss": "~0.1.4"
   },
   "devDependencies": {
+    "assert": "Jxck/assert",
     "deamdify": "~0.1.1",
-    "debowerify": "~0.8.1",
     "grunt": "~0.4.5",
     "grunt-browserify": "~2.1.3",
     "grunt-contrib-jshint": "~0.10.0",
@@ -25,6 +26,8 @@
     "karma-mocha": "~0.1.6",
     "karma-phantomjs-launcher": "~0.1.4",
     "mocha": "~1.20.1",
-    "mocha-qunit-ui": "~0.1.1"
+    "mocha-qunit-ui": "~0.1.1",
+    "qunitjs": "^1.16.0",
+    "sinon": "^1.12.2"
   }
 }

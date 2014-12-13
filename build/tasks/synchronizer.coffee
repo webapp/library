@@ -1,15 +1,15 @@
 module.exports = ->
-  #@loadNpmTasks "grunt-synchronizer"
+  @loadNpmTasks "grunt-synchronizer"
 
   @config "synchronizer",
     options:
       name: "WebApp"
 
       paths:
-        scopedcss: "../bower_components/scopedcss/dist/scopedcss"
-        lodash: "../bower_components/lodash/dist/lodash"
-        jquery: "../bower_components/jquery/jquery"
-        ractive: "../bower_components/ractive/Ractive"
+        scopedcss: "../node_modules/scopedcss/dist/scopedcss"
+        lodash: "../node_modules/lodash/dist/lodash"
+        jquery: "../node_modules/jquery/dst/jquery"
+        ractive: "../node_modules/ractive/ractive"
 
     # Bundles all third party libraries necessary for this library to operate
     # at full potential.
@@ -22,7 +22,6 @@ module.exports = ->
       options:
         exclude: [
           "scopedcss"
-          "lodash"
           "jquery"
           "ractive"
         ]

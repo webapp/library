@@ -3,9 +3,9 @@ module.exports = ->
 
   @config "browserify",
     options:
-      transform: ["debowerify", "deamdify"]
+      transform: ["deamdify"]
 
-      bundleOptions:
+      browserifyOptions:
         standalone: "WebApp"
 
     modern:

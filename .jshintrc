@@ -1,14 +1,13 @@
 {
   "evil": true,
   "browser": true,
+  "node": true,
   "boss": true,
   "immed": false,
   "eqnull": true,
-  "maxlen": 80,
-  "es3": true,
   "curly": true,
-  "quotmark": "double",
   "trailing": true,
+  "proto": true,
   "unused": true,
   "undef": true,
   "globals": {

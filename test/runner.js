@@ -51,14 +51,14 @@
     paths: {
       tests: "../test/tests",
       backbone: "../vendor/backbone",
-      sinon: "../bower_components/sinon/lib/sinon",
+      sinon: "../node_modules/sinon/lib/sinon",
       layoutmanager: "../bower_components/layoutmanager/"
     },
 
     baseUrl: baseUrl + "lib"
   }, ["config"], function(config) {
     // Set up the library to expose globals.
-    require(["webapp", "view", "lodash", "sync"], function(WebApp, View, _) {
+    require(["index", "view", "lodash", "sync"], function(WebApp, View, _) {
       window.Backbone = WebApp;
       window.Backbone.Layout = View;
       window._ = _;
