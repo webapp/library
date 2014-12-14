@@ -5,7 +5,7 @@
   "main": "dist/webapp.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WebApp/library.git"
+    "url": "https://github.com/webapp/library.git"
   },
   "scripts": {
     "build": "grunt browserify",
