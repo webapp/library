@@ -52,7 +52,7 @@
       tests: "../test/tests",
       backbone: "../vendor/backbone",
       sinon: "../node_modules/sinon/lib/sinon",
-      layoutmanager: "../bower_components/layoutmanager/"
+      layoutmanager: "../node_modules/backbone.layoutmanager/"
     },
 
     baseUrl: baseUrl + "lib"
@@ -63,6 +63,9 @@
       window.Backbone.Layout = View;
       window._ = _;
       window.$ = Backbone.$;
+
+      // Necessary for sync tests.
+      window.raises = QUnit.raises;
 
       // Kick off the tests.
       require(["backbone/test/environment"], function() {

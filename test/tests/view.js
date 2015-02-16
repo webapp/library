@@ -51,7 +51,7 @@ define(function(require, exports, module) {
       it("has predefined defaults", function() {
         assert.equal(view.prefix, "");
         assert.equal(view.tagName, "div");
-        assert.equal(view.useFragment, true);
+        assert.equal(view.useRAF, true);
         assert.equal(typeof view.deferred, "function");
         assert.equal(typeof view.fetchTemplate, "function");
         assert.equal(typeof view.renderTemplate, "function");
@@ -142,13 +142,15 @@ define(function(require, exports, module) {
       });
 
       it("will trigger the provided fetch", function() {
-        new TestView().render();
-        assert.equal(hit, "extend");
+        return new TestView().render().promise().then(function() {
+          assert.equal(hit, "extend");
+        });
       });
 
       it("will trigger the fetch provided during create", function() {
-        new TestView().render();
-        assert(hit, "Fetch gets called on a View.");
+        return new TestView().render().promise().then(function() {
+          assert(hit, "Fetch gets called on a View.");
+        });
       });
     });
 
@@ -166,8 +168,11 @@ define(function(require, exports, module) {
       });
 
       it("will render the correct text", function() {
-        var testView = new TestView().render();
-        assert.equal(testUtil.trim(testView.$el.text()), "hi");
+        var testView = new TestView();
+
+        return testView.render().promise().then(function() {
+          assert.equal(testUtil.trim(testView.$el.text()), "hi");
+        });
       });
     });
 

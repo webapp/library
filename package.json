@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "lodash": "~2.4.1",
-    "ractive": "~0.5.5",
     "scopedcss": "~0.1.4"
   },
   "devDependencies": {
@@ -27,6 +26,7 @@
     "grunt-jscs-checker": "0.4.4",
     "grunt-jsdoc": "~0.5.6",
     "grunt-karma": "~0.8.3",
+    "jquery": "^2.1.1",
     "karma": "~0.12.17",
     "karma-coverage": "~0.2.4",
     "karma-mocha": "~0.1.6",
@@ -34,6 +34,8 @@
     "mocha": "~1.20.1",
     "mocha-qunit-ui": "~0.1.1",
     "qunitjs": "^1.16.0",
-    "sinon": "^1.12.2"
+    "requirejs": "^2.1.15",
+    "sinon": "^1.12.2",
+    "backbone.layoutmanager": "~0.9.6"
   }
 }
