@@ -50,7 +50,7 @@
   require({
     paths: {
       tests: "../test/tests",
-      backbone: "../vendor/backbone",
+      backbone: "./vendor/backbone",
       sinon: "../node_modules/sinon/lib/sinon",
       layoutmanager: "../node_modules/backbone.layoutmanager/"
     },
