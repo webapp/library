@@ -13,29 +13,28 @@
     "test": "grunt"
   },
   "dependencies": {
-    "lodash": "~2.4.1",
-    "scopedcss": "~0.1.4"
+    "lodash": "^3.2.0",
+    "scopedcss": "^0.1.4"
   },
   "devDependencies": {
-    "assert": "Jxck/assert",
-    "deamdify": "~0.1.1",
-    "grunt": "~0.4.5",
-    "grunt-browserify": "~2.1.3",
+    "deamdify": "^0.1.1",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.3.0",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-jscs-checker": "0.4.4",
-    "grunt-jsdoc": "~0.5.6",
-    "grunt-karma": "~0.8.3",
-    "jquery": "^2.1.1",
-    "karma": "~0.12.17",
-    "karma-coverage": "~0.2.4",
-    "karma-mocha": "~0.1.6",
-    "karma-phantomjs-launcher": "~0.1.4",
-    "mocha": "~1.20.1",
-    "mocha-qunit-ui": "~0.1.1",
-    "qunitjs": "^1.16.0",
-    "requirejs": "^2.1.15",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-jscs-checker": "^0.4.4",
+    "grunt-jsdoc": "^0.5.8",
+    "grunt-karma": "^0.10.1",
+    "jquery": "^2.1.3",
+    "karma": "^0.12.31",
+    "karma-coverage": "^0.2.7",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^2.1.0",
+    "mocha-qunit-ui": "^0.1.2",
+    "qunitjs": "^1.17.1",
+    "requirejs": "^2.1.16",
     "sinon": "^1.12.2",
-    "backbone.layoutmanager": "~0.9.6"
+    "backbone.layoutmanager": "^0.9.6"
   }
 }

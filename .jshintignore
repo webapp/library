@@ -1,0 +1,8 @@
+lib/collection.js
+lib/model.js
+lib/events.js
+lib/history.js
+lib/router.js
+lib/view.js
+lib/sync.js
+lib/sync/transports/xhr.js

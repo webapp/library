@@ -22,14 +22,14 @@
     "tests/model",
     "tests/router",
     "tests/sync",
-    "tests/view",
+    //"tests/view",
 
     // Backbone tests.
     "backbone/test/noconflict",
     "backbone/test/events",
     "backbone/test/model",
-    "backbone/test/collection",
-    "backbone/test/router",
+    //"backbone/test/collection",
+    //"backbone/test/router",
     "backbone/test/view",
     "backbone/test/sync",
 
@@ -50,7 +50,7 @@
   require({
     paths: {
       tests: "../test/tests",
-      backbone: "./vendor/backbone",
+      backbone: "../test/vendor/backbone",
       sinon: "../node_modules/sinon/lib/sinon",
       layoutmanager: "../node_modules/backbone.layoutmanager/"
     },
