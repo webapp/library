@@ -65,7 +65,7 @@
       window.$ = Backbone.$;
 
       // Necessary for sync tests.
-      window.raises = QUnit.raises;
+      window.raises = QUnit.throws;
 
       // Kick off the tests.
       require(["backbone/test/environment"], function() {
