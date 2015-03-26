@@ -1,0 +1,134 @@
+[
+  {
+    "tags": [
+      {
+        "type": "module",
+        "string": "webapp"
+      },
+      {
+        "type": "requires",
+        "string": "module:channel"
+      },
+      {
+        "type": "requires",
+        "string": "module:class"
+      },
+      {
+        "type": "requires",
+        "string": "module:collection"
+      },
+      {
+        "type": "requires",
+        "string": "module:component"
+      },
+      {
+        "type": "requires",
+        "string": "module:events"
+      },
+      {
+        "type": "requires",
+        "string": "module:history"
+      },
+      {
+        "type": "requires",
+        "string": "module:inheritance"
+      },
+      {
+        "type": "requires",
+        "string": "module:model"
+      },
+      {
+        "type": "requires",
+        "string": "module:router"
+      },
+      {
+        "type": "requires",
+        "string": "module:view"
+      },
+      {
+        "type": "requires",
+        "string": "module:component/view"
+      },
+      {
+        "type": "requires",
+        "string": "module:sync"
+      },
+      {
+        "type": "requires",
+        "string": "module:sync/transports/xhr"
+      },
+      {
+        "type": "requires",
+        "string": "module:scopedcss"
+      },
+      {
+        "type": "requires",
+        "string": "module:jquery"
+      }
+    ],
+    "description": {
+      "full": "",
+      "summary": "",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 1,
+    "codeStart": 19,
+    "code": "define(function(require, exports, module) {\n  \"use strict\";\n\n  // WebApp internals.\n  var Channel = require(\"./channel\");\n  var Class = require(\"./class\");\n  var Collection = require(\"./collection\");\n  var Component = require(\"./component\");\n  var Events = require(\"./events\");\n  var History = require(\"./history\");\n  var Inheritance = require(\"./inheritance\");\n  var Model = require(\"./model\");\n  var Router = require(\"./router\");\n  var View = require(\"./view\");\n  var ViewComponent = require(\"./component/view\");\n  var Sync = require(\"./sync\");\n  var XhrTransport = require(\"./sync/transports/xhr\");\n\n  // Third-party dependencies.\n  var ScopedCss = require(\"scopedcss\");\n  var $ = require(\"jquery\");\n  var _ = require(\"lodash\");\n\n  var WebApp = Class.extend({"
+  },
+  {
+    "tags": [
+      {
+        "type": "param",
+        "name": "mainElement",
+        "description": "<ul>\n<li>Any value that can be wrapped by jQuery.</li>\n</ul>\n",
+        "types": [],
+        "typesDescription": "<code>*</code>",
+        "optional": false,
+        "nullable": false,
+        "nonNullable": false,
+        "variable": false
+      }
+    ],
+    "description": {
+      "full": "<p>Starts the WebApp Library into a given container otherwise it creates<br />the element in memory.</p>",
+      "summary": "<p>Starts the WebApp Library into a given container otherwise it creates<br />the element in memory.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 43,
+    "codeStart": 49,
+    "code": "start: function(mainElement) {\n  // The application element.\n  this.$el = $(this.mainElement || mainElement);\n\n  // If the main element entry point is not found.\n  if (!this.$el.length) {\n    this.$el = $(\"<div>\");\n  }\n\n  // Register the ViewComponent and activate on the initial element.\n  Component.register(ViewComponent).activateAll(this.$el);\n},",
+    "ctx": {
+      "type": "method",
+      "name": "start",
+      "string": "start()"
+    }
+  },
+  {
+    "tags": [],
+    "description": {
+      "full": "<p>Stops the application and ensures all DOM and internal events are<br />removed.</p>",
+      "summary": "<p>Stops the application and ensures all DOM and internal events are<br />removed.</p>",
+      "body": ""
+    },
+    "isPrivate": false,
+    "isConstructor": false,
+    "isEvent": false,
+    "ignore": false,
+    "line": 62,
+    "codeStart": 66,
+    "code": "stop: function() {\n  if (this.$el) {\n    this.$el.remove();\n  }\n}\n  });\n\n  // Ensure Events are added to the exposed API, mirroring Backbone.\n  WebApp.mixin(Events);\n\n  WebApp.mixin({\n// Expose a version.\nVERSION: \"0.1.0-wip\",\n\n// Expose jQuery if it's included, also helps remain compatible with\n// Backbone.\n$: $,\n\n// Expose other libraries (if they are included).\n_: _,\nScopedCss: ScopedCss,\n\n// Expose modules.\nChannel: Channel,\nClass: Class,\nCollection: Collection,\nComponent: Component,\nEvents: Events,\nHistory: History,\nInheritance: Inheritance,\nModel: Model,\nRouter: Router,\nView: View,\n\n// Expose default transport.\nTransports: {\n  Xhr: XhrTransport\n},\n\n// Backbone compatibility helper.\nnoConflict: function() {\n  window.Backbone = WebApp.Backbone;\n  return WebApp;\n},\n\n// Expose the sync functionality.\nsync: Sync,\n\n// Mirror Backbone API by exposing an `ajax` method.\najax: function() {\n  return WebApp.$.ajax.apply(WebApp.$, arguments);\n},\n\n// Create new history.\nhistory: new History()\n  });\n\n  module.exports = WebApp;\n});",
+    "ctx": {
+      "type": "method",
+      "name": "stop",
+      "string": "stop()"
+    }
+  }
+]

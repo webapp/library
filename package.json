@@ -2,39 +2,40 @@
   "name": "webapp",
   "version": "0.1.0",
   "description": "a tool for writing web applications",
-  "main": "dist/webapp.js",
+  "main": "dist/webapp.bundled.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/webapp/library.git"
   },
   "scripts": {
-    "build": "grunt browserify",
+    "build": "grunt synchronizer",
     "grunt": "grunt",
     "test": "grunt"
   },
-  "dependencies": {
-    "lodash": "^3.2.0",
+  "peerDependencies": {
+    "jquery": "^2.1.3",
+    "lodash": "^3.5.0",
+    "underscore": "^1.7.0",
     "scopedcss": "^0.1.4"
   },
   "devDependencies": {
-    "deamdify": "^0.1.1",
+    "assert": "^1.3.0",
+    "backbone.layoutmanager": "^0.9.6",
     "grunt": "^0.4.5",
-    "grunt-browserify": "^3.3.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.11.0",
     "grunt-jscs-checker": "^0.4.4",
     "grunt-jsdoc": "^0.5.8",
     "grunt-karma": "^0.10.1",
-    "jquery": "^2.1.3",
     "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "^0.2.7",
     "karma-mocha": "^0.1.10",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "mocha": "^2.1.0",
+    "karma-phantomjs-launcher": "karma-runner/karma-phantomjs-launcher",
+    "mocha": "^2.2.1",
     "mocha-qunit-ui": "^0.1.2",
     "qunitjs": "^1.17.1",
     "requirejs": "^2.1.16",
-    "sinon": "^1.12.2",
-    "backbone.layoutmanager": "^0.9.6"
+    "sinon": "^1.13.0"
   }
 }

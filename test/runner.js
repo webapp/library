@@ -5,7 +5,7 @@
   var baseUrl = karma ? "/base/" : "../";
 
   var tests = [
-    // WebApp library tests.
+    // WebApp Library tests.
     "tests/component/view",
     "tests/sync/adapters/rest",
     "tests/sync/transports/xhr",
@@ -33,11 +33,11 @@
     "backbone/test/view",
     "backbone/test/sync",
 
-    // TODO LayoutManager tests.
-    //"layoutmanager/test/spec/configure",
-    //"layoutmanager/test/spec/dom",
+    // LayoutManager tests.
+    "layoutmanager/test/spec/configure",
+    "layoutmanager/test/spec/dom",
     //"layoutmanager/test/spec/setup",
-    //"layoutmanager/test/spec/views"
+    "layoutmanager/test/spec/views"
   ];
 
   // Prefer the BDD testing style.
@@ -52,15 +52,21 @@
       tests: "../test/tests",
       backbone: "../test/vendor/backbone",
       sinon: "../node_modules/sinon/lib/sinon",
-      layoutmanager: "../node_modules/backbone.layoutmanager/"
+      layoutmanager: "../node_modules/backbone.layoutmanager"
     },
 
     baseUrl: baseUrl + "lib"
   }, ["config"], function(config) {
     // Set up the library to expose globals.
-    require(["index", "view", "lodash", "sync"], function(WebApp, View, _) {
+    require(["index", "underscore"], function(WebApp, _) {
       window.Backbone = WebApp;
-      window.Backbone.Layout = View;
+      window.Backbone.Layout = WebApp.View.extend({
+        constructor: function() {
+          console.log('here');
+        },
+
+        manage: true
+      });
       window._ = _;
       window.$ = Backbone.$;
 

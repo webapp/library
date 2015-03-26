@@ -25,7 +25,7 @@ module.exports = ->
         { pattern: "build/**/*.js", included: false }
 
         "node_modules/backbone.layoutmanager/test/util/util.js"
-        "node_modules/assert/assert.js"
+        "node_modules/assert/dist.js"
         "node_modules/mocha-qunit-ui/mocha-qunit-ui.js"
         "node_modules/requirejs/require.js"
         { pattern: "node_modules/**/*.js", included: false }

@@ -6,10 +6,10 @@ module.exports = ->
       name: "WebApp"
 
       paths:
-        scopedcss: "../node_modules/scopedcss/dist/scopedcss"
-        lodash: "../node_modules/lodash/dist/lodash"
-        jquery: "../node_modules/jquery/dst/jquery"
-        ractive: "../node_modules/ractive/ractive"
+        scopedcss: "node_modules/scopedcss/dist/scopedcss"
+        underscore: "node_modules/underscore/underscore"
+        jquery: "node_modules/jquery/dist/jquery"
+        lodash: "node_modules/lodash/index"
 
     # Bundles all third party libraries necessary for this library to operate
     # at full potential.
@@ -20,17 +20,20 @@ module.exports = ->
     # A minimal build that only includes the official source code.
     default:
       options:
+        name: "WebApp"
+
         exclude: [
           "scopedcss"
           "jquery"
-          "ractive"
+          "underscore"
+          "lodash"
         ]
 
         deps: [
           "scopedcss": "ScopedCSS"
+          "underscore": "_"
           "lodash": "_"
           "jquery": "jQuery"
-          "ractive": "Ractive"
         ]
 
       files:

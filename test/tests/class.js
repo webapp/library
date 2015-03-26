@@ -19,7 +19,7 @@ define(function(require, exports, module) {
     it("exposes a mixin method", function() {
       assert.equal(typeof Class.mixin, "function");
     });
-    
+
     it("has inheritance", function() {
       assert.equal(typeof Class.extend, "function");
     });

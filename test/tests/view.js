@@ -71,7 +71,7 @@ define(function(require, exports, module) {
       });
 
       afterEach(function() {
-        delete View.prototype.prefix;
+        View.prototype.prefix = "";
         view.remove();
       });
 
@@ -163,7 +163,7 @@ define(function(require, exports, module) {
             return contents;
           },
 
-          scope: "hi"
+          serialize: "hi"
         });
       });
 
